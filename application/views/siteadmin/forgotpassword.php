@@ -15,7 +15,7 @@
     <link href="<?php echo base_url(); ?>assets/dist/js/sweetalert2.min.css" rel="stylesheet" type="text/css">
     <link href="<?php echo base_url(); ?>assets/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="<?php echo base_url(); ?>assets/bower_components/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet" type="text/css">
-	 <script src="<?php echo base_url(); ?>assets/jquery.js"></script>
+	  <script src="<?php echo base_url(); ?>assets/jquery.js"></script>
     <script src="<?php echo base_url(); ?>assets/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/dist/js/jquery.validate.min.js"></script>
@@ -32,7 +32,7 @@
         <div class="panel panel-default card-view mb-0">
           <div class="panel-heading">
             <div class="pull-left">
-              <h6 class="panel-title txt-dark">Sign In</h6>
+              <h6 class="panel-title txt-dark">Register Email  Address to Reset </h6>
             </div>
             <div class="clearfix"></div>
           </div>
@@ -43,27 +43,19 @@
                   <div class="form-wrap">
                     <form action="#" method="post" enctype="multipart/form-data" id="loginform" name="loginform">
                       <div class="form-group">
-                        <label class="control-label mb-10" for="exampleInputEmail_2">Email / Username</label>
+                        <label class="control-label mb-10" for="exampleInputEmail_2">Email</label>
                         <div class="input-group">
-                          <input type="text" class="form-control" name="user_name" id="exampleInputEmail_2" placeholder="Username/ Email">
+                          <input type="text" class="form-control" name="email" id="exampleInputEmail_2" placeholder=" Email">
                           <div class="input-group-addon"><i class="icon-envelope-open"></i></div>
                         </div>
                       </div>
                       <div class="form-group">
-                        <label class="control-label mb-10" for="exampleInputpwd_2">Password</label>
-                        <div class="input-group">
-                          <input type="password" class="form-control" name="password" id="exampleInputpwd_2" placeholder=" Password">
-                          <div class="input-group-addon"><i class="icon-lock"></i></div>
-                        </div>
-                      </div>
 
-                      <div class="form-group">
-
-                        <a class="capitalize-font txt-danger block pt-5 pull-right" href="<?php echo base_url(); ?>adminlogin/forgotpassword">forgot password</a>
+                        <a class="capitalize-font txt-danger block pt-5 pull-right" href="<?php echo base_url(); ?>adminlogin/">Login here</a>
                         <div class="clearfix"></div>
                       </div>
                       <div class="form-group">
-                        <button type="submit" class="btn btn-success btn-block">sign in</button>
+                        <button type="submit" class="btn btn-success btn-block">Reset</button>
                       </div>
 
                     </form>
@@ -101,27 +93,28 @@
 <script>
 $('#loginform').validate({ // initialize the plugin
     rules: {
-        user_name: {required: true },
-        password: {  required: true },
+        email: {required: true,email:true },
+
     },
     messages: {
-        user_name: { required:"Enter the Username" },
-        password: { required:"Enter the Password"}
+        email: { required:"Enter the valid email" }
 
     },
     submitHandler: function(form) {
         $.ajax({
-            url: "<?php echo base_url(); ?>adminlogin/check_login",
+            url: "<?php echo base_url(); ?>adminlogin/resetpassword",
             type: 'POST',
             data: $('#loginform').serialize(),
             success: function(response) {
-            //  alert(response);
+
                 if (response == "success") {
-                  swal('Please wait')
-                  swal.showLoading();
-                  window.setTimeout(function () {
-                   location.href = "<?php echo base_url(); ?>adminlogin/home";
-               }, 3000);
+                  swal({
+                  title: "Success",
+                  text: " Password has been sent Register Email ",
+                  type: "success"
+              }).then(function() {
+                  location.href = '<?php echo base_url(); ?>adminlogin/';
+              });
 
                 } else{
 

@@ -72,7 +72,7 @@
                  }
                },
             newpassword : {
-               minlength : 6,maxlength:12,
+              required: true, minlength : 6,maxlength:12,
            },
            retypepassword : {
 
@@ -97,7 +97,13 @@
                 success: function(response) {
                 //  alert(response);
                     if (response == "success") {
-                      swal("Success", "Password Updated", "success")
+                      swal({
+                      title: "Success",
+                      text: " Password Has been Changed Successfully",
+                      type: "success"
+                  }).then(function() {
+                      location.href = '<?php echo base_url(); ?>adminlogin/home';
+                  });
 
                     } else{
                         sweetAlert("Oops...", response, "error");

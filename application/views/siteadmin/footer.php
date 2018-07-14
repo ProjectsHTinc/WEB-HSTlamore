@@ -25,6 +25,9 @@
   color:red;
   font-weight: 400;
 }
+hr{
+  border-top:1px solid #3cb879;
+}
 </style>
     <script src="<?php echo base_url(); ?>assets/dist/js/jquery.slimscroll.js"></script>
     <script src="<?php echo base_url(); ?>assets/bower_components/moment/min/moment.min.js"></script>
