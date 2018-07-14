@@ -80,7 +80,7 @@
                     <div class="container-footer ptb-30">
                         <div class="row">
                             <div class="col-sm-7">
-                                <p class="text-left copyright-text">Copyright ©  <a target="_blank" href="#">Nevara</a> All Rights Reserved.</p>
+                                <p class="text-left copyright-text">Copyright ©  <a target="_blank" href="#">Little A More</a> All Rights Reserved.</p>
                             </div>
                             <div class="col-sm-5">
                                 <!-- Footer Social List Start -->
@@ -251,10 +251,9 @@
         
         
     </div>
-    
+  
     <!-- Wrapper End -->
-    <!-- jquery 3.12.4 -->
-    <script src="<?php echo base_url(); ?>assets/front/js/vendor/jquery-1.12.4.min.js"></script>
+
     <!-- mobile menu js  -->
     <script src="<?php echo base_url(); ?>assets/front/js/jquery.meanmenu.min.js"></script>
     <!-- scroll-up js -->
@@ -273,124 +272,19 @@
     <script src="<?php echo base_url(); ?>assets/front/js/bootstrap.min.js"></script>
     <!-- plugins -->
     <script src="<?php echo base_url(); ?>assets/front/js/plugins.js"></script>
-    
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAq7MrCR1A2qIShmjbtLHSKjcEIEBEEwM"></script>
-    
-	<script>
-        // When the window has finished loading create our google map below
-        google.maps.event.addDomListener(window, 'load', init);
-
-        function init() {
-            // Basic options for a simple Google Map
-            // For more options see: https://developers.google.com/maps/documentation/javascript/reference#MapOptions
-            var mapOptions = {
-                // How zoomed in you want the map to start at (always required)
-                zoom: 11,
-
-                scrollwheel: false,
-
-                // The latitude and longitude to center the map (always required)
-                center: new google.maps.LatLng(23.761226, 90.420766), // New York
-
-                // How you would like to style the map. 
-                // This is where you would paste any style found on Snazzy Maps.
-                styles: [{
-                        "featureType": "administrative",
-                        "elementType": "labels.text.fill",
-                        "stylers": [{
-                            "color": "#444444"
-                        }]
-                    },
-                    {
-                        "featureType": "landscape",
-                        "elementType": "all",
-                        "stylers": [{
-                            "color": "#f2f2f2"
-                        }]
-                    },
-                    {
-                        "featureType": "poi",
-                        "elementType": "all",
-                        "stylers": [{
-                            "visibility": "off"
-                        }]
-                    },
-                    {
-                        "featureType": "road",
-                        "elementType": "all",
-                        "stylers": [{
-                                "saturation": -100
-                            },
-                            {
-                                "lightness": 45
-                            }
-                        ]
-                    },
-                    {
-                        "featureType": "road.highway",
-                        "elementType": "all",
-                        "stylers": [{
-                            "visibility": "simplified"
-                        }]
-                    },
-                    {
-                        "featureType": "road.arterial",
-                        "elementType": "labels.icon",
-                        "stylers": [{
-                            "visibility": "off"
-                        }]
-                    },
-                    {
-                        "featureType": "transit",
-                        "elementType": "all",
-                        "stylers": [{
-                            "visibility": "off"
-                        }]
-                    },
-                    {
-                        "featureType": "water",
-                        "elementType": "all",
-                        "stylers": [{
-                                "color": "#314453"
-                            },
-                            {
-                                "visibility": "on"
-                            }
-                        ]
-                    },
-                    {
-                        "featureType": "water",
-                        "elementType": "geometry.fill",
-                        "stylers": [{
-                                "lightness": "-12"
-                            },
-                            {
-                                "saturation": "0"
-                            },
-                            {
-                                "color": "#4bc7e9"
-                            }
-                        ]
-                    }
-                ]
-            };
-
-            // Get the HTML DOM element that will contain your map 
-            // We are using a div with id="map" seen below in the <body>
-            var mapElement = document.getElementById('map');
-
-            // Create the Google Map using our element and options defined above
-            var map = new google.maps.Map(mapElement, mapOptions);
-
-            // Let's also add a marker while we're at it
-            var marker = new google.maps.Marker({
-                position: new google.maps.LatLng(23.761226, 90.420766),
-                map: map,
-                title: 'Snazzy!'
-            });
-        }
-    </script>
     <!-- main js -->
     <script src="<?php echo base_url(); ?>assets/front/js/main.js"></script>
-</body>
+	 <!-- shop function js -->
+    <script src="<?php echo base_url(); ?>assets/front/js/shop_functions.js"></script>
+	<script type="text/javascript">
+	$(window).load(function() {
+	 // start to load the first set of data
+        var guest_session = '<?php  echo $_SESSION['guest_session']; ?>';
+		//alert(guest_session);
+        //ajxCartdetails(guest_session_id);
+	});
+
+	</script>
+    
+     </body>
 </html>

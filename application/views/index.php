@@ -58,7 +58,7 @@
                                 <div class="single-product">
                                     <!-- Product Image Start -->
                                     <div class="pro-img">
-                                        <a href="product-page.html">
+                                        <a href="<?php echo base_url(); ?>product_details/">
                                             <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/1_1.jpg" alt="single-product">
                                             <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/1_2.jpg" alt="single-product">
                                         </a>
@@ -70,10 +70,10 @@
                                     <!-- Product Image End -->
                                     <!-- Product Content Start -->
                                     <div class="pro-content text-center">
-                                        <h4><a href="product-page.html">Sheepskin Pillow2</a></h4>
+                                        <h4><a href="<?php echo base_url(); ?>product_details/">Sheepskin Pillow2</a></h4>
                                         <p class="price"><span>$241.99</span></p>
                                         <div class="action-links2">
-                                            <a data-toggle="tooltip" title="Add to Cart" href="cart.html">add to cart</a>
+                                            <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
                                         </div>
                                     </div>
                                     <!-- Product Content End -->
@@ -87,7 +87,7 @@
                                 <div class="single-product">
                                     <!-- Product Image Start -->
                                     <div class="pro-img">
-                                        <a href="product-page.html">
+                                        <a href="<?php echo base_url(); ?>product_details/">
                                             <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_1.jpg" alt="single-product">
                                             <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="single-product">
                                         </a>
@@ -99,10 +99,10 @@
                                     <!-- Product Image End -->
                                     <!-- Product Content Start -->
                                     <div class="pro-content text-center">
-                                        <h4><a href="product-page.html">Carte Postal Clock</a></h4>
+                                        <h4><a href="<?php echo base_url(); ?>product_details/">Carte Postal Clock</a></h4>
                                         <p class="price"><span>$2000</span></p>
                                         <div class="action-links2">
-                                            <a data-toggle="tooltip" title="Add to Cart" href="cart.html">add to cart</a>
+                                            <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
                                         </div>
                                     </div>
                                     <!-- Product Content End -->
@@ -116,7 +116,7 @@
                                 <div class="single-product">
                                     <!-- Product Image Start -->
                                     <div class="pro-img">
-                                        <a href="product-page.html">
+                                        <a href="<?php echo base_url(); ?>product_details/">
                                             <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/3_1.jpg" alt="single-product">
                                             <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/3_2.jpg" alt="single-product">
                                         </a>
@@ -128,10 +128,10 @@
                                     <!-- Product Image End -->
                                     <!-- Product Content Start -->
                                     <div class="pro-content text-center">
-                                        <h4><a href="product-page.html">congue sitamet</a></h4>
+                                        <h4><a href="<?php echo base_url(); ?>product_details/">congue sitamet</a></h4>
                                         <p class="price"><span>$241.99</span></p>
                                         <div class="action-links2">
-                                            <a data-toggle="tooltip" title="Add to Cart" href="cart.html">add to cart</a>
+                                            <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
                                         </div>
                                     </div>
                                     <!-- Product Content End -->
@@ -145,7 +145,7 @@
                                 <div class="single-product">
                                     <!-- Product Image Start -->
                                     <div class="pro-img">
-                                        <a href="product-page.html">
+                                        <a href="<?php echo base_url(); ?>product_details/">
                                             <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/4_1.jpg" alt="single-product">
                                             <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="single-product">
                                         </a>
@@ -157,10 +157,10 @@
                                     <!-- Product Image End -->
                                     <!-- Product Content Start -->
                                     <div class="pro-content text-center">
-                                        <h4><a href="product-page.html">dictum idrisus</a></h4>
+                                        <h4><a href="<?php echo base_url(); ?>product_details/">dictum idrisus</a></h4>
                                         <p class="price"><span>$541.99</span></p>
                                         <div class="action-links2">
-                                            <a data-toggle="tooltip" title="Add to Cart" href="cart.html">add to cart</a>
+                                            <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
                                         </div>
                                     </div>
                                     <!-- Product Content End -->
@@ -174,7 +174,7 @@
                                 <div class="single-product">
                                     <!-- Product Image Start -->
                                     <div class="pro-img">
-                                        <a href="product-page.html">
+                                        <a href="<?php echo base_url(); ?>product_details/">
                                             <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="single-product">
                                             <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_1.jpg" alt="single-product">
                                         </a>
@@ -186,10 +186,10 @@
                                     <!-- Product Image End -->
                                     <!-- Product Content Start -->
                                     <div class="pro-content text-center">
-                                        <h4><a href="product-page.html">Decorative Vase</a></h4>
+                                        <h4><a href="<?php echo base_url(); ?>product_details/">Decorative Vase</a></h4>
                                         <p class="price"><span>$241.99</span></p>
                                         <div class="action-links2">
-                                            <a data-toggle="tooltip" title="Add to Cart" href="cart.html">add to cart</a>
+                                            <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
                                         </div>
                                     </div>
                                     <!-- Product Content End -->
@@ -297,7 +297,7 @@
                             <div class="single-product">
                                 <!-- Product Image Start -->
                                 <div class="pro-img">
-                                    <a href="product-page.html">
+                                    <a href="<?php echo base_url(); ?>product_details/">
                                         <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/1_2.jpg" alt="single-product">
                                         <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/5_1.jpg" alt="single-product">
                                     </a>
@@ -309,10 +309,10 @@
                                 <!-- Product Image End -->
                                 <!-- Product Content Start -->
                                 <div class="pro-content text-center">
-                                    <h4><a href="product-page.html">Decorative Vase</a></h4>
+                                    <h4><a href="<?php echo base_url(); ?>product_details/">Decorative Vase</a></h4>
                                     <p class="price"><span>$241.99</span></p>
                                     <div class="action-links2">
-                                        <a data-toggle="tooltip" title="Add to Cart" href="cart.html">add to cart</a>
+                                        <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
                                     </div>
                                 </div>
                                 <!-- Product Content End -->
@@ -322,7 +322,7 @@
                             <div class="single-product">
                                 <!-- Product Image Start -->
                                 <div class="pro-img">
-                                    <a href="product-page.html">
+                                    <a href="<?php echo base_url(); ?>product_details/">
                                         <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/3_1.jpg" alt="single-product">
                                         <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/6_2.jpg" alt="single-product">
                                     </a>
@@ -333,10 +333,10 @@
                                 <!-- Product Image End -->
                                 <!-- Product Content Start -->
                                 <div class="pro-content text-center">
-                                    <h4><a href="product-page.html">Sheepskin Pillow2</a></h4>
+                                    <h4><a href="<?php echo base_url(); ?>product_details/">Sheepskin Pillow2</a></h4>
                                     <p class="price"><span>$500.00</span></p>
                                     <div class="action-links2">
-                                        <a data-toggle="tooltip" title="Add to Cart" href="cart.html">add to cart</a>
+                                        <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
                                     </div>
                                 </div>
                                 <!-- Product Content End -->
@@ -346,7 +346,7 @@
                             <div class="single-product">
                                 <!-- Product Image Start -->
                                 <div class="pro-img">
-                                    <a href="product-page.html">
+                                    <a href="<?php echo base_url(); ?>product_details/">
                                         <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/1_1.jpg" alt="single-product">
                                         <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="single-product">
                                     </a>
@@ -358,10 +358,10 @@
                                 <!-- Product Image End -->
                                 <!-- Product Content Start -->
                                 <div class="pro-content text-center">
-                                    <h4><a href="product-page.html">Carte Postal Clock</a></h4>
+                                    <h4><a href="<?php echo base_url(); ?>product_details/">Carte Postal Clock</a></h4>
                                     <p class="price"><span>$180.29</span></p>
                                     <div class="action-links2">
-                                        <a data-toggle="tooltip" title="Add to Cart" href="cart.html">add to cart</a>
+                                        <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
                                     </div>
                                 </div>
                                 <!-- Product Content End -->
@@ -371,7 +371,7 @@
                             <div class="single-product">
                                 <!-- Product Image Start -->
                                 <div class="pro-img">
-                                    <a href="product-page.html">
+                                    <a href="<?php echo base_url(); ?>product_details/">
                                         <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/6_1.jpg" alt="single-product">
                                         <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/6_2.jpg" alt="single-product">
                                     </a>
@@ -383,10 +383,10 @@
                                 <!-- Product Image End -->
                                 <!-- Product Content Start -->
                                 <div class="pro-content text-center">
-                                    <h4><a href="product-page.html">dictum idrisus</a></h4>
+                                    <h4><a href="<?php echo base_url(); ?>product_details/">dictum idrisus</a></h4>
                                     <p class="price"><span>$199.99</span></p>
                                     <div class="action-links2">
-                                        <a data-toggle="tooltip" title="Add to Cart" href="cart.html">add to cart</a>
+                                        <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
                                     </div>
                                 </div>
                                 <!-- Product Content End -->
@@ -396,7 +396,7 @@
                             <div class="single-product">
                                 <!-- Product Image Start -->
                                 <div class="pro-img">
-                                    <a href="product-page.html">
+                                    <a href="<?php echo base_url(); ?>product_details/">
                                         <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_1.jpg" alt="single-product">
                                         <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="single-product">
                                     </a>
@@ -408,10 +408,10 @@
                                 <!-- Product Image End -->
                                 <!-- Product Content Start -->
                                 <div class="pro-content text-center">
-                                    <h4><a href="product-page.html">Decorative Vase</a></h4>
+                                    <h4><a href="<?php echo base_url(); ?>product_details/">Decorative Vase</a></h4>
                                     <p class="price"><span>$241.99</span></p>
                                     <div class="action-links2">
-                                        <a data-toggle="tooltip" title="Add to Cart" href="cart.html">add to cart</a>
+                                        <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
                                     </div>
                                 </div>
                                 <!-- Product Content End -->
@@ -421,7 +421,7 @@
                             <div class="single-product">
                                 <!-- Product Image Start -->
                                 <div class="pro-img">
-                                    <a href="product-page.html">
+                                    <a href="<?php echo base_url(); ?>product_details/">
                                         <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/8_1.jpg" alt="single-product">
                                         <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/3_2.jpg" alt="single-product">
                                     </a>
@@ -433,10 +433,10 @@
                                 <!-- Product Image End -->
                                 <!-- Product Content Start -->
                                 <div class="pro-content text-center">
-                                    <h4><a href="product-page.html">dictum idrisus</a></h4>
+                                    <h4><a href="<?php echo base_url(); ?>product_details/">dictum idrisus</a></h4>
                                     <p class="price"><span>$271.99</span></p>
                                     <div class="action-links2">
-                                        <a data-toggle="tooltip" title="Add to Cart" href="cart.html">add to cart</a>
+                                        <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
                                     </div>
                                 </div>
                                 <!-- Product Content End -->
