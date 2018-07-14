@@ -1,6 +1,6 @@
 <?php 
-$guest_data = 'lil'.$_SESSION["__ci_last_regenerate"]; 
-$this->session->set_userdata('guest_user', $guest_data);
+	$guest_data = 'lil'.$_SESSION["__ci_last_regenerate"];
+	$this->session->set_userdata('guest_session', $guest_data);
 //echo $_SESSION['guest_user'];
 ?>
 <!doctype html>
@@ -8,7 +8,7 @@ $this->session->set_userdata('guest_user', $guest_data);
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Nevara-Furniture & Interior Ecommerce HTML Template</title>
+    <title>Little A More - Online Shopping Cart</title>
     <meta name="description" content="Default Description">
     <meta name="keywords" content="E-commerce" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -41,6 +41,10 @@ $this->session->set_userdata('guest_user', $guest_data);
 
     <!-- modernizr js -->
     <script src="<?php echo base_url(); ?>assets/front/js/vendor/modernizr-2.8.3.min.js"></script>
+    <!-- jquery 3.12.4 -->
+    <script src="<?php echo base_url(); ?>assets/front/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/front/js/jquery.validate.js"></script>
+    <script src="<?php echo base_url(); ?>assets/front/js/additional-methods.js"></script>
 </head>
 
 <body>
@@ -66,7 +70,7 @@ $this->session->set_userdata('guest_user', $guest_data);
            <div class="container-fluid header-top-area header-sticky">
                <div class="row">
                     <!-- Logo Start -->
-                    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-5 full-col pl-0">
+                    <div class="col-lg-2 col-md-3 col-sm-6 col-xs-5 full-col pl-0">
                         <div class="logo">
                              <a href="<?php echo base_url(); ?>"><img src="<?php echo base_url(); ?>assets/front/img/logo/logo.png" alt="brand-image"></a>
                         </div>
@@ -169,16 +173,16 @@ $this->session->set_userdata('guest_user', $guest_data);
                                     <li><a href="#">pages<i class="pe-7s-angle-down"></i></a>
                                         <!-- Home Version Dropdown Start -->
                                         <ul class="ht-dropdown">
-                                            <li><a href="categorie-page.html">shop</a></li>
-                                            <li><a href="product-page.html">Product Details</a></li>
-                                            <li><a href="cart.html">cart</a></li>
-                                            <li><a href="checkout.html">checkout</a></li>
-                                            <li><a href="wish-list.html">wish list</a></li>
-                                            <li><a href="blog.html">blog</a></li>
+                                            <li><a href="<?php echo base_url(); ?>categories/">Categories</a></li>
+                                            <li><a href="<?php echo base_url(); ?>product_details/">Product Details</a></li>
+                                            <li><a href="<?php echo base_url(); ?>cart/">cart</a></li>
+                                            <li><a href="<?php echo base_url(); ?>checkout/">checkout</a></li>
+                                            <li><a href="<?php echo base_url(); ?>wishlist/">wish list</a></li>
+                                            <!--<li><a href="blog.html">blog</a></li>
                                             <li><a href="blog-details.html">blog details</a></li>
                                             <li><a href="contact.html">contact</a></li>
                                             <li><a href="privacy.html">Privacy Policy</a></li>
-                                            <li><a href="404.html">404</a></li>
+                                            <li><a href="404.html">404</a></li>-->
                                         </ul>
                                         <!-- Home Version Dropdown End -->
                                     </li>
@@ -190,7 +194,7 @@ $this->session->set_userdata('guest_user', $guest_data);
                     </div>
                     <!-- Primary-Menu End -->
                     <!-- Header All Shopping Selection Start -->
-                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-7 full-col pr-0">
+                    <div class="col-lg-3 col-md-2 col-sm-6 col-xs-7 full-col pr-0">
                         <div class="main-selection">
                             <ul class="selection-list text-right">
                                 <!-- Searcch Box Start -->
@@ -206,6 +210,7 @@ $this->session->set_userdata('guest_user', $guest_data);
                                 </li>
                                 <!-- Search Box End -->
                                 <li><a href="<?php echo base_url(); ?>wishlist"><i class="pe-7s-like"></i><span>2</span></a></li>
+                                
                                 <li><i class="pe-7s-shopbag"></i><span>2</span>
                                     <ul class="ht-dropdown main-cart-box">
                                         <li>
@@ -237,7 +242,7 @@ $this->session->set_userdata('guest_user', $guest_data);
                                             <div class="cart-footer fix">
                                                 <h5>total :<span class="f-right">$698.00</span></h5>
                                                 <div class="cart-actions">
-                                                    <a class="checkout" href="checkout.html">Checkout</a>
+                                                    <a class="checkout" href="<?php echo base_url(); ?>checkout/">Checkout</a>
                                                 </div>
                                             </div>
                                             <!-- Cart Footer Inner End -->
@@ -247,13 +252,13 @@ $this->session->set_userdata('guest_user', $guest_data);
                                 <!-- Dropdown Currency Selection Start -->
                                 <li><i class="pe-7s-config"></i>
                                     <ul class="ht-dropdown currrency">
-                                        
                                         <li>
                                             <h3>my account</h3>
                                             <ul>
-                                                <li><a href="register.html">register</a></li>
-                                                <li><a href="account.html">My Account</a></li>
-                                                <li><a href="log-in.html">log in</a></li>
+                                                <li><a href="<?php echo base_url(); ?>register/">register</a></li>
+                                                <li><a href="<?php echo base_url(); ?>myaccount/">My Account</a></li>
+                                                <li><a href="<?php echo base_url(); ?>login/">log in</a></li>
+                                                <li><a href="<?php echo base_url(); ?>logout/">logout</a></li>
                                             </ul>
                                         </li>
                                     </ul>

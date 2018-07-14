@@ -55,3 +55,11 @@ $route['translate_uri_dashes'] = FALSE;
 $route['aboutus'] = 'home/aboutus';
 $route['contactus'] = 'home/contactus';
 $route['wishlist'] = 'home/wishlist';
+$route['register'] = 'home/register';
+$route['myaccount'] = 'home/myaccount';
+$route['login'] = 'home/login';
+$route['cart'] = 'home/cart';
+$route['checkout'] = 'home/checkout';
+$route['categories'] = 'home/categories';
+$route['product_details'] = 'home/product_details';
+
