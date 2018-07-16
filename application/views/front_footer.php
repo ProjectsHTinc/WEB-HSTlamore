@@ -262,8 +262,6 @@
     <script src="<?php echo base_url(); ?>assets/front/js/owl.carousel.min.js"></script>
     <!-- wow js -->
     <script src="<?php echo base_url(); ?>assets/front/js/wow.min.js"></script>
-    <!-- price slider js -->
-    <script src="<?php echo base_url(); ?>assets/front/js/jquery-ui.min.js"></script>
     <!-- elevateZoom js -->
     <script src="<?php echo base_url(); ?>assets/front/js/jquery.elevateZoom-3.0.8.min.js"></script>
     <!-- nivo slider js -->

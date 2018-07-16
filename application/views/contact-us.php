@@ -16,18 +16,27 @@
             <!-- Container End -->
         </div>
         <!-- Page Breadcrumb End -->
-        <!-- Google Map Start -->
-        <div id="map" class="mt-100" style="height:550px"></div>
-        <!-- Google Map End -->
+        
         <!-- Contact Email Area Start -->
-        <div class="contact-email-area ptb-100">
+        <div class="contact-email-area mt-50">
             <div class="container">
                 <div class="row">
-                    <div class="col-xs-12">
-                        <h3 class="mb-5">Contact Us</h3>
+                <h3 class="mb-5">Contact Us</h3>
                         <p class="text-capitalize mb-40">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                    <div class="col-md-6">
+                   
+                                    
+                                    <h5 class="contact-info mtb-10">contact info:</h5>
+                                    <ul class="footer-list first-content">
+                                        <li><i class="pe-7s-map-marker"></i>Address will be here</li>
+                                        <li><i class="pe-7s-mail"></i>your-email@example.com</li>
+                                        <li><i class="pe-7s-call"></i>+00 123 45678</li>
+                                    </ul>
+              
+                    </div>
+                    <div class="col-md-6">
                         <div class="row">
-                            <form id="contact-form" class="contact-form" action="https://d29u17ylf1ylz9.cloudfront.net/nevara/mail.php" method="post">
+                            <form id="contact-form" class="contact-form" action="" method="post">
                                 <div class="address-wrapper">
                                     <div class="col-md-12">
                                         <div class="address-fname">
@@ -63,15 +72,65 @@
                                 </div>
                             </form>
                         </div>
+                        		<div class="alert alert-success alert-dismissible" id="send" style="display:none;">
+    								<strong>Request Send..</strong> Your Message send to Webmaster...
+  								</div>
+                        
+                                <div class="alert alert-danger alert-dismissible" id="error" style="display:none;">
+    								<strong>Sorry!.. Please Check Your Email id.
+  								</div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- Contact Email Area End -->
         
+        <!-- Google Map Start -->
+        <div id="map" class="mt-20" style="height:550px"></div>
+        <!-- Google Map End -->
+        
+        
+        
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAq7MrCR1A2qIShmjbtLHSKjcEIEBEEwM"></script>
-    
-	<script>
+  <script language="javascript">
+	$('#contact-form').validate({ // initialize the plugin
+    rules: {
+		 name: {
+            required: true,
+        },
+        email: {
+            required: true,email:true,
+        },
+        subject: {
+            required: true,
+        },
+		message: {
+            required: true,
+        },
+    },
+    messages: {
+		name: { required:"Enter your Name"},
+		email: { required:"Enter your Email"},
+		subject: { required:"Enter Subject"},
+		message: { required:"Enter Message"},
+    },
+    submitHandler: function(form) {
+       
+		$.ajax({
+            url: "<?php echo base_url(); ?>home/contact_us",
+            type: 'POST',
+            data: $('#contact-form').serialize(),
+            success: function(response) {
+				 if (response == "send") {
+					$('#error').hide();
+                     $('#send').show();
+                } else {
+					$('#error').show();
+                }
+            }
+        });
+    }
+});
         // When the window has finished loading create our google map below
         google.maps.event.addDomListener(window, 'load', init);
 

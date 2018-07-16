@@ -51,9 +51,9 @@
                         <div class="col-lg-2 col-md-2">
                             <!-- Nav tabs -->
                             <ul class="nav flex-column dashboard-list" role="tablist">
-                                <li class="active"><a href="<?php echo base_url(); ?>myaccount/">Dashboard</a></li>
+                                <li><a href="<?php echo base_url(); ?>myaccount/">Dashboard</a></li>
                                 <li><a href="<?php echo base_url(); ?>cust_orders/">Orders</a></li>
-                                <li><a href="<?php echo base_url(); ?>cust_address/">Addresses</a></li>
+                                <li class="active"><a href="<?php echo base_url(); ?>cust_address/">Addresses</a></li>
                                 <li><a href="<?php echo base_url(); ?>cust_details/">Account Details</a></li>
                                 <li><a href="<?php echo base_url(); ?>cust_change_password/">Change Password</a></li>
                                 <li><a href="<?php echo base_url(); ?>logout/">Logout</a></li>
@@ -62,10 +62,16 @@
                         <div class="col-lg-10 col-md-10">
                             <!-- Tab panes -->
                             <div class="tab-content dashboard-content mt-all-40">
-                                <div id="dashboard" class="tab-pane fade in active">
-                                    <h3>Dashboard </h3>
-                                    <p>From your account dashboard. you can easily check & view your <a href="#">recent orders</a>, manage your <a href="#">shipping and billing addresses</a> and <a href="#">edit your password and account details.</a></p>
+                                
+                                
+                                <div id="address" class="tab-pane fade in active">
+                                    <p>The following addresses will be used on the checkout page by default.</p>
+                                    <h4 class="billing-address">Billing address</h4>
+                                    <a class="view" href="#">edit</a>
+                                    <p>steven smith</p>
+                                    <p>Australia</p>   
                                 </div>
+                                
                             </div>
                         </div>
                     </div>

@@ -1,7 +1,7 @@
 <?php 
 	$guest_data = 'lil'.$_SESSION["__ci_last_regenerate"];
 	$this->session->set_userdata('guest_session', $guest_data);
-//echo $_SESSION['guest_user'];
+//	echo '<pre>' . print_r($_SESSION, TRUE) . '</pre>';
 ?>
 <!doctype html>
 <html class="no-js" lang="en-US">
@@ -22,9 +22,7 @@
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/front/css/nivo-slider.css">
     <!-- owl carousel css -->
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/front/css/owl.carousel.min.css">
-    <!-- price slider css -->
-    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/front/css/jquery-ui.min.css">
-    <!-- fontawesome css -->
+     <!-- fontawesome css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
     <!--<link rel="stylesheet" href="<?php echo base_url(); ?>assets/front/css/font-awesome.css">-->
     <!-- icon font pack css -->
@@ -40,9 +38,13 @@
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/front/css/responsive.css">
 
     <!-- modernizr js -->
-    <script src="<?php echo base_url(); ?>assets/front/js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/front/js/modernizr-2.8.3.min.js"></script>
+    
     <!-- jquery 3.12.4 -->
-    <script src="<?php echo base_url(); ?>assets/front/js/vendor/jquery-1.12.4.min.js"></script>
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/front/css/jquery-ui.css">
+    
+    <script src="<?php echo base_url(); ?>assets/front/js/jquery-1.12.4.js"></script>
+    <script src="<?php echo base_url(); ?>assets/front/js/jquery-ui.js"></script>
     <script src="<?php echo base_url(); ?>assets/front/js/jquery.validate.js"></script>
     <script src="<?php echo base_url(); ?>assets/front/js/additional-methods.js"></script>
 </head>
@@ -255,10 +257,13 @@
                                         <li>
                                             <h3>my account</h3>
                                             <ul>
-                                                <li><a href="<?php echo base_url(); ?>register/">register</a></li>
-                                                <li><a href="<?php echo base_url(); ?>myaccount/">My Account</a></li>
-                                                <li><a href="<?php echo base_url(); ?>login/">log in</a></li>
+                                            <?php if (isset($_SESSION['cust_id'])) { ?>
+                                            	<li><a href="<?php echo base_url(); ?>myaccount/">My Account</a></li>
                                                 <li><a href="<?php echo base_url(); ?>logout/">logout</a></li>
+                                            <?php } else { ?>
+                                                <li><a href="<?php echo base_url(); ?>register/">register</a></li>
+                                                <li><a href="<?php echo base_url(); ?>login/">log in</a></li>
+                                             <?php } ?>
                                             </ul>
                                         </li>
                                     </ul>
