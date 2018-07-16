@@ -15,10 +15,11 @@
     <link href="<?php echo base_url(); ?>assets/dist/js/sweetalert2.min.css" rel="stylesheet" type="text/css">
     <link href="<?php echo base_url(); ?>assets/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="<?php echo base_url(); ?>assets/bower_components/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet" type="text/css">
-    
+
 	  <script src="<?php echo base_url(); ?>assets/jquery.js"></script>
     <script src="<?php echo base_url(); ?>assets/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+  
     <script src="<?php echo base_url(); ?>assets/dist/js/jquery.validate.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/dist/js/additional-methods.min.js"></script>
 </head>

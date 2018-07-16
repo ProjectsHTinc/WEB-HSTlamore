@@ -11,17 +11,23 @@ Class Categorymodel extends CI_Model
 
 
 
-   function checkpassword($password,$user_id){
-     $select="SELECT * FROM admin_details WHERE password='$password' AND id='$user_id'";
-     $res=$this->db->query($select);
-    if($res->num_rows()==0){
-      echo "false";
+   function create_category($cat_name,$cat_desc,$cat_status,$cat_meta_title,$cat_meta_desc,$cat_meta_keywords,$cat_cover_img,$cat_thumb_img,$user_id){
+    if(empty($cat_name)){
+
     }else{
-      echo "true";
+      $insert_query="INSERT INTO category_masters (parent_id,category_name,category_image,category_thumbnail,category_desc,category_meta_title,category_meta_desc,category_keywords,status,created_at,created_by) VALUES('1','$cat_name','$cat_cover_img','$cat_thumb_img','$cat_desc','$cat_meta_title','$cat_meta_desc','$cat_meta_keywords','$cat_status',NOW(),'$user_id')";
+      $res=$this->db->query($insert_query);
+      if($res){
+               $data = array("status" => "success");
+               return $data;
+           }else{
+               $data = array("status" => "failed");
+               return $data;
+           }
     }
    }
-   function checkemail($email,$user_id){
-     $select="SELECT * FROM admin_details WHERE email='$email' AND id!='$user_id'";
+   function check_category($cat_name,$user_id){
+     $select="SELECT * FROM category_masters WHERE category_name='$cat_name'";
      $res=$this->db->query($select);
     if($res->num_rows()>0){
       echo "false";
@@ -29,8 +35,10 @@ Class Categorymodel extends CI_Model
       echo "true";
     }
    }
-   function checkphone($phone_number,$user_id){
-     $select="SELECT * FROM admin_details WHERE phone_number='$phone_number' AND id!='$user_id'";
+
+  function  check_category_exist($cat_id,$cat_name,$user_id){
+     $id=base64_decode($cat_id)/9876;
+     $select="SELECT * FROM category_masters WHERE category_name='$cat_name' AND id!='$id'";
      $res=$this->db->query($select);
     if($res->num_rows()>0){
       echo "false";
@@ -39,89 +47,79 @@ Class Categorymodel extends CI_Model
     }
    }
 
-   function updateprofile($email,$phone_number,$name,$user_id){
-     if(empty($email)){
+   function create_sub_category($cat_name,$cat_desc,$cat_status,$cat_meta_title,$cat_meta_desc,$cat_meta_keywords,$cat_cover_img,$cat_thumb_img,$user_id,$sub_cat_id){
+      $parent_id=base64_decode($sub_cat_id)/9876;
+
+     if(empty($cat_name)){
 
      }else{
-       $select="UPDATE admin_details SET email='$email',name='$name',phone_number='$phone_number',updated_at=NOW(),updated_by='$user_id' WHERE id='$user_id'";
-       $res=$this->db->query($select);
-      if($res){
-        echo "success";
-      }else{
-        echo "failed";
-      }
-     }
-   }
-
-   function updatepassword($password,$user_id){
-     if(empty($password)){
-
-     }else{
-       $select="UPDATE admin_details SET password='$password',updated_at=NOW(),updated_by='$user_id' WHERE id='$user_id'";
-       $res=$this->db->query($select);
-      if($res){
-        echo "success";
-      }else{
-        echo "failed";
-      }
+       $insert_query="INSERT INTO category_masters (parent_id,category_name,category_image,category_thumbnail,category_desc,category_meta_title,category_meta_desc,category_keywords,status,created_at,created_by) VALUES('$parent_id','$cat_name','$cat_cover_img','$cat_thumb_img','$cat_desc','$cat_meta_title','$cat_meta_desc','$cat_meta_keywords','$cat_status',NOW(),'$user_id')";
+       $res=$this->db->query($insert_query);
+       if($res){
+                $data = array("status" => "success");
+                return $data;
+            }else{
+                $data = array("status" => "failed");
+                return $data;
+            }
      }
    }
 
 
-   function get_admin_details($user_id){
-     $select="SELECT rm.*,ad.* FROM admin_details AS ad LEFT JOIN role_masters AS rm ON rm.id=ad.role_type_id WHERE ad.id='$user_id'";
+
+
+
+   function get_all_category(){
+     $select="SELECT * FROM category_masters WHERE id!='1' AND parent_id='1'";
      $res=$this->db->query($select);
       return $res->result();
    }
 
-
-
-   function resetpassword($email){
-     function randomPassword() {
-      $alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
-      $pass = array();
-      $alphaLength = strlen($alphabet) - 1;
-      for ($i = 0; $i < 8; $i++) {
-          $n = rand(0, $alphaLength);
-          $pass[] = $alphabet[$n];
-      }
-      return implode($pass);
-    }
-     $newPassword=randomPassword();
-     $update_password=md5($newPassword);
-     $select="SELECT * FROM admin_details WHERE email='$email'";
-
+   function get_all_parent_category(){
+     $select="SELECT * FROM category_masters WHERE id!='1' AND parent_id='1'";
      $res=$this->db->query($select);
-     if($res->num_rows()==1){
-       $select="UPDATE admin_details SET password='$update_password',updated_at=NOW() WHERE email='$email'";
-       $res=$this->db->query($select);
-       $to=$email;
-        $subject="Reset Password";
-        $htmlContent = '
-         <html>
-         <head>
-         <title>Reset Password</title>
-            </head>
-            <body>
-            <p style="margin-left:20px;">Password has been Reset Successfully.Please use this password to login <a href="">'.$newPassword.'</a></p>
-            </body>
-         </html>';
-        $headers = "MIME-Version: 1.0" . "\r\n";
-        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-        // Additional headers
-        $headers .= 'From:Admin <admin@littleamore.com>' . "\r\n";
-        $sent= mail($to,$subject,$htmlContent,$headers);
-        if($sent){
-          echo "success";
-      }else{
-        echo "Something Went Wrong";
-      }
-    }else{
-      echo "Email  id is not found!!";
-    }
+    return $res->result();
    }
 
+   function get_all_subcategory($sub_cat){
+      $parent_id=base64_decode($sub_cat)/9876;
+      $select="SELECT * FROM category_masters WHERE id!='1' AND parent_id='$parent_id'";
+      $res=$this->db->query($select);
+      return $res->result();
+   }
+   function get_category_edit($cat_id){
+       $id=base64_decode($cat_id)/9876;
+       $select="SELECT * FROM category_masters WHERE id='$id'";
+       $res=$this->db->query($select);
+       return $res->result();
+   }
 
+   function update_category($cat_name,$cat_desc,$cat_status,$cat_meta_title,$cat_meta_desc,$cat_meta_keywords,$cat_cover_img,$cat_thumb_img,$user_id,$cat_id){
+   $id=base64_decode($cat_id)/9876;
+   $update="UPDATE category_masters SET category_name='$cat_name',category_image='$cat_cover_img',category_thumbnail='$cat_thumb_img',category_desc='$cat_desc',category_meta_title='$cat_meta_title',category_meta_desc='$cat_meta_desc',category_keywords='$cat_meta_keywords',status='$cat_status',updated_at=NOW(),updated_by='$user_id' WHERE id='$id'";
+   $res=$this->db->query($update);
+   if($res){
+        $data = array("status" => "success");
+        return $data;
+    }else{
+        $data = array("status" => "failed");
+        return $data;
+    }
+  }
+
+  function update_sub_category($cat_name,$cat_desc,$cat_status,$cat_meta_title,$cat_meta_desc,$cat_meta_keywords,$cat_cover_img,$cat_thumb_img,$user_id,$cat_id,$main_cat_id){
+  $id=base64_decode($cat_id)/9876;
+   $update="UPDATE category_masters SET parent_id='$main_cat_id',category_name='$cat_name',category_image='$cat_cover_img',category_thumbnail='$cat_thumb_img',category_desc='$cat_desc',category_meta_title='$cat_meta_title',category_meta_desc='$cat_meta_desc',category_keywords='$cat_meta_keywords',status='$cat_status',updated_at=NOW(),updated_by='$user_id' WHERE id='$id'";
+
+  $res=$this->db->query($update);
+  if($res){
+       $data = array("status" => "success");
+       return $data;
+   }else{
+       $data = array("status" => "failed");
+       return $data;
+   }
+ }
 
 
 

@@ -35,13 +35,14 @@
 										<div class="row">
 											<div class="col-sm-12 col-xs-12">
 												<div class="form-wrap">
-													<form action="<?php echo base_url(); ?>category/create_category" method="post" enctype="multipart/form-data" id="adminform" name="adminform">
+													<?php  foreach($res as $rows){} ?>
+													<form action="<?php echo base_url(); ?>category/update_category" method="post" enctype="multipart/form-data" id="adminform" name="adminform">
 														<div class="form-body">
 															<div class="row">
 																<div class="col-md-6">
 																	<div class="form-group">
 																		<label class="control-label mb-10">Category Title</label>
-																		<input type="text" id="firstName" name="cat_name" class="form-control" placeholder="">
+																		<input type="text" id="firstName" name="cat_name" class="form-control" value="<?php echo $rows->category_name; ?>">
 
 																	</div>
 																</div>
@@ -96,7 +97,7 @@
 																<div class="col-md-6">
 																	<div class="form-group">
 																		<label class="control-label mb-10">Status</label>
-																		<select class="form-control" data-placeholder="Choose a Status" tabindex="1" name="cat_status">
+																		<select class="form-control" data-placeholder="Choose a Status" tabindex="1" name="cat_status" id="cat_status">
 																			<option value="Active">Active</option>
 																			<option value="Inactive">Inactive</option>
 
@@ -141,7 +142,7 @@
 
 														</div>
 														<div class="form-actions mt-10">
-															<button type="submit" class="btn btn-success  mr-10"> Save</button>
+															<button type="submit" class="btn btn-success  mr-10"> Update </button>
 															<button type="button" class="btn btn-default">Cancel</button>
 														</div>
 													</form>
@@ -153,89 +154,6 @@
 							</div>
 						</div>
 					</div>
-
-					<!-- Row -->
-			<div class="row">
-				<div class="col-sm-12">
-					<div class="panel panel-default card-view">
-						<div class="panel-heading">
-							<div class="pull-left">
-								<h6 class="panel-title txt-dark">List  of Categories</h6>
-							</div>
-							<div class="clearfix"></div>
-						</div>
-						<div class="panel-wrapper collapse in">
-							<div class="panel-body">
-								<div class="table-wrap">
-									<div class="table-responsive">
-										<table id="datable_1" class="table table-hover display  pb-30" >
-											<thead>
-												<tr>
-													<th>S.no</th>
-													<th>Category Title</th>
-													<th>Cover img</th>
-													<th>Thumb img</th>
-													<th>Status</th>
-													<th>Action</th>
-												</tr>
-											</thead>
-											<tfoot>
-												<tr>
-													<th>S.no</th>
-													<th>Category Title</th>
-													<th>Cover img</th>
-													<th>Thumb img</th>
-													<th>Status</th>
-													<th>Action</th>
-												</tr>
-											</tfoot>
-											<tbody>
-												<tr>
-													<td>1</td>
-													<td>Home</td>
-													<td></td>
-													<td></td>
-													<td>	<button class="btn  btn-success btn-rounded">Active</button></td>
-													<td></td>
-												</tr>
-												<?php $i=2; foreach($res as $rows){ ?>
-
-												<tr>
-													<td><?php echo $i; ?></td>
-													<td><?php echo $rows->category_name; ?></td>
-													<td><img src="<?php echo base_url(); ?>assets/category/<?php  echo $rows->category_image; ?>" style="width:100px;"></td>
-													<td><?php if(empty($rows->category_thumbnail)){ ?>
-
-												<?php 	}else{ ?>
-																<img src="<?php echo base_url(); ?>assets/category/thumbnail/<?php  echo $rows->category_thumbnail; ?>" style="width:100px;">
-													<?php	} ?>
-
-														</td>
-													<td><?php if($rows->status=='Active'){ ?>
-														<button class="btn  btn-success btn-rounded">Active</button>
-													<?php }else{ ?>
-														<button class="btn  btn-danger btn-rounded">Inactive</button>
-												<?php 	} ?></td>
-													<td><a href="<?php echo base_url(); ?>category/edit_cat/<?php  echo base64_encode($rows->id*9876); ?>"><i class="ti-pencil-alt"></i></a>
-														&nbsp;
-														<a href="<?php echo base_url(); ?>category/view_sub/<?php  echo base64_encode($rows->id*9876); ?>">	<i class="ti-menu-alt"></i></a>
-														&nbsp;
-															<a href="<?php echo base_url(); ?>category/add_sub/<?php  echo base64_encode($rows->id*9876); ?>">		<i class="ti-plus"></i></a>
-												</td>
-												</tr>
-						<?php	 $i++; }  ?>
-
-
-											</tbody>
-										</table>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- /Row -->
 
 
 
@@ -256,17 +174,17 @@ $('#adminform').validate({ // initialize the plugin
        },
 
 			cat_cover_img : {
-				 required: true,accept: "jpg,jpeg,png",filesize: 1048576,
+				 required: true,
 		 },
 			 cat_status : {
-					required: true,accept: "jpg,jpeg,png",filesize: 1048576,
+					required: true,
 			}
     },
     messages: {
         cat_name: { required:"Enter the Category",remote:"Category name already exist" },
         cat_desc: { required:"Enter the Description"},
-				cat_cover_img: { required:"Select cover image", accept:"Please upload .jpg or .png .",fileSize:"File must be JPG or PNG, less than 1MB"},
-				cat_thumb_img: { required:"Select thumbnail image",accept:"Please upload .jpg or .png .",fileSize:"File must be JPG or PNG, less than 1MB"}
+				cat_cover_img: { required:"Select cover image"},
+				cat_thumb_img: { required:"Select thumbnail image"}
 
 
     }

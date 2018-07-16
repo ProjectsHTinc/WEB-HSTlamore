@@ -28,6 +28,9 @@
 hr{
   border-top:1px solid #3cb879;
 }
+.alert-success{
+  color: #fff;
+}
 </style>
     <script src="<?php echo base_url(); ?>assets/dist/js/jquery.slimscroll.js"></script>
     <script src="<?php echo base_url(); ?>assets/bower_components/moment/min/moment.min.js"></script>
@@ -43,4 +46,9 @@ hr{
     <script src="<?php echo base_url(); ?>assets/dist/js/init.js"></script>
     <script src="<?php echo base_url(); ?>assets/dist/js/dashboard-data.js"></script>
     <script src="<?php echo base_url(); ?>assets/dist/js/sweetalert2.min.js"></script>
+    <script>
+    $(document).ready(function() {
+	     $('#datable_1').DataTable();
+     });
+    </script>
 </html>
