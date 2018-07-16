@@ -15,7 +15,8 @@
     <link href="<?php echo base_url(); ?>assets/dist/js/sweetalert2.min.css" rel="stylesheet" type="text/css">
     <link href="<?php echo base_url(); ?>assets/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="<?php echo base_url(); ?>assets/bower_components/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet" type="text/css">
-	  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    
+	  <script src="<?php echo base_url(); ?>assets/jquery.js"></script>
     <script src="<?php echo base_url(); ?>assets/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/dist/js/jquery.validate.min.js"></script>
@@ -89,11 +90,10 @@
                     <a href="#" class="dropdown-toggle pr-0" data-toggle="dropdown"><img src="<?php echo base_url(); ?>/assets/dist/img/user1.png" alt="user_auth" class="user-auth-img img-circle" /><span class="user-online-status"></span></a>
                     <ul class="dropdown-menu user-auth-dropdown" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
                         <li>
-                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
-                        </li>
-
-                        <li>
                             <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo base_url(); ?>adminlogin/profile"><i class="fa fa-fw fa-user"></i> Profile</a>
                         </li>
                         <li>
                             <a href="<?php echo base_url(); ?>adminlogin/changepassword"><i class="fa fa-fw fa-gear"></i>Change Password</a>
@@ -126,7 +126,7 @@
         <div class="fixed-sidebar-left">
             <ul class="nav navbar-nav side-nav nicescroll-bar">
                 <li>
-                    <a class="active" href="#" data-toggle="collapse"><i class="icon-picture mr-10"></i>Dashboard
+                    <a class="active" href="<?php echo base_url(); ?>adminlogin/home"><i class="icon-picture mr-10"></i>Dashboard
 
                     </a>
 
@@ -135,7 +135,7 @@
                     <a href="javascript:void(0);" data-toggle="collapse" data-target="#ecom_dr"><i class="icon-basket-loaded mr-10"></i>Masters<span class="pull-right"><i class="fa fa-fw fa-angle-down"></i></span></a>
                     <ul id="ecom_dr" class="collapse collapse-level-1">
                         <li>
-                            <a href="">Category</a>
+                            <a href="<?php echo base_url(); ?>category/">Category</a>
                         </li>
                         <li>
                             <a href="">Specification</a>

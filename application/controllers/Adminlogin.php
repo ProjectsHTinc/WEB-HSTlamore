@@ -10,6 +10,18 @@ class Adminlogin extends CI_Controller {
 		$this->load->library('session');
 			$this->load->model('loginmodel');
 	}
+	public function index()
+	{
+		$data=$this->session->userdata();
+		$user_id=$this->session->userdata('id');
+		$user_role=$this->session->userdata('role_type_id');
+			if($user_role=='1' || $user_role=='2'){
+				redirect('adminlogin/home');
+		}else{
+			$this->load->view('siteadmin/login');
+		}
+
+	}
 
 	public function home()
 	{
@@ -26,13 +38,7 @@ class Adminlogin extends CI_Controller {
 
 	}
 
-	public function index()
-	{
 
-
-		$this->load->view('siteadmin/login');
-
-	}
 
 	public function check_login(){
 		$username=$this->input->post('user_name');
@@ -69,7 +75,34 @@ class Adminlogin extends CI_Controller {
 		 $data=$this->loginmodel->checkpassword($password,$user_id);
 	 }
 
+	 public function checkemail(){
+		 $data=$this->session->userdata();
+		 $user_id=$this->session->userdata('id');
+		 $user_role=$this->session->userdata('role_type_id');
+		 $email=$this->input->post('email');
+		 $data=$this->loginmodel->checkemail($email,$user_id);
+	 }
+	 public function checkphone(){
+		 $data=$this->session->userdata();
+		 $user_id=$this->session->userdata('id');
+		 $user_role=$this->session->userdata('role_type_id');
+		 $phone_number=$this->input->post('phone_number');
+		 $data=$this->loginmodel->checkphone($phone_number,$user_id);
+	 }
+	 public function updateprofile(){
+		 $data=$this->session->userdata();
+		 $user_id=$this->session->userdata('id');
+		 $user_role=$this->session->userdata('role_type_id');
+			if($user_role=='1' || $user_role=='2'){
+			$phone_number=$this->input->post('phone_number');
+			$email=$this->input->post('email');
+			$name=$this->input->post('name');
+			$data=$this->loginmodel->updateprofile($email,$phone_number,$name,$user_id);
+		}else{
+			redirect('/');
+		}
 
+	 }
 	 public function updatepassword(){
 		 $data=$this->session->userdata();
 		 $user_id=$this->session->userdata('id');
@@ -78,9 +111,32 @@ class Adminlogin extends CI_Controller {
 			$password=md5($this->input->post('newpassword'));
 			$data=$this->loginmodel->updatepassword($password,$user_id);
 		 }else{
-
+			 redirect('/');
 		 }
 
 	 }
+	 public function profile(){
+		 $data=$this->session->userdata();
+		 $user_id=$this->session->userdata('id');
+		 $user_role=$this->session->userdata('role_type_id');
+		 if($user_role=='1' || $user_role=='2'){
+			 	 $data['res']=$this->loginmodel->get_admin_details($user_id);
+				 $this->load->view('siteadmin/header',$data);
+				 $this->load->view('siteadmin/profile',$data);
+				 $this->load->view('siteadmin/footer');
+		 }else{
+			 redirect('/');
+		 }
+	 }
+
+	 public function forgotpassword(){
+		 $this->load->view('siteadmin/forgotpassword');
+	 }
+
+	 public function resetpassword(){
+		 	 $email=$this->input->post('email');
+			$data=$this->loginmodel->resetpassword($email);
+	 }
+
 
 }
