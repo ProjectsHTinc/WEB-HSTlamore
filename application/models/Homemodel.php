@@ -1,6 +1,6 @@
 <?php
 
-Class Customermodel extends CI_Model
+Class Homemodel extends CI_Model
 {
 
   public function __construct()
@@ -145,6 +145,47 @@ Class Customermodel extends CI_Model
 		}
    }
 
+
+	function customer_login($username,$password){
+		
+			$pwd = md5($password);
+			
+			$check_user = "SELECT * FROM customers WHERE password = '$pwd' AND status = 'Active' AND (phone_number = '$username' OR email = '$username')";
+			$res=$this->db->query($check_user);
+
+			if($res->num_rows()>0){
+				foreach($res->result() as $rows) { 
+					$cust_id = $rows->id;
+					$login_count = $rows->login_count+1;
+					$cust_name = $rows->name;
+					$cust_mobile = $rows->phone_number;
+					$cust_email = $rows->email;
+				}
+				 	$data =  array("cust_id"=>$cust_id,"cust_name" => $cust_name,"cust_mobile"=>$cust_mobile,"cust_email"=>$cust_email);
+   	            	$this->session->set_userdata($data);
+					
+					$update_sql = "UPDATE customers SET last_login =NOW(),login_count='$login_count' WHERE id='$cust_id'";
+				 	$update_result = $this->db->query($update_sql);
+				echo "login";
+					}else{
+				echo "error";
+			}
+   }
+   
+   function customer_logindetails($cust_id){
+		$sql = "SELECT * FROM customers WHERE id='$cust_id'";
+		$resu=$this->db->query($sql);
+		$res=$resu->result();
+		return $res;
+   }
+   
+    function customer_details($cust_id){
+		$sql = "SELECT * FROM customer_details WHERE id='$cust_id'";
+		$resu=$this->db->query($sql);
+		$res=$resu->result();
+		return $res;
+   }
+   
 	function customer_registration($name,$mobile,$email,$pwdconfirm,$newsletter){
 		
 			$pwd = md5($pwdconfirm);
@@ -156,6 +197,9 @@ Class Customermodel extends CI_Model
 			$user_details="INSERT INTO customer_details(customer_id,first_name,newsletter_status) VALUES('$last_id','$name','$newsletter')";
 			$result=$this->db->query($user_details);
 			
+			$update_sql = "UPDATE customers SET created_at =NOW(),created_by ='$last_id' WHERE id='$last_id'";
+			$update_result = $this->db->query($update_sql);
+					
 			//$subject = "Customer Registration";
 			//$htmlContent = 'Dear '. $name . '<br><br>' .  'Username : '. $email .'<br>Password : '. $pwdconfirm .'<br><br><br>Regards<br>LittleAMore';
 			//$this->sendMail($email,$subject,$htmlContent);
@@ -169,9 +213,9 @@ Class Customermodel extends CI_Model
 			$cust_update = $this->db->query($customer_update);
 
 			if ($cust_pic !="") {
-				$customer_details_update = "UPDATE customer_details SET first_name = '$fname',last_name = '$lname',birth_date  = '$dob',gender  ='$gender',newsletter_status ='$newsletter',profile_picture = '$cust_pic',updated_at =now(), updated_by = '$cust_id' WHERE id  ='$cust_id'";
+				echo $customer_details_update = "UPDATE customer_details SET first_name = '$fname',last_name = '$lname',birth_date  = '$dob',gender  ='$gender',newsletter_status ='$newsletter',profile_picture = '$cust_pic',updated_at =now(), updated_by = '$cust_id' WHERE id  ='$cust_id'";
 			} else {
-				$customer_details_update = "UPDATE customer_details SET first_name = '$fname',last_name = '$lname',birth_date = '$dob',gender  ='$gender',newsletter_status ='$newsletter',updated_at =now(),updated_by = '$cust_id' WHERE id  ='$cust_id'";
+				echo $customer_details_update = "UPDATE customer_details SET first_name = '$fname',last_name = '$lname',birth_date = '$dob',gender  ='$gender',newsletter_status ='$newsletter',updated_at =now(),updated_by = '$cust_id' WHERE id  ='$cust_id'";
 			}
 			$cust_detail_update = $this->db->query($customer_details_update);
 			 
@@ -214,38 +258,45 @@ Class Customermodel extends CI_Model
 		}
    }
 
-	function customer_login($username,$password){
-		
-			$pwd = md5($password);
-			
-			$check_user = "SELECT * FROM customers WHERE password = '$pwd' AND status = 'Active' AND (phone_number = '$username' OR email = '$username')";
-			$res=$this->db->query($check_user);
-			
-			if($res->num_rows()>0){
-				
-				foreach($res->result() as $rows) { }              
-				 	$data =  array("cust_id"=>$rows->id,"cust_name" => $rows->name,"cust_mobile"=>$rows->phone_number,"cust_email"=>$rows->email,"msg"  =>"success");
-   	            	$this->session->set_userdata($data);
-				echo "login";
-					}else{
-				echo "error";
-			}
-   }
-   
-   function customer_logindetails($cust_id){
-		$sql = "SELECT * FROM customers WHERE id='$cust_id'";
+
+ 	function categorylist(){
+		$sql = "SELECT * FROM category_masters";
 		$resu=$this->db->query($sql);
 		$res=$resu->result();
 		return $res;
    }
    
-    function customer_details($cust_id){
-		$sql = "SELECT * FROM customer_details WHERE id='$cust_id'";
+   	function newproducts(){
+		$sql = "SELECT * FROM products WHERE status='Active' ORDER BY created_at LIMIT 10";
+		$resu=$this->db->query($sql);
+		$res=$resu->result();
+		return $res;
+   }
+   
+   function homebanner(){
+		$sql = "SELECT * FROM products WHERE status='Active' ORDER BY created_at LIMIT 10";
 		$resu=$this->db->query($sql);
 		$res=$resu->result();
 		return $res;
    }
 
+    function bestsaleproducts(){
+		$sql = "SELECT * FROM products WHERE status='Active' ORDER BY created_at LIMIT 10";
+		$resu=$this->db->query($sql);
+		$res=$resu->result();
+		return $res;
+   }
+     
+   function homepromotions(){
+		$sql = "SELECT * FROM products WHERE status='Active' ORDER BY created_at LIMIT 10";
+		$resu=$this->db->query($sql);
+		$res=$resu->result();
+		return $res;
+   }
+   
+   
+   
+   
 	function contact_us($name,$email,$website,$subject,$message){
 		// Set content-type header for sending HTML email
 		$headers = "MIME-Version: 1.0" . "\r\n";

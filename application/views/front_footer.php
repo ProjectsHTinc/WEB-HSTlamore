@@ -251,8 +251,7 @@
         
         
     </div>
-  
-    <!-- Wrapper End -->
+      <!-- Wrapper End -->
 
     <!-- mobile menu js  -->
     <script src="<?php echo base_url(); ?>assets/front/js/jquery.meanmenu.min.js"></script>

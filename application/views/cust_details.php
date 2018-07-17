@@ -12,6 +12,12 @@
 		$redirect_url = base_url()."login/";
 	}
 ?>
+<style>
+.ui-widget.ui-widget-content {
+    border: none;
+    background: #F7F7F7;
+}
+</style>
         <!-- Page Breadcrumb Start -->
         <div class="main-breadcrumb mb-100">
             <div class="container">
@@ -168,6 +174,8 @@
 	$( function() {
 		$("#dob").datepicker({
 		  dateFormat: 'dd-mm-yy',
+		  changeMonth: true,
+			changeYear: true
 		});
 	});
   
