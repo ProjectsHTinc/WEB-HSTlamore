@@ -51,8 +51,8 @@
                         <div class="col-lg-2 col-md-2">
                             <!-- Nav tabs -->
                             <ul class="nav flex-column dashboard-list" role="tablist">
-                                <li class="active"><a href="<?php echo base_url(); ?>myaccount/">Dashboard</a></li>
-                                <li><a href="<?php echo base_url(); ?>cust_orders/">Orders</a></li>
+                                <li><a href="<?php echo base_url(); ?>myaccount/">Dashboard</a></li>
+                                <li class="active"><a href="<?php echo base_url(); ?>cust_orders/">Orders</a></li>
                                 <li><a href="<?php echo base_url(); ?>cust_address/">Addresses</a></li>
                                 <li><a href="<?php echo base_url(); ?>cust_details/">Account Details</a></li>
                                 <li><a href="<?php echo base_url(); ?>cust_change_password/">Change Password</a></li>
@@ -62,10 +62,40 @@
                         <div class="col-lg-10 col-md-10">
                             <!-- Tab panes -->
                             <div class="tab-content dashboard-content mt-all-40">
-                                <div id="dashboard" class="tab-pane fade in active">
-                                    <h3>Dashboard </h3>
-                                    <p>From your account dashboard. you can easily check & view your <a href="#">recent orders</a>, manage your <a href="#">shipping and billing addresses</a> and <a href="#">edit your password and account details.</a></p>
+                                
+                                <div id="orders" class="tab-pane fade in active">
+                                    <h3>Orders</h3>
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Order</th>
+                                                    <th>Date</th>
+                                                    <th>Status</th>
+                                                    <th>Total</th>
+                                                    <th>Actions</th>	 	 	 	
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>May 10, 2018</td>
+                                                    <td>Processing</td>
+                                                    <td>$25.00 for 1 item </td>
+                                                    <td><a class="view" href="cart.html">view</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2</td>
+                                                    <td>May 10, 2018</td>
+                                                    <td>Processing</td>
+                                                    <td>$17.00 for 1 item </td>
+                                                    <td><a class="view" href="cart.html">view</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
+                                
                             </div>
                         </div>
                     </div>

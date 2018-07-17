@@ -51,25 +51,73 @@
                         <div class="col-lg-2 col-md-2">
                             <!-- Nav tabs -->
                             <ul class="nav flex-column dashboard-list" role="tablist">
-                                <li class="active"><a href="<?php echo base_url(); ?>myaccount/">Dashboard</a></li>
+                                <li><a href="<?php echo base_url(); ?>myaccount/">Dashboard</a></li>
                                 <li><a href="<?php echo base_url(); ?>cust_orders/">Orders</a></li>
                                 <li><a href="<?php echo base_url(); ?>cust_address/">Addresses</a></li>
                                 <li><a href="<?php echo base_url(); ?>cust_details/">Account Details</a></li>
-                                <li><a href="<?php echo base_url(); ?>cust_change_password/">Change Password</a></li>
+                                <li class="active"><a href="<?php echo base_url(); ?>cust_change_password/">Change Password</a></li>
                                 <li><a href="<?php echo base_url(); ?>logout/">Logout</a></li>
                             </ul>
                         </div>
-                        <div class="col-lg-10 col-md-10">
+                        <div class="col-lg-8 col-md-8">
                             <!-- Tab panes -->
                             <div class="tab-content dashboard-content mt-all-40">
-                                <div id="dashboard" class="tab-pane fade in active">
-                                    <h3>Dashboard </h3>
-                                    <p>From your account dashboard. you can easily check & view your <a href="#">recent orders</a>, manage your <a href="#">shipping and billing addresses</a> and <a href="#">edit your password and account details.</a></p>
+      
+                                <div id="account-details" class="tab-pane fade in active">
+                                    <h3>Change Password </h3>
+                                    <div class="register-form login-form clearfix">
+                                    <form class="form-horizontal pb-100" name="registration"  id="registration" method="post" action="<?php echo base_url(); ?>home/change_password/">
+                                    	
+                                        <fieldset>
+                                        <div class="form-group row">
+                                            <label for="f-name" class="col-lg-4 col-md-4 col-form-label">New Password: <span class="require">*</span></label>
+                                            <div class="col-lg-8 col-md-8">
+                                            <input type="password" class="form-control" name="pwd" id="pwd" placeholder="Password">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="f-name" class="col-lg-4 col-md-4 col-form-label">Confirm New Password: <span class="require">*</span></label>
+                                            <div class="col-lg-8 col-md-8">
+                                            <input type="password" class="form-control" name="pwdconfirm" id="pwdconfirm" placeholder="Password">
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <div class="buttons newsletter-input">
+                                        <div class="pull-right">
+                                            <input type="submit" value="Update" class="newsletter-btn">
+                                        </div>
+                                    </div>
+                                    </form>
+                                    </div>
                                 </div>
                             </div>
+                        </div>
+                        
+                        <div class="col-lg-2 col-md-2 pro-img">
+                        
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- My Account Page End Here -->
+        
+<script language="javascript">
+
+	$('#registration').validate({ // initialize the plugin
+    rules: {
+		 
+		pwd: {
+            required: true,
+        },
+		pwdconfirm: {
+            required: true,equalTo: "#pwd"
+        },
+    },
+    messages: {
+		pwd: { required:"Enter New Password"},
+		pwdconfirm: { required:"Enter Confirm New Password"},
+    },
+    
+});
+</script>

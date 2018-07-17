@@ -39,16 +39,19 @@
                             <div class="return-customer">
                                 <h3 class="mb-10">RETURNING CUSTOMER</h3>
                                 <p class="mb-10"><strong>I am a returning customer</strong></p>
-                                <form action="#">
+                                <form name="login" id="login" method="post" action="">
                                     <div class="form-group">
-                                        <label class="control-label">Enter you email address here...</label>
-                                        <input type="text" name="email" placeholder="Enter you email address here..." id="input-email" class="form-control">
+                                        <label class="control-label">Enter you email address or Mobile</label>
+                                        <input type="text" name="username" placeholder="Enter you email address or Mobile" id="username" class="form-control">
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label">Password</label>
-                                        <input type="text" name="pass" placeholder="Password" id="input-password" class="form-control">
+                                        <input type="password" name="pass" placeholder="Password" id="pass" class="form-control">
                                     </div>
-                                    <p class="lost-password"><a href="forgot-password.html">Forgot password?</a></p>
+                                    <div class="alert alert-danger alert-dismissible" id="error" style="display:none;">
+    										<strong>Invalid Username or Password 
+  									</div>
+                                    <p class="lost-password"><a href="<?php echo base_url(); ?>forgotpassword/">Forgot password?</a></p>
                                     <input type="submit" value="Login" class="return-customer-btn">
                                 </form>
                             </div>
@@ -61,4 +64,38 @@
             <!-- Container End -->
         </div>
         <!-- LogIn Page End -->
- 
+ <script language="javascript">
+
+	$('#login').validate({ // initialize the plugin
+    rules: {
+		username: {
+            required: true,
+            remote: {
+                   url: "<?php echo base_url(); ?>home/chkusername",
+                   type: "post"
+                }
+        },
+		pass: {
+            required: true,
+        },
+    },
+    messages: {
+		username: { required:"Enter your Email or Password",remote:"Email or Mobile Error!"},
+		pass: { required:"Enter Password"},
+    },
+    submitHandler: function(form) {
+		$.ajax({
+            url: "<?php echo base_url(); ?>home/customer_login",
+            type: 'POST',
+            data: $('#login').serialize(),
+            success: function(response) {
+                if (response == "login") {
+                        location.href = '<?php echo base_url(); ?>myaccount/';
+                } else {
+					$('#error').show();
+                }
+            }
+        });
+    }
+});
+</script>

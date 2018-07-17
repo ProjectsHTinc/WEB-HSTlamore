@@ -28,7 +28,7 @@
                 </div>
                 <!-- Row End -->
                 <div class="row">
-                    <form class="form-horizontal pb-100" id="registration" method="post" action="" >
+                    <form class="form-horizontal pb-100" name="registration"  id="registration" method="post" action="">
                         <fieldset>
                             <legend>Your Personal Details</legend>
                             <div class="form-group">
@@ -129,11 +129,21 @@
 		pwd: { required:"Enter Password"},
 		pwdconfirm: { required:"Enter Confirm Password"},
 		agree: { required:"Please Accept Our Policy"},
-		
     },
     submitHandler: function(form) {
        
-
+		$.ajax({
+            url: "<?php echo base_url(); ?>home/customer_registration",
+            type: 'POST',
+            data: $('#registration').serialize(),
+            success: function(response) {
+                if (response == "register") {
+                        location.href = '<?php echo base_url(); ?>login/';
+                } else {
+					alert("error");
+                }
+            }
+        });
     }
 });
 </script>

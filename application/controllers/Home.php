@@ -18,11 +18,31 @@ class Home extends CI_Controller {
 		$this->load->view('front_footer');
 	}
 	
-	public function wishlist()
-	{
-		$this->load->view('front_header');
-		$this->load->view('wish-list');
-		$this->load->view('front_footer');
+	public function existemail(){
+		$email=$this->input->post('email');
+		$data=$this->customermodel->exist_email($email);
+	}
+
+	public function existmobile(){
+		$mobile=$this->input->post('mobile');
+		$data=$this->customermodel->exist_mobile($mobile);
+	}
+	
+	public function existemailcustomer(){
+		$email=$this->input->post('email');
+		$cust_id = $this->session->userdata('cust_id');
+		$data=$this->customermodel->exist_email_customer($email,$cust_id);
+	}
+	
+	public function existmobilecustomer(){
+		$mobile=$this->input->post('mobile');
+		$cust_id = $this->session->userdata('cust_id');
+		$data=$this->customermodel->exist_mobile_customer($mobile,$cust_id);
+	}
+	
+	public function chkusername(){
+		$username=$this->input->post('username');
+		$data=$this->customermodel->exist_username($username);
 	}
 	
 	public function register()
@@ -31,29 +51,16 @@ class Home extends CI_Controller {
 		$this->load->view('register');
 		$this->load->view('front_footer');
 	}
-	public function existemail(){
-		$email=$this->input->post('email');
-		$data=$this->customermodel->exist_email($email);
-
-		}
-	public function existmobile(){
-		$mobile=$this->input->post('mobile');
-		$data=$this->customermodel->exist_mobile($mobile);
-	}
+	
 	public function customer_registration(){
 		$name=$this->input->post('name');
 		$mobile=$this->input->post('mobile');
 		$email=$this->input->post('email');
-		$password=$this->input->post('new_password');
-		$datas['res']=$this->loginmodel->customer_registration($name,$mobile,$email,$password);
+		$password=$this->input->post('pwdconfirm');
+		$newsletter=$this->input->post('newsletter');
+		$datas['res']=$this->customermodel->customer_registration($name,$mobile,$email,$password,$newsletter);
 
 		}
-	public function myaccount()
-	{
-		$this->load->view('front_header');
-		$this->load->view('my_account');
-		$this->load->view('front_footer');
-	}
 	
 	public function login()
 	{
@@ -61,12 +68,142 @@ class Home extends CI_Controller {
 		$this->load->view('login');
 		$this->load->view('front_footer');
 	}
+	
+	public function customer_login()
+	{
+		$username=$this->input->post('username');
+		$password=$this->input->post('pass');
+		$datas['res']=$this->customermodel->customer_login($username,$password);
+	}
+	
+	public function customer_update(){
+		
+		$cust_pic = "";
+		
+		if ($_FILES['profile_pic']['name']!="") {
+			$profile_pic      = $_FILES['profile_pic']['name'];
+			$temp = pathinfo($profile_pic, PATHINFO_EXTENSION);
+			$file_name      = time() . rand(1, 5) . rand(6, 10);
+			$cust_pic   = $file_name. '.' .$temp;
+			$uploaddir      = 'assets/front/profile/';
+			$profilepic     = $uploaddir . $cust_pic;
+			move_uploaded_file($_FILES['profile_pic']['tmp_name'], $profilepic);
+		}
+			$cust_id = $this->session->userdata('cust_id');
+			$mobile=$this->input->post('mobile');
+			$email=$this->input->post('email');
+			
+			$fname=$this->input->post('fname');
+			$lname=$this->input->post('lname');
+			$dob=$this->input->post('dob');
+			$gender=$this->input->post('gender');
+			$newsletter=$this->input->post('newsletter');
+
+			$datas['res']=$this->customermodel->customer_update($cust_id,$fname,$lname,$mobile,$email,$dob,$gender,$cust_pic,$newsletter);
+	}
+	
+	
+	public function logout()
+		{
+			$datas = $this->session->userdata();
+			$this->session->unset_userdata($datas);
+			$this->session->sess_destroy();
+			redirect(base_url());
+		}
+		
+	public function forgotpassword()
+	{
+		$this->load->view('front_header');
+		$this->load->view('forgot-password');
+		$this->load->view('front_footer');
+	}
+	
+	public function resetpassword()
+	{
+		$email=$this->input->post('email');
+		$datas['res']=$this->customermodel->reset_password($email);
+	}
+	
+	public function myaccount()
+	{
+		$cust_id = $this->session->userdata('cust_id');
+		
+		if ($cust_id !='') {
+			$this->load->view('front_header');
+			$this->load->view('my_account');
+			$this->load->view('front_footer');
+		} else {
+			redirect(base_url()."login/");
+		}
+	}
+	
+	public function cust_orders()
+	{
+		$cust_id = $this->session->userdata('cust_id');
+		
+		if ($cust_id !='') {
+			$this->load->view('front_header');
+			$this->load->view('cust_orders');
+			$this->load->view('front_footer');
+		} else {
+			redirect(base_url()."login/");
+		}
+	}
+	
+	public function cust_address()
+	{
+		$cust_id = $this->session->userdata('cust_id');
+		
+		if ($cust_id !='') {
+			$this->load->view('front_header');
+			$this->load->view('cust_address');
+			$this->load->view('front_footer');
+		} else {
+			redirect(base_url()."login/");
+		}
+	}
+	
+	public function cust_details()
+	{
+		$cust_id = $this->session->userdata('cust_id');
+		
+		if ($cust_id !='') {
+			$data['cust_logindetails'] = $this->customermodel->customer_logindetails($cust_id);
+			$data['cust_details'] = $this->customermodel->customer_details($cust_id);
+			$this->load->view('front_header');
+			$this->load->view('cust_details', $data);
+			$this->load->view('front_footer');
+		} else {
+			redirect(base_url()."login/");
+		}
+	}
+	
+	public function cust_change_password()
+	{
+		$cust_id = $this->session->userdata('cust_id');
+		
+		if ($cust_id !='') {
+			$this->load->view('front_header');
+			$this->load->view('change_password');
+			$this->load->view('front_footer');
+		} else {
+			redirect(base_url()."login/");
+		}
+	}
+
+	public function change_password(){
+		$password=$this->input->post('pwdconfirm');
+		$cust_id = $this->session->userdata('cust_id');
+		$datas['res']=$this->customermodel->cust_change_password($cust_id,$password);
+	}
+		
 	public function cart()
 	{
 		$this->load->view('front_header');
 		$this->load->view('cart');
 		$this->load->view('front_footer');
 	}
+	
 	public function checkout()
 	{
 		$this->load->view('front_header');
@@ -88,7 +225,7 @@ class Home extends CI_Controller {
 		$this->load->view('front_footer');
 	}
 	
-		public function aboutus()
+	public function aboutus()
 	{
 		$this->load->view('front_header');
 		$this->load->view('about-us');
@@ -100,5 +237,21 @@ class Home extends CI_Controller {
 		$this->load->view('front_header');
 		$this->load->view('contact-us');
 		$this->load->view('front_footer');
+	}
+	
+	public function wishlist()
+	{
+		$this->load->view('front_header');
+		$this->load->view('wish-list');
+		$this->load->view('front_footer');
+	}
+	
+	public function contact_us(){
+		$name=$this->input->post('name');
+		$email=$this->input->post('email');
+		$website=$this->input->post('website');
+		$subject=$this->input->post('subject');
+		$message=$this->input->post('message');
+		$datas['res']=$this->customermodel->contact_us($name,$email,$website,$subject,$message);
 	}
 }

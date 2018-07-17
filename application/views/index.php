@@ -443,8 +443,7 @@
                             </div>
                             <!-- Single Product End -->
                         </div>
-                        <!-- Best Seller Product Activation Start -->
-                        <div class="text-center shop-link-page mt-50"><a href="best-seller.html">Shop All Best Sellers</a></div>
+                        
                     </div>
                 </div>
                 <!-- Row End -->
