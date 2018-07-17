@@ -57,7 +57,7 @@ class Category extends CI_Controller {
 							$trade_file_thumb = $uploaddi_thumbr.$cat_thumb_img;
 							move_uploaded_file($_FILES['cat_thumb_img']['tmp_name'], $trade_file_thumb);
 						}
-						echo
+					
 						$data=$this->categorymodel->create_category($cat_name,$cat_desc,$cat_status,$cat_meta_title,$cat_meta_desc,$cat_meta_keywords,$cat_cover_img,$cat_thumb_img,$user_id);
 						if($data['status']=="success"){
 							$this->session->set_flashdata('msg', 'Category Created Successfully');

@@ -34,6 +34,7 @@ hr{
 </style>
     <script src="<?php echo base_url(); ?>assets/dist/js/jquery.slimscroll.js"></script>
     <script src="<?php echo base_url(); ?>assets/bower_components/moment/min/moment.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/bower_components/mjolnic-bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/bower_components/waypoints/lib/jquery.waypoints.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/bower_components/Counter-Up/jquery.counterup.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/dist/js/dropdown-bootstrap-extended.js"></script>
@@ -49,6 +50,7 @@ hr{
     <script>
     $(document).ready(function() {
 	     $('#datable_1').DataTable();
+       $('.colorpicker').colorpicker();
      });
     </script>
 </html>
