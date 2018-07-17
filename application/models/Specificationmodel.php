@@ -1,6 +1,6 @@
 <?php
 
-Class Categorymodel extends CI_Model
+Class Specificationmodel extends CI_Model
 {
 
   public function __construct()
@@ -11,23 +11,21 @@ Class Categorymodel extends CI_Model
 
 
 
-   function create_category($cat_name,$cat_desc,$cat_status,$cat_meta_title,$cat_meta_desc,$cat_meta_keywords,$cat_cover_img,$cat_thumb_img,$user_id){
-    if(empty($cat_name)){
+   function create_spec_name($spec_name,$spec_status,$user_id){
+    if(empty($spec_name)){
 
     }else{
-      $insert_query="INSERT INTO category_masters (parent_id,category_name,category_image,category_thumbnail,category_desc,category_meta_title,category_meta_desc,category_keywords,status,created_at,created_by) VALUES('1','$cat_name','$cat_cover_img','$cat_thumb_img','$cat_desc','$cat_meta_title','$cat_meta_desc','$cat_meta_keywords','$cat_status',NOW(),'$user_id')";
+      $insert_query="INSERT INTO specification_masters (spec_name,status,created_at,created_by) VALUES('$spec_name','$spec_status',NOW(),'$user_id')";
       $res=$this->db->query($insert_query);
       if($res){
-               $data = array("status" => "success");
-               return $data;
+              echo "success";
            }else{
-               $data = array("status" => "failed");
-               return $data;
+              echo "failed";
            }
     }
    }
-   function check_category($cat_name,$user_id){
-     $select="SELECT * FROM category_masters WHERE category_name='$cat_name'";
+   function check_spec_name($spec_name,$user_id){
+     $select="SELECT * FROM specification_masters WHERE spec_name='$spec_name'";
      $res=$this->db->query($select);
     if($res->num_rows()>0){
       echo "false";
@@ -69,14 +67,14 @@ Class Categorymodel extends CI_Model
 
 
 
-   function get_all_category(){
-     $select="SELECT * FROM category_masters WHERE id!='1' AND parent_id='1'";
+   function get_all_specification(){
+     $select="SELECT * FROM specification_masters";
      $res=$this->db->query($select);
       return $res->result();
    }
 
    function get_all_parent_category(){
-     $select="SELECT * FROM category_masters WHERE  parent_id='1'";
+     $select="SELECT * FROM category_masters WHERE id!='1' AND parent_id='1'";
      $res=$this->db->query($select);
     return $res->result();
    }

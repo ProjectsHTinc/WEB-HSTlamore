@@ -140,7 +140,7 @@
                             <a href="<?php echo base_url(); ?>category/">Category</a>
                         </li>
                         <li>
-                            <a href="">Specification</a>
+                            <a href="<?php echo base_url(); ?>specification/">Specification</a>
                         </li>
                         <li>
                             <a href="<?php echo base_url(); ?>attribute">Attribute</a>

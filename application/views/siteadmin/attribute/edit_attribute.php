@@ -6,9 +6,9 @@
 <div class="page-wrapper">
 	<div class="container-fluid">
       <div class="row">
-				<div class="row heading-bg bg-blue">
+				<div class="row heading-bg bg-green">
 					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-					  <h5 class="txt-light">category</h5>
+					  <h5 class="txt-light">Attribute</h5>
 					</div>
 
 					<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
