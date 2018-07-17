@@ -8,11 +8,16 @@ class Home extends CI_Controller {
 		parent::__construct();
 		$this->load->helper('url');
 		$this->load->library('session');
-		$this->load->model('customermodel');
+		$this->load->model('homemodel');
 	}
 
 	public function index()
 	{
+		$data['categories'] = $this->homemodel->categorylist();
+		$data['home_banner'] = $this->homemodel->homebanner();
+		$data['home_newproducts'] = $this->homemodel->newproducts();
+		$data['home_bestsaleproducts'] = $this->homemodel->bestsaleproducts();
+		$data['home_promotions'] = $this->homemodel->homepromotions();
 		$this->load->view('front_header');
 		$this->load->view('index');
 		$this->load->view('front_footer');
@@ -20,29 +25,29 @@ class Home extends CI_Controller {
 	
 	public function existemail(){
 		$email=$this->input->post('email');
-		$data=$this->customermodel->exist_email($email);
+		$data=$this->homemodel->exist_email($email);
 	}
 
 	public function existmobile(){
 		$mobile=$this->input->post('mobile');
-		$data=$this->customermodel->exist_mobile($mobile);
+		$data=$this->homemodel->exist_mobile($mobile);
 	}
 	
 	public function existemailcustomer(){
 		$email=$this->input->post('email');
 		$cust_id = $this->session->userdata('cust_id');
-		$data=$this->customermodel->exist_email_customer($email,$cust_id);
+		$data=$this->homemodel->exist_email_customer($email,$cust_id);
 	}
 	
 	public function existmobilecustomer(){
 		$mobile=$this->input->post('mobile');
 		$cust_id = $this->session->userdata('cust_id');
-		$data=$this->customermodel->exist_mobile_customer($mobile,$cust_id);
+		$data=$this->homemodel->exist_mobile_customer($mobile,$cust_id);
 	}
 	
 	public function chkusername(){
 		$username=$this->input->post('username');
-		$data=$this->customermodel->exist_username($username);
+		$data=$this->homemodel->exist_username($username);
 	}
 	
 	public function register()
@@ -58,7 +63,7 @@ class Home extends CI_Controller {
 		$email=$this->input->post('email');
 		$password=$this->input->post('pwdconfirm');
 		$newsletter=$this->input->post('newsletter');
-		$datas['res']=$this->customermodel->customer_registration($name,$mobile,$email,$password,$newsletter);
+		$datas['res']=$this->homemodel->customer_registration($name,$mobile,$email,$password,$newsletter);
 
 		}
 	
@@ -73,7 +78,7 @@ class Home extends CI_Controller {
 	{
 		$username=$this->input->post('username');
 		$password=$this->input->post('pass');
-		$datas['res']=$this->customermodel->customer_login($username,$password);
+		$datas['res']=$this->homemodel->customer_login($username,$password);
 	}
 	
 	public function customer_update(){
@@ -99,7 +104,7 @@ class Home extends CI_Controller {
 			$gender=$this->input->post('gender');
 			$newsletter=$this->input->post('newsletter');
 
-			$datas['res']=$this->customermodel->customer_update($cust_id,$fname,$lname,$mobile,$email,$dob,$gender,$cust_pic,$newsletter);
+			$datas['res']=$this->homemodel->customer_update($cust_id,$fname,$lname,$mobile,$email,$dob,$gender,$cust_pic,$newsletter);
 	}
 	
 	
@@ -121,7 +126,7 @@ class Home extends CI_Controller {
 	public function resetpassword()
 	{
 		$email=$this->input->post('email');
-		$datas['res']=$this->customermodel->reset_password($email);
+		$datas['res']=$this->homemodel->reset_password($email);
 	}
 	
 	public function myaccount()
@@ -168,8 +173,8 @@ class Home extends CI_Controller {
 		$cust_id = $this->session->userdata('cust_id');
 		
 		if ($cust_id !='') {
-			$data['cust_logindetails'] = $this->customermodel->customer_logindetails($cust_id);
-			$data['cust_details'] = $this->customermodel->customer_details($cust_id);
+			$data['cust_logindetails'] = $this->homemodel->customer_logindetails($cust_id);
+			$data['cust_details'] = $this->homemodel->customer_details($cust_id);
 			$this->load->view('front_header');
 			$this->load->view('cust_details', $data);
 			$this->load->view('front_footer');
@@ -194,7 +199,7 @@ class Home extends CI_Controller {
 	public function change_password(){
 		$password=$this->input->post('pwdconfirm');
 		$cust_id = $this->session->userdata('cust_id');
-		$datas['res']=$this->customermodel->cust_change_password($cust_id,$password);
+		$datas['res']=$this->homemodel->cust_change_password($cust_id,$password);
 	}
 		
 	public function cart()
@@ -252,6 +257,6 @@ class Home extends CI_Controller {
 		$website=$this->input->post('website');
 		$subject=$this->input->post('subject');
 		$message=$this->input->post('message');
-		$datas['res']=$this->customermodel->contact_us($name,$email,$website,$subject,$message);
+		$datas['res']=$this->homemodel->contact_us($name,$email,$website,$subject,$message);
 	}
 }

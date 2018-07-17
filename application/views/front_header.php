@@ -1,7 +1,7 @@
 <?php 
 	$guest_data = 'lil'.$_SESSION["__ci_last_regenerate"];
 	$this->session->set_userdata('guest_session', $guest_data);
-//	echo '<pre>' . print_r($_SESSION, TRUE) . '</pre>';
+	//echo '<pre>' . print_r($_SESSION, TRUE) . '</pre>';
 ?>
 <!doctype html>
 <html class="no-js" lang="en-US">
@@ -74,7 +74,7 @@
                     <!-- Logo Start -->
                     <div class="col-lg-2 col-md-3 col-sm-6 col-xs-5 full-col pl-0">
                         <div class="logo">
-                             <a href="<?php echo base_url(); ?>"><img src="<?php echo base_url(); ?>assets/front/img/logo/logo.png" alt="brand-image"></a>
+                             <a href="<?php echo base_url(); ?>"><img src="<?php echo base_url(); ?>assets/front/img/logo/logo.png" alt="Little A More"></a>
                         </div>
                     </div>
                     <!-- Logo End -->
