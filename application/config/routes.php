@@ -63,9 +63,12 @@ $route['cust_address'] = 'home/cust_address';
 $route['cust_details'] = 'home/cust_details';
 $route['cart'] = 'home/cart';
 $route['checkout'] = 'home/checkout';
-$route['categories'] = 'home/categories';
+$route['(:any)/categories/(:any)'] = 'home/categories/$id/$name';
 $route['product_details'] = 'home/product_details';
 $route['aboutus'] = 'home/aboutus';
 $route['contactus'] = 'home/contactus';
 $route['wishlist'] = 'home/wishlist';
+
+//---------------------------------------------------------------//
+
 

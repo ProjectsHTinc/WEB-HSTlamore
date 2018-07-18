@@ -44,20 +44,7 @@
                                         <option value="#">Sort By:Name (Z - A)</option>
                                         <option value="#">Sort By:Price (Low > High)</option>
                                         <option value="#">Sort By:Price (High > Low)</option>
-                                        <option value="#">Sort By:Rating (Highest)</option>
-                                        <option value="#">Sort By:Rating (Lowest)</option>
-                                        <option value="#">Sort By:Model (A - Z)</option>
-                                        <option value="#">Sort By:Model (Z - A)</option>
                                     </select>
-                                </div>
-                                <div class="col-md-3 col-sm-3 pull-right">
-                                    <select name="shorter" id="#" class="form-control select-varient">
-                                        <option value="#">Show: 9</option>
-                                        <option value="#">Show: 25</option>
-                                        <option value="#">Show: 50</option>
-                                        <option value="#">Show: 75</option>
-                                        <option value="#">Show: 100</option>
-                                   </select>
                                 </div>
                             </div>
                             <div class="row">
@@ -808,6 +795,34 @@
                             <!-- Categories Module Start -->
                             <div class="categorie-module mb-80">
                                 <h3>categories</h3>
+                                 <ul class="categorie-list">
+
+									<?php 
+									if (count($maincat_count)>0){
+										foreach($maincat_count as $rowm){ 
+										$cat_id = $rowm->id;
+										$cat_count = $rowm->count;
+										$category_id = $rowm->id * 564738;
+										$category_name = strtolower(preg_replace("/[^\w]/", "-", $rowm->category_name));
+										$enc_category_id = base64_encode($category_id);
+                          				echo '<li class="active"><a href="'.base_url().'home/categories/'.$cat_id.'/'.$category_name.'/">'.$rowm->category_name.'</a>';
+                                    	$subcat_count = $this->homemodel->get_subcat_count($cat_id);
+											if (count($subcat_count)>0){
+                                    			echo '<ul class="sub-categorie pl-30">';
+                                          		foreach($subcat_count as $rows) {
+													$sub_cat_id = $rows->id;
+													$subcat_count = $rows->count;
+													$sub_category_id = $rows->id * 564738;
+													$sub_category_name = strtolower(preg_replace("/[^\w]/", "-", $rows->category_name));
+													$enc_sub_category_id = base64_encode($sub_category_id);
+                                    				echo '<li><a href="'.base_url().'home/subcategories/'.$sub_cat_id.'/'.$sub_category_name.'/">'.$rows->category_name.'</a></li>';
+                                    			}
+                                    			echo '</ul>';
+                                   			}
+                                    	echo '</li>';
+                                   		}
+									} ?>
+								</ul><!--
                                 <ul class="categorie-list">
                                     <li class="active"><a href="#">Furniture (19)</a>
                                         <ul class="sub-categorie pl-30">
@@ -821,7 +836,7 @@
                                     <li><a href="#">Window Treatments (16)</a></li>
                                     <li><a href="#">Bookshelves (16)</a></li>
                                     <li><a href="#">Coffee & Accent Tables (17)</a></li>
-                                </ul>
+                                </ul>-->
                             </div>
                             <!-- Categories Module End -->
                             <!-- Filter Option Start -->
@@ -845,201 +860,8 @@
                                 </ul>
                             </div>
                             <!-- Categories Color End -->
-                            <!-- Manufactures List Start -->
-                             <div class="manufactures mb-80">
-                                 <h3>MANUFACTURERS</h3>
-                                 <ul class="manufactures-list">
-                                     <li><a href="#">Manufacturers 1 (14)</a></li>
-                                     <li><a href="#">Manufacturers 2 (13)</a></li>
-                                     <li><a href="#">Manufacturers 3 (13)</a></li>
-                                     <li><a href="#">Manufacturers 4 (14)</a></li>
-                                     <li><a href="#">Manufacturers 5 (13)</a></li>
-                                 </ul>
-                             </div>
-                            <!-- Manufactures List End -->
-                            <!-- Most Viewed Product Start -->
-                            <div class="most-viewed">
-                                <h3>most viewed</h3>
-                                <!-- Most Viewed Product Activation Start -->
-                                <div class="most-viewed-product owl-carousel">
-                                    <!-- Triple Product Start -->
-                                    <div class="triple-product">
-                                        <!-- Single Product Start -->
-                                        <div class="single-product mb-25">
-                                            <!-- Product Image Start -->
-                                            <div class="pro-img">
-                                                <a href="<?php echo base_url(); ?>product_details/">
-                                                    <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_1.jpg" alt="single-product">
-                                                    <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="single-product">
-                                                </a>
-                                            </div>
-                                            <!-- Product Image End -->
-                                            <!-- Product Content Start -->
-                                            <div class="pro-content">
-                                                <h4><a href="<?php echo base_url(); ?>product_details/">Carte Postal Clock</a></h4>
-                                                <p class="price"><span>$122.00</span></p>
-                                            </div>
-                                            <!-- Product Content End -->
-                                        </div>
-                                        <!-- Single Product End -->
-                                        <!-- Single Product Start -->
-                                        <div class="single-product mb-25">
-                                            <!-- Product Image Start -->
-                                            <div class="pro-img">
-                                                <a href="<?php echo base_url(); ?>product_details/">
-                                                    <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/3_1.jpg" alt="single-product">
-                                                    <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/3_2.jpg" alt="single-product">
-                                                </a>
-                                            </div>
-                                            <!-- Product Image End -->
-                                            <!-- Product Content Start -->
-                                            <div class="pro-content">
-                                                <h4><a href="<?php echo base_url(); ?>product_details/">congue sitamet</a></h4>
-                                                <p class="price"><span>$2000.00</span></p>
-                                            </div>
-                                            <!-- Product Content End -->
-                                        </div>
-                                        <!-- Single Product End -->
-                                        <!-- Single Product Start -->
-                                        <div class="single-product mb-25">
-                                            <!-- Product Image Start -->
-                                            <div class="pro-img">
-                                                <a href="<?php echo base_url(); ?>product_details/">
-                                                     <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/4_1.jpg" alt="single-product">
-                                                     <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="single-product">
-                                                </a>
-                                            </div>
-                                            <!-- Product Image End -->
-                                            <!-- Product Content Start -->
-                                            <div class="pro-content">
-                                                <h4><a href="<?php echo base_url(); ?>product_details/">dictum idrisus</a></h4>
-                                                <p class="price"><span>$602.00</span></p>
-                                            </div>
-                                            <!-- Product Content End -->
-                                        </div>
-                                        <!-- Single Product End -->
-                                    </div>
-                                    <!-- Triple Product End -->
-                                    <!-- Triple Product Start -->
-                                    <div class="triple-product">
-                                        <!-- Single Product Start -->
-                                        <div class="single-product mb-25">
-                                            <!-- Product Image Start -->
-                                            <div class="pro-img">
-                                                <a href="<?php echo base_url(); ?>product_details/">
-                                                    <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/4_1.jpg" alt="single-product">
-                                                    <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="single-product">
-                                                </a>
-                                            </div>
-                                            <!-- Product Image End -->
-                                            <!-- Product Content Start -->
-                                            <div class="pro-content">
-                                                <h4><a href="<?php echo base_url(); ?>product_details/">Carte Postal Clock</a></h4>
-                                                <p class="price"><span>$122.00</span></p>
-                                            </div>
-                                            <!-- Product Content End -->
-                                        </div>
-                                        <!-- Single Product End -->
-                                        <!-- Single Product Start -->
-                                        <div class="single-product mb-25">
-                                            <!-- Product Image Start -->
-                                            <div class="pro-img">
-                                                <a href="<?php echo base_url(); ?>product_details/">
-                                                    <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_1.jpg" alt="single-product">
-                                                    <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="single-product">
-                                                </a>
-                                            </div>
-                                            <!-- Product Image End -->
-                                            <!-- Product Content Start -->
-                                            <div class="pro-content">
-                                                <h4><a href="<?php echo base_url(); ?>product_details/">congue sitamet</a></h4>
-                                                <p class="price"><span>$2000.00</span></p>
-                                            </div>
-                                            <!-- Product Content End -->
-                                        </div>
-                                        <!-- Single Product End -->
-                                        <!-- Single Product Start -->
-                                        <div class="single-product mb-25">
-                                            <!-- Product Image Start -->
-                                            <div class="pro-img">
-                                                <a href="<?php echo base_url(); ?>product_details/">
-                                                     <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/3_1.jpg" alt="single-product">
-                                                     <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/3_2.jpg" alt="single-product">
-                                                </a>
-                                            </div>
-                                            <!-- Product Image End -->
-                                            <!-- Product Content Start -->
-                                            <div class="pro-content">
-                                                <h4><a href="<?php echo base_url(); ?>product_details/">dictum idrisus</a></h4>
-                                                <p class="price"><span>$602.00</span></p>
-                                            </div>
-                                            <!-- Product Content End -->
-                                        </div>
-                                        <!-- Single Product End -->
-                                    </div>
-                                    <!-- Triple Product End -->
-                                    <!-- Triple Product Start -->
-                                    <div class="triple-product">
-                                        <!-- Single Product Start -->
-                                        <div class="single-product mb-25">
-                                            <!-- Product Image Start -->
-                                            <div class="pro-img">
-                                                <a href="<?php echo base_url(); ?>product_details/">
-                                                    <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_1.jpg" alt="single-product">
-                                                    <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="single-product">
-                                                </a>
-                                            </div>
-                                            <!-- Product Image End -->
-                                            <!-- Product Content Start -->
-                                            <div class="pro-content">
-                                                <h4><a href="<?php echo base_url(); ?>product_details/">Carte Postal Clock</a></h4>
-                                                <p class="price"><span>$122.00</span></p>
-                                            </div>
-                                            <!-- Product Content End -->
-                                        </div>
-                                        <!-- Single Product End -->
-                                        <!-- Single Product Start -->
-                                        <div class="single-product mb-25">
-                                            <!-- Product Image Start -->
-                                            <div class="pro-img">
-                                                <a href="<?php echo base_url(); ?>product_details/">
-                                                    <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/3_1.jpg" alt="single-product">
-                                                    <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/3_2.jpg" alt="single-product">
-                                                </a>
-                                            </div>
-                                            <!-- Product Image End -->
-                                            <!-- Product Content Start -->
-                                            <div class="pro-content">
-                                                <h4><a href="<?php echo base_url(); ?>product_details/">congue sitamet</a></h4>
-                                                <p class="price"><span>$2000.00</span></p>
-                                            </div>
-                                            <!-- Product Content End -->
-                                        </div>
-                                        <!-- Single Product End -->
-                                        <!-- Single Product Start -->
-                                        <div class="single-product mb-25">
-                                            <!-- Product Image Start -->
-                                            <div class="pro-img">
-                                                <a href="<?php echo base_url(); ?>product_details/">
-                                                     <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/4_1.jpg" alt="single-product">
-                                                     <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="single-product">
-                                                </a>
-                                            </div>
-                                            <!-- Product Image End -->
-                                            <!-- Product Content Start -->
-                                            <div class="pro-content">
-                                                <h4><a href="#">dictum idrisus</a></h4>
-                                                <p class="price"><span>$602.00</span></p>
-                                            </div>
-                                            <!-- Product Content End -->
-                                        </div>
-                                        <!-- Single Product End -->
-                                    </div>
-                                    <!-- Triple Product End -->
-                                </div>
-                                <!-- Most Viewed Product Activation End -->
-                            </div>
-                            <!-- Most Viewed Product End -->
+                            
+                            
                         </aside>
                     </div>
                     <!-- Sidebar End -->

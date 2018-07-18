@@ -94,101 +94,40 @@
                             <nav>
                                 <ul class="primary-menu-list text-center">
                                     <li><a href="<?php echo base_url(); ?>">home</a></li>
-										<li><a href="#">furniture<i class="pe-7s-angle-down"></i></a>
-                                        <!-- Mega Menu Start -->
-                                        <ul class="ht-dropdown mega-menu">
-                                            <!-- Single Mega Sub Menu Start -->
-                                            <li>
-                                                <h3>SOFAS & LOVESEATSs</h3>
-                                                <ul>
-                                                    <li><a href="categorie-page.html">convallis neceros</a></li>
-                                                    <li><a href="categorie-page.html">Outdoor Rugs</a></li>
-                                                    <li><a href="categorie-page.html">Mice and Trackballs</a></li>
-                                                    <li><a href="categorie-page.html">Cameras</a></li>
-                                                </ul>
-                                            </li>
-                                            <!-- Single Mega Sub Menu Start -->
-                                            <!-- Single Mega Sub Menu Start -->
-                                            <li>
-                                                <h3>Chairs & Recliners</h3>
-                                                <ul>
-                                                    <li><a href="categorie-page.html">commodo nunc</a></li>
-                                                    <li><a href="categorie-page.html">dignissim porta</a></li>
-                                                    <li><a href="categorie-page.html">necvelit dignissim</a></li>
-                                                    <li><a href="categorie-page.html">venenatis lacinia</a></li>
-                                                </ul>
-                                            </li>
-                                            <!-- Single Mega Sub Menu Start -->
-                                        </ul>
-                                        <!-- Mega Menu End -->
-                                    </li>
-                                    <li class="static-menu"><a href="#">decor<i class="pe-7s-angle-down"></i></a>
-                                        <!-- Mega Menu Start -->
-                                        <ul class="ht-dropdown mega-menu-2">
-                                            <!-- Single Mega Sub Menu Start -->
-                                            <li>
-                                                <h3>Art Gallery</h3>
-                                                <ul>
-                                                    <li><a href="categorie-page.html">congue nonorna</a></li>
-                                                    <li><a href="categorie-page.html">Etiam sapien</a></li>
-                                                    <li><a href="categorie-page.html">Outdoor Lighting</a></li>
-                                                    <li><a href="categorie-page.html">sapien enim</a></li>
-                                                </ul>
-                                            </li>
-                                            <!-- Single Mega Sub Menu Start -->
-                                            <!-- Single Mega Sub Menu Start -->
-                                            <li>
-                                                <h3>Lighting</h3>
-                                                <ul>
-                                                    <li><a href="categorie-page.html">commodo nunc</a></li>
-                                                    <li><a href="categorie-page.html">elementum dolor</a></li>
-                                                    <li><a href="categorie-page.html">ligula velvenen</a></li>
-                                                    <li><a href="categorie-page.html">Vestibulum tempor</a></li>
-                                                </ul>
-                                            </li>
-                                            <!-- Single Mega Sub Menu Start -->
-                                            <!-- Single Mega Sub Menu Start -->
-                                            <li>
-                                                <h3>Rugs</h3>
-                                                <ul>
-                                                    <li><a href="categorie-page.html">blandit vehicula</a></li>
-                                                    <li><a href="categorie-page.html">Praesent molestie</a></li>
-                                                    <li><a href="categorie-page.html">sagittis ipsum</a></li>
-                                                    <li><a href="categorie-page.html">venenatis innunc</a></li>
-                                                </ul>
-                                            </li>
-                                            <!-- Single Mega Sub Menu Start -->
-                                            <!-- Single Mega Sub Menu Start -->
-                                            <li>
-                                                <h3>Throw Pillows</h3>
-                                                <ul>
-                                                    <li><a href="categorie-page.html">Fire Pits</a></li>
-                                                    <li><a href="categorie-page.html">Garden Accents</a></li>
-                                                    <li><a href="categorie-page.html">Outdoor Fountains</a></li>
-                                                    <li><a href="categorie-page.html">Patio Heaters</a></li>
-                                                </ul>
-                                            </li>
-                                            <!-- Single Mega Sub Menu Start -->
-                                        </ul>
-                                        <!-- Mega Menu End -->
-                                    </li>
+									<?php 
+									if (count($main_catmenu)>0){
+										foreach($main_catmenu as $rowm){ 
+										$cat_id = $rowm->id;
+										$category_id = $rowm->id * 564738;
+										$category_name = strtolower(preg_replace("/[^\w]/", "-", $rowm->category_name));
+										$enc_category_id = base64_encode($category_id);
+                                    	echo '<li><a href="'.base_url().'home/categories/'.$cat_id.'/'.$category_name.'/">'.$rowm->category_name.'<i class="pe-7s-angle-down"></i></a>';
+                                    	$sub_catmenu = $this->homemodel->get_sub_catmenu($cat_id);
+											if (count($sub_catmenu)>0){
+                                    			echo '<ul class="ht-dropdown">';
+                                          		foreach($sub_catmenu as $rows) {
+													$sub_cat_id = $rows->id;
+													$sub_category_id = $rows->id * 564738;
+													$sub_category_name = strtolower(preg_replace("/[^\w]/", "-", $rows->category_name));
+													$enc_sub_category_id = base64_encode($sub_category_id);
+                                    				echo '<li><a href="'.base_url().'home/subcategories/'.$sub_cat_id.'/'.$sub_category_name.'/">'.$rows->category_name.'</a></li>';
+                                    			}
+                                    			echo '</ul>';
+                                   			}
+                                    	echo '</li>';
+                                   		}
+									} ?>
                                     <li><a href="#">pages<i class="pe-7s-angle-down"></i></a>
                                         <!-- Home Version Dropdown Start -->
                                         <ul class="ht-dropdown">
-                                            <li><a href="<?php echo base_url(); ?>categories/">Categories</a></li>
+                                        	<li><a href="<?php echo base_url(); ?>aboutus/">about us</a></li>
                                             <li><a href="<?php echo base_url(); ?>product_details/">Product Details</a></li>
                                             <li><a href="<?php echo base_url(); ?>cart/">cart</a></li>
                                             <li><a href="<?php echo base_url(); ?>checkout/">checkout</a></li>
                                             <li><a href="<?php echo base_url(); ?>wishlist/">wish list</a></li>
-                                            <!--<li><a href="blog.html">blog</a></li>
-                                            <li><a href="blog-details.html">blog details</a></li>
-                                            <li><a href="contact.html">contact</a></li>
-                                            <li><a href="privacy.html">Privacy Policy</a></li>
-                                            <li><a href="404.html">404</a></li>-->
                                         </ul>
                                         <!-- Home Version Dropdown End -->
                                     </li>
-                                    <li><a href="<?php echo base_url(); ?>aboutus/">about us</a></li>
                                     <li><a href="<?php echo base_url(); ?>contactus/">contact us</a></li>
                                 </ul>
                             </nav>

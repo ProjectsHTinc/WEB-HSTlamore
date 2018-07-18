@@ -257,13 +257,73 @@ Class Homemodel extends CI_Model
 			echo "error";
 		}
    }
-
-
- 	function categorylist(){
-		$sql = "SELECT * FROM category_masters";
+   
+	function get_main_catmenu()
+	{
+		$sql="SELECT * FROM category_masters WHERE category_name !='Home' AND status = 'Active' AND parent_id ='1'";
 		$resu=$this->db->query($sql);
 		$res=$resu->result();
 		return $res;
+	}
+		
+	function get_sub_catmenu($cat_id)
+	{
+		$sql="SELECT * FROM category_masters WHERE category_name !='Home' AND status = 'Active' AND parent_id ='$cat_id'";
+		$resu=$this->db->query($sql);
+		$res=$resu->result();
+		return $res;
+	}
+	
+
+	function get_maincat_count()
+	{
+		$sql="SELECT category_masters.category_name,category_masters.id,COUNT(category_id) AS count
+			FROM
+				category_masters
+			LEFT JOIN products ON category_masters.id = products.category_id
+			WHERE
+				category_masters.category_name != 'Home' AND parent_id ='1'
+			GROUP BY
+				id";
+		$resu=$this->db->query($sql);
+		$res=$resu->result();
+		return $res;
+	}
+		
+	function get_subcat_count($cat_id)
+	{
+		$sql = "SELECT category_masters.category_name,category_masters.id,COUNT(category_id) AS count
+			FROM
+				category_masters
+			LEFT JOIN products ON category_masters.id = products.category_id
+			WHERE
+				category_masters.category_name != 'Home' AND parent_id ='$cat_id'
+			GROUP BY
+				id";
+		$resu=$this->db->query($sql);
+		$res=$resu->result();
+		return $res;
+	}
+	
+ 	function categorylist(){
+		$sql="SELECT * FROM category_masters WHERE category_name !='Home' AND status = 'Active'";
+	  	$resu=$this->db->query($sql);
+	  	$res=$resu->result();
+	  	return $res;
+   }
+   
+   function get_cat_products(){
+		$sql="SELECT * FROM category_masters WHERE category_name !='Home' AND status = 'Active'";
+	  	$resu=$this->db->query($sql);
+	  	$res=$resu->result();
+	  	return $res;
+   }
+   
+    function get_subcat_products(){
+		$sql="SELECT * FROM category_masters WHERE category_name !='Home' AND status = 'Active'";
+	  	$resu=$this->db->query($sql);
+	  	$res=$resu->result();
+	  	return $res;
    }
    
    	function newproducts(){
