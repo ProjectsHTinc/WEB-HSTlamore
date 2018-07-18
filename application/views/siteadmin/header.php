@@ -128,25 +128,25 @@
         <div class="fixed-sidebar-left">
             <ul class="nav navbar-nav side-nav nicescroll-bar">
                 <li>
-                    <a class="active" href="<?php echo base_url(); ?>adminlogin/home"><i class="icon-picture mr-10"></i>Dashboard
+                    <a id="dashboard" href="<?php echo base_url(); ?>adminlogin/home"><i class="icon-picture mr-10"></i>Dashboard
 
                     </a>
 
                 </li>
                 <li>
-                    <a href="javascript:void(0);" data-toggle="collapse" data-target="#ecom_dr"><i class="icon-basket-loaded mr-10"></i>Masters<span class="pull-right"><i class="fa fa-fw fa-angle-down"></i></span></a>
+                    <a href="javascript:void(0);" id="master" data-toggle="collapse" data-target="#ecom_dr"><i class="icon-basket-loaded mr-10"></i>Masters<span class="pull-right"><i class="fa fa-fw fa-angle-down"></i></span></a>
                     <ul id="ecom_dr" class="collapse collapse-level-1">
                         <li>
                             <a href="<?php echo base_url(); ?>category/">Category</a>
                         </li>
                         <li>
-                            <a href="<?php echo base_url(); ?>specification/">Specification</a>
+                            <a href="<?php echo base_url(); ?>admin/specification">Specification</a>
                         </li>
                         <li>
                             <a href="<?php echo base_url(); ?>attribute">Attribute</a>
                         </li>
                         <li>
-                            <a href="">Tags</a>
+                            <a href="<?php echo base_url(); ?>admin/tags">Tags</a>
                         </li>
                         <li>
                             <a href="">Zip code Masters</a>

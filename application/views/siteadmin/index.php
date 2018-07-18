@@ -15,7 +15,7 @@
                         <ol class="breadcrumb">
                             <li><a href="">Home</a></li>
                             <li class="active"><a href="#"><span>dashboard</span></a></li>
-                          
+
                         </ol>
                     </div>
                     <!-- /Breadcrumb -->
@@ -339,3 +339,6 @@
                 <!-- Row -->
             </div>
             <!-- Footer -->
+<script>
+$('#dashboard').addClass("active");
+</script>

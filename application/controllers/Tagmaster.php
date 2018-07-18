@@ -1,14 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Specification extends CI_Controller {
+class Tagmaster extends CI_Controller {
 
 	function __construct()
 	{
 		parent::__construct();
 		$this->load->helper('url');
 		$this->load->library('session');
-			$this->load->model('specificationmodel');
+			$this->load->model('tagmodel');
 	}
 	public function index()
 	{
@@ -16,39 +16,40 @@ class Specification extends CI_Controller {
 		$user_id=$this->session->userdata('id');
 		$user_role=$this->session->userdata('role_type_id');
 			if($user_role=='1' || $user_role=='2'){
-				$data['res']=$this->specificationmodel->get_all_specification();
+				$data['res']=$this->tagmodel->get_all_tag();
 				$this->load->view('siteadmin/header',$data);
-				$this->load->view('siteadmin/specification/spec_create',$data);
+				$this->load->view('siteadmin/tagmaster/tag_create',$data);
 				$this->load->view('siteadmin/footer');
 		}else{
 			$this->load->view('siteadmin/login');
 		}
 	}
 
-	public function create_spec_name()
+	public function create_tag_name()
 	{
 		$data=$this->session->userdata();
 		$user_id=$this->session->userdata('id');
 		$user_role=$this->session->userdata('role_type_id');
 		if($user_role=='1' || $user_role=='2'){
-				$spec_name= $this->db->escape_str($this->input->post('spec_name'));
-				$spec_status=$this->input->post('spec_status');
-				$data=$this->specificationmodel->create_spec_name($spec_name,$spec_status,$user_id);
+				 $tag_name= $this->db->escape_str($this->input->post('tag_name'));
+				$tag_status=$this->input->post('tag_status');
+				$data=$this->tagmodel->create_tag_name($tag_name,$tag_status,$user_id);
 			}else{
 			redirect('/');
 		}
 
 	}
 
-	public function update_specification()
+	public function update_tag()
 	{
 		$data=$this->session->userdata();
 		$user_id=$this->session->userdata('id');
 		$user_role=$this->session->userdata('role_type_id');
 		if($user_role=='1' || $user_role=='2'){
-			$spec_name= $this->db->escape_str($this->input->post('spec_name'));
-			$spec_status=$this->input->post('spec_status');
-			$data=$this->specificationmodel->create_spec_name($spec_name,$spec_status,$user_id);
+			$tag_name= $this->db->escape_str($this->input->post('tag_name'));
+			$tag_status=$this->input->post('tag_status');
+			$tag_id=$this->input->post('tag_id');
+			$data=$this->tagmodel->update_tag_name($tag_name,$tag_status,$user_id,$tag_id);
 		}else{
 			redirect('/');
 		}
@@ -56,21 +57,21 @@ class Specification extends CI_Controller {
 	}
 
 
-	public function check_spec_name(){
+	public function check_tag_name(){
 		$data=$this->session->userdata();
 		$user_id=$this->session->userdata('id');
 		$user_role=$this->session->userdata('role_type_id');
-		$spec_name= $this->db->escape_str($this->input->post('spec_name'));
-		$data=$this->specificationmodel->check_spec_name($spec_name,$user_id);
+		$tag_name= $this->db->escape_str($this->input->post('tag_name'));
+		$data=$this->tagmodel->check_tag_name($tag_name,$user_id);
 	}
 
-	public function check_spec_exist(){
+	public function check_tag_exist(){
 		$data=$this->session->userdata();
 		$user_id=$this->session->userdata('id');
 		$user_role=$this->session->userdata('role_type_id');
-		$specs_id=$this->uri->segment(3);
-		$specs_name= $this->db->escape_str($this->input->post('spec_name'));
-		$data=$this->specificationmodel->check_spec_exist($specs_id,$specs_name,$user_id);
+		$tag_id=$this->uri->segment(3);
+		$tag_name= $this->db->escape_str($this->input->post('tag_name'));
+		$data=$this->tagmodel->check_tag_exist($tag_id,$tag_name,$user_id);
 	}
 
 
@@ -81,10 +82,10 @@ class Specification extends CI_Controller {
 		$user_id=$this->session->userdata('id');
 		$user_role=$this->session->userdata('role_type_id');
 			if($user_role=='1' || $user_role=='2'){
-				$spec_id=$this->uri->segment(3);
-				$data['res']=$this->specificationmodel->get_specification_edit($spec_id);
+				$tag_id=$this->uri->segment(3);
+				$data['res']=$this->tagmodel->get_tag_edit($tag_id);
 				$this->load->view('siteadmin/header',$data);
-				$this->load->view('siteadmin/specification/edit_specs',$data);
+				$this->load->view('siteadmin/tagmaster/edit_tag',$data);
 				$this->load->view('siteadmin/footer');
 		}else{
 			$this->load->view('siteadmin/login');
