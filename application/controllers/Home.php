@@ -53,7 +53,7 @@ class Home extends CI_Controller {
 	
 	public function register()
 	{
-		$data['main_cat'] = $this->homemodel->get_main();
+		$data['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$this->load->view('front_header',$data);
 		$this->load->view('register');
 		$this->load->view('front_footer');
@@ -71,7 +71,7 @@ class Home extends CI_Controller {
 	
 	public function login()
 	{
-		$data['main_cat'] = $this->homemodel->get_main();
+		$data['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$this->load->view('front_header',$data);
 		$this->load->view('login');
 		$this->load->view('front_footer');
@@ -121,7 +121,7 @@ class Home extends CI_Controller {
 		
 	public function forgotpassword()
 	{
-		$data['main_cat'] = $this->homemodel->get_main();
+		$data['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$this->load->view('front_header',$data);
 		$this->load->view('forgot-password');
 		$this->load->view('front_footer');
@@ -135,7 +135,7 @@ class Home extends CI_Controller {
 	
 	public function myaccount()
 	{
-		$data['main_cat'] = $this->homemodel->get_main();
+		$data['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$cust_id = $this->session->userdata('cust_id');
 		
 		if ($cust_id !='') {
@@ -149,7 +149,7 @@ class Home extends CI_Controller {
 	
 	public function cust_orders()
 	{
-		$data['main_cat'] = $this->homemodel->get_main();
+		$data['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$cust_id = $this->session->userdata('cust_id');
 		
 		if ($cust_id !='') {
@@ -163,7 +163,7 @@ class Home extends CI_Controller {
 	
 	public function cust_address()
 	{
-		$data['main_cat'] = $this->homemodel->get_main();
+		$data['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$cust_id = $this->session->userdata('cust_id');
 		
 		if ($cust_id !='') {
@@ -177,7 +177,7 @@ class Home extends CI_Controller {
 	
 	public function cust_details()
 	{
-		$data['main_cat'] = $this->homemodel->get_main();
+		$data['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$cust_id = $this->session->userdata('cust_id');
 		
 		if ($cust_id !='') {
@@ -193,7 +193,7 @@ class Home extends CI_Controller {
 	
 	public function cust_change_password()
 	{
-		$data['main_cat'] = $this->homemodel->get_main();
+		$data['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$cust_id = $this->session->userdata('cust_id');
 		
 		if ($cust_id !='') {
@@ -215,8 +215,8 @@ class Home extends CI_Controller {
 	{
 		$data['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$data['maincat_count'] = $this->homemodel->get_maincat_count();
+		$data['category_details'] = $this->homemodel->get_categorydetails($cat_id);
 		$data['cat_products'] = $this->homemodel->get_cat_products($cat_id);
-		
 		$this->load->view('front_header',$data);
 		$this->load->view('categories',$data);
 		$this->load->view('front_footer');
@@ -225,7 +225,9 @@ class Home extends CI_Controller {
 	{
 		$data['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$data['maincat_count'] = $this->homemodel->get_maincat_count();
-		$data['subcat_products'] = $this->homemodel->get_subcat_products($cat_id);
+		$data['category_details'] = $this->homemodel->get_categorydetails($cat_id);
+		$data['cat_products'] = $this->homemodel->get_subcat_products($cat_id);
+		
 		$this->load->view('front_header',$data);
 		$this->load->view('categories',$data);
 		$this->load->view('front_footer');
@@ -233,7 +235,7 @@ class Home extends CI_Controller {
 	
 	public function product_details()
 	{
-		$data['main_cat'] = $this->homemodel->get_main();
+		$data['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$this->load->view('front_header',$data);
 		$this->load->view('product_details');
 		$this->load->view('front_footer');
@@ -241,7 +243,7 @@ class Home extends CI_Controller {
 	
 	public function cart()
 	{
-		$data['main_cat'] = $this->homemodel->get_main();
+		$data['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$this->load->view('front_header',$data);
 		$this->load->view('cart');
 		$this->load->view('front_footer');
@@ -249,25 +251,31 @@ class Home extends CI_Controller {
 	
 	public function checkout()
 	{
-		$data['main_cat'] = $this->homemodel->get_main();
+		$data['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$this->load->view('front_header',$data);
 		$this->load->view('checkout');
 		$this->load->view('front_footer');
 	}
 	
-	
-	
 	public function aboutus()
 	{
-		$data['main_cat'] = $this->homemodel->get_main();
+		$data['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$this->load->view('front_header',$data);
 		$this->load->view('about-us');
 		$this->load->view('front_footer');
 	}
 	
+	public function wishlist()
+	{
+		$data['main_catmenu'] = $this->homemodel->get_main_catmenu();
+		$this->load->view('front_header',$data);
+		$this->load->view('wish-list');
+		$this->load->view('front_footer');
+	}
+	
 	public function contactus()
 	{
-		$data['main_cat'] = $this->homemodel->get_main();
+		$data['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$this->load->view('front_header',$data);
 		$this->load->view('contact-us');
 		$this->load->view('front_footer');
@@ -282,13 +290,7 @@ class Home extends CI_Controller {
 		$datas['res']=$this->homemodel->contact_us($name,$email,$website,$subject,$message);
 	}
 	
-	public function wishlist()
-	{
-		$data['main_cat'] = $this->homemodel->get_main();
-		$this->load->view('front_header',$data);
-		$this->load->view('wish-list');
-		$this->load->view('front_footer');
-	}
+
 	
 	
 }

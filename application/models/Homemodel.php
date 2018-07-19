@@ -260,7 +260,7 @@ Class Homemodel extends CI_Model
    
 	function get_main_catmenu()
 	{
-		$sql="SELECT * FROM category_masters WHERE category_name !='Home' AND status = 'Active' AND parent_id ='1'";
+		$sql="SELECT * FROM category_masters WHERE category_name !='Home' AND parent_id ='1' AND status = 'Active'";
 		$resu=$this->db->query($sql);
 		$res=$resu->result();
 		return $res;
@@ -268,7 +268,7 @@ Class Homemodel extends CI_Model
 		
 	function get_sub_catmenu($cat_id)
 	{
-		$sql="SELECT * FROM category_masters WHERE category_name !='Home' AND status = 'Active' AND parent_id ='$cat_id'";
+		$sql="SELECT * FROM category_masters WHERE category_name !='Home' AND parent_id ='$cat_id' AND status = 'Active'";
 		$resu=$this->db->query($sql);
 		$res=$resu->result();
 		return $res;
@@ -304,23 +304,28 @@ Class Homemodel extends CI_Model
 		$res=$resu->result();
 		return $res;
 	}
-	
  	function categorylist(){
 		$sql="SELECT * FROM category_masters WHERE category_name !='Home' AND status = 'Active'";
 	  	$resu=$this->db->query($sql);
 	  	$res=$resu->result();
 	  	return $res;
    }
-   
-   function get_cat_products(){
-		$sql="SELECT * FROM category_masters WHERE category_name !='Home' AND status = 'Active'";
+	function get_categorydetails($cat_id){
+		$sql="SELECT * FROM category_masters WHERE id ='$cat_id' AND status = 'Active'";
 	  	$resu=$this->db->query($sql);
 	  	$res=$resu->result();
 	  	return $res;
    }
    
-    function get_subcat_products(){
-		$sql="SELECT * FROM category_masters WHERE category_name !='Home' AND status = 'Active'";
+   function get_cat_products($cat_id){
+		$sql="SELECT * FROM products WHERE category_id ='$cat_id' AND status = 'Active'";
+	  	$resu=$this->db->query($sql);
+	  	$res=$resu->result();
+	  	return $res;
+   }
+   
+    function get_subcat_products($cat_id){
+		$sql="SELECT * FROM products WHERE sub_category_id ='$cat_id' AND status = 'Active'";
 	  	$resu=$this->db->query($sql);
 	  	$res=$resu->result();
 	  	return $res;

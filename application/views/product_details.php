@@ -96,7 +96,6 @@
                             <div class="product-button-actions">
                                <button class="add-to-cart">add to cart</button>
                                <a href="wish-list.html" data-toggle="tooltip" title="Add to Wishlist" class="same-btn mr-15"><i class="pe-7s-like"></i></a>
-                               <button data-toggle="tooltip" title="Compare this Product" class="same-btn"><i class="pe-7s-repeat"></i></button>
                             </div>
                             <!-- Product Button Actions End -->
                             <!-- Product Social Link Share Start -->
