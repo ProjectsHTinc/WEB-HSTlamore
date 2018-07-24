@@ -4045,7 +4045,7 @@ legend {
   width: auto;
 }
 #dashboard a {
-    color: #000 ;
+    color: #FAA320 ;
     text-transform: capitalize;
 }
 .view,.view-cart  {
@@ -4059,7 +4059,7 @@ legend {
     background: #1a1a1a;
 }
 #dashboard a:hover {
-    color: #003c97;
+    color: #81C341;
 }
 
 .billing-address {

@@ -71,7 +71,7 @@
                                     <!-- Product Content Start -->
                                     <div class="pro-content text-center">
                                         <h4><a href="<?php echo base_url(); ?>product_details/">Sheepskin Pillow2</a></h4>
-                                        <p class="price"><span>$241.99</span></p>
+                                        <p class="price"><span>₹241.99</span></p>
                                         <div class="action-links2">
                                             <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
                                         </div>
@@ -100,7 +100,7 @@
                                     <!-- Product Content Start -->
                                     <div class="pro-content text-center">
                                         <h4><a href="<?php echo base_url(); ?>product_details/">Carte Postal Clock</a></h4>
-                                        <p class="price"><span>$2000</span></p>
+                                        <p class="price"><span>₹2000</span></p>
                                         <div class="action-links2">
                                             <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
                                         </div>
@@ -129,7 +129,7 @@
                                     <!-- Product Content Start -->
                                     <div class="pro-content text-center">
                                         <h4><a href="<?php echo base_url(); ?>product_details/">congue sitamet</a></h4>
-                                        <p class="price"><span>$241.99</span></p>
+                                        <p class="price"><span>₹241.99</span></p>
                                         <div class="action-links2">
                                             <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
                                         </div>
@@ -158,7 +158,7 @@
                                     <!-- Product Content Start -->
                                     <div class="pro-content text-center">
                                         <h4><a href="<?php echo base_url(); ?>product_details/">dictum idrisus</a></h4>
-                                        <p class="price"><span>$541.99</span></p>
+                                        <p class="price"><span>₹541.99</span></p>
                                         <div class="action-links2">
                                             <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
                                         </div>
@@ -187,7 +187,7 @@
                                     <!-- Product Content Start -->
                                     <div class="pro-content text-center">
                                         <h4><a href="<?php echo base_url(); ?>product_details/">Decorative Vase</a></h4>
-                                        <p class="price"><span>$241.99</span></p>
+                                        <p class="price"><span>₹241.99</span></p>
                                         <div class="action-links2">
                                             <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
                                         </div>
@@ -310,7 +310,7 @@
                                 <!-- Product Content Start -->
                                 <div class="pro-content text-center">
                                     <h4><a href="<?php echo base_url(); ?>product_details/">Decorative Vase</a></h4>
-                                    <p class="price"><span>$241.99</span></p>
+                                    <p class="price"><span>₹241.99</span></p>
                                     <div class="action-links2">
                                         <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
                                     </div>
@@ -334,7 +334,7 @@
                                 <!-- Product Content Start -->
                                 <div class="pro-content text-center">
                                     <h4><a href="<?php echo base_url(); ?>product_details/">Sheepskin Pillow2</a></h4>
-                                    <p class="price"><span>$500.00</span></p>
+                                    <p class="price"><span>₹500.00</span></p>
                                     <div class="action-links2">
                                         <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
                                     </div>
@@ -359,7 +359,7 @@
                                 <!-- Product Content Start -->
                                 <div class="pro-content text-center">
                                     <h4><a href="<?php echo base_url(); ?>product_details/">Carte Postal Clock</a></h4>
-                                    <p class="price"><span>$180.29</span></p>
+                                    <p class="price"><span>₹180.29</span></p>
                                     <div class="action-links2">
                                         <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
                                     </div>
@@ -384,7 +384,7 @@
                                 <!-- Product Content Start -->
                                 <div class="pro-content text-center">
                                     <h4><a href="<?php echo base_url(); ?>product_details/">dictum idrisus</a></h4>
-                                    <p class="price"><span>$199.99</span></p>
+                                    <p class="price"><span>₹199.99</span></p>
                                     <div class="action-links2">
                                         <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
                                     </div>
@@ -409,7 +409,7 @@
                                 <!-- Product Content Start -->
                                 <div class="pro-content text-center">
                                     <h4><a href="<?php echo base_url(); ?>product_details/">Decorative Vase</a></h4>
-                                    <p class="price"><span>$241.99</span></p>
+                                    <p class="price"><span>₹241.99</span></p>
                                     <div class="action-links2">
                                         <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
                                     </div>
@@ -434,7 +434,7 @@
                                 <!-- Product Content Start -->
                                 <div class="pro-content text-center">
                                     <h4><a href="<?php echo base_url(); ?>product_details/">dictum idrisus</a></h4>
-                                    <p class="price"><span>$271.99</span></p>
+                                    <p class="price"><span>₹271.99</span></p>
                                     <div class="action-links2">
                                         <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
                                     </div>

@@ -163,16 +163,30 @@ class Home extends CI_Controller {
 	
 	public function cust_address()
 	{
-		$data['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$cust_id = $this->session->userdata('cust_id');
-		
+		$data['main_catmenu'] = $this->homemodel->get_main_catmenu();
+		$data['cust_address'] = $this->homemodel->get_cust_address($cust_id);
+		//print_r ($data);
 		if ($cust_id !='') {
 			$this->load->view('front_header',$data);
-			$this->load->view('cust_address');
+			$this->load->view('cust_address',$data);
 			$this->load->view('front_footer');
 		} else {
 			redirect(base_url()."login/");
 		}
+	}
+	
+	public function cust_default_address()
+	{
+		$address_id=$this->input->post('address_id');
+		$cust_id = $this->session->userdata('cust_id');
+		$datas['res']=$this->homemodel->cust_default_address($cust_id,$address_id);
+	}
+	
+	public function cust_address_delete($address_id)
+	{
+		$cust_id = $this->session->userdata('cust_id');
+		$datas['res']=$this->homemodel->cust_address_delete($address_id,$cust_id);
 	}
 	
 	public function cust_details()
@@ -252,10 +266,52 @@ class Home extends CI_Controller {
 	public function checkout()
 	{
 		$data['main_catmenu'] = $this->homemodel->get_main_catmenu();
-		$this->load->view('front_header',$data);
-		$this->load->view('checkout');
-		$this->load->view('front_footer');
+		$data['countrylist'] = $this->homemodel->countrylist();
+		$cust_id = $this->session->userdata('cust_id');
+		
+		if ($cust_id !='') {
+			$this->load->view('front_header',$data);
+			$this->load->view('checkout');
+			$this->load->view('front_footer');
+		} else {
+			redirect(base_url()."login/");
+		}
 	}
+	
+	public function cartprocess()
+	{
+		$data['main_catmenu'] = $this->homemodel->get_main_catmenu();
+		$cust_id = $this->session->userdata('cust_id');
+		echo $address_value = $this->input->post('address_value');
+		if ($address_value == 'new')
+		{
+			
+		} else {
+			if (isset($_POST['ship-box'])) {
+				echo "Oldnew";
+			} else {
+			   echo "Old";
+			}
+		}
+		/*
+		$mobile=$this->input->post('mobile');
+		$email=$this->input->post('email');
+		$fname=$this->input->post('fname');
+		$lname=$this->input->post('lname');
+		$dob=$this->input->post('dob');
+		$gender=$this->input->post('gender');
+		$newsletter=$this->input->post('newsletter');	
+		
+		if ($cust_id !='') {
+			$this->load->view('front_header',$data);
+			$this->load->view('cart_process');
+			$this->load->view('front_footer');
+		} else {
+			redirect(base_url()."login/");
+		}
+		*/
+	}
+	
 	
 	public function aboutus()
 	{

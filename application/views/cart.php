@@ -27,7 +27,7 @@
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <!-- Form Start -->
-                        <form action="#">
+                        <form name="checkout"  id="checkout" method="post" action="<?php echo base_url(); ?>home/checkout/">
                             <!-- Table Content Start -->
                             <div class="table-content table-responsive mb-50">
                                 <table>
@@ -47,9 +47,9 @@
                                                 <a href="#"><img src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="cart-image" /></a>
                                             </td>
                                             <td class="product-name"><a href="#">dictum idrisus</a></td>
-                                            <td class="product-price"><span class="amount">£165.00</span></td>
-                                            <td class="product-quantity"><input type="number" value="1" /></td>
-                                            <td class="product-subtotal">£165.00</td>
+                                            <td class="product-price"><span class="amount">₹165.00</span></td>
+                                            <td class="product-quantity"><input type="number" value="2" min="1" max="10" /></td>
+                                            <td class="product-subtotal">₹165.00</td>
                                             <td class="product-remove"> <a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></td>
                                         </tr>
                                         <tr>
@@ -57,9 +57,9 @@
                                                 <a href="#"><img src="<?php echo base_url(); ?>assets/front/img/new-products/6_2.jpg" alt="cart-image" /></a>
                                             </td>
                                             <td class="product-name"><a href="#">Carte Postal Clock</a></td>
-                                            <td class="product-price"><span class="amount">£50.00</span></td>
-                                            <td class="product-quantity"><input type="number" value="1" /></td>
-                                            <td class="product-subtotal">£50.00</td>
+                                            <td class="product-price"><span class="amount">₹50.00</span></td>
+                                            <td class="product-quantity"><input type="number" value="1" min="1" max="10" /></td>
+                                            <td class="product-subtotal">₹50.00</td>
                                             <td class="product-remove"> <a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></td>
                                         </tr>
                                     </tbody>
@@ -84,18 +84,18 @@
                                             <tbody>
                                                 <tr class="cart-subtotal">
                                                     <th>Subtotal</th>
-                                                    <td><span class="amount">$215.00</span></td>
+                                                    <td><span class="amount">₹215.00</span></td>
                                                 </tr>
                                                 <tr class="order-total">
                                                     <th>Total</th>
                                                     <td>
-                                                        <strong><span class="amount">$215.00</span></strong>
+                                                        <strong><span class="amount">₹215.00</span></strong>
                                                     </td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                         <div class="wc-proceed-to-checkout">
-                                            <a href="#">Proceed to Checkout</a>
+                                            <a href="<?php echo base_url(); ?>home/checkout/"">Proceed to Checkout</a>
                                         </div>
                                     </div>
                                 </div>

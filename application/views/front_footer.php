@@ -181,24 +181,20 @@
                                             <div class="thubnail-desc fix">
                                                 <h2 class="product-header">Sheepskin Pillow2</h2>
                                                 <!-- Product Rating Start -->
-                                                <div class="rating-summary fix mtb-25">
+                                                <div class="rating-summary fix mtb-20">
                                                     <div class="rating f-left mr-10">
                                                         <i class="fa fa-star-o"></i>
                                                         <i class="fa fa-star-o"></i>
                                                         <i class="fa fa-star-o"></i>
                                                         <i class="fa fa-star-o"></i>
                                                     </div>
-                                                    <div class="rating-feedback f-left">
-                                                        <a href="#">0 reviews</a> /
-                                                        <a href="#">Write a review</a>
-                                                    </div>
                                                 </div>
                                                 <!-- Product Rating End -->
                                                 <!-- Product Price Start -->
                                                 <div class="pro-price mb-15">
                                                     <ul class="pro-price-list">
-                                                        <li class="price">$241.99</li>
-                                                        <li class="tax">Ex Tax: $199.99</li>
+                                                        <li class="price">₹241.99</li>
+                                                        <li class="tax">Ex Tax: ₹199.99</li>
                                                     </ul>
                                                 </div>
                                                 <!-- Product Price End -->
@@ -206,26 +202,48 @@
                                                 <div class="product-price-desc mb-10">
                                                     <ul class="pro-desc-list">
                                                         <li>Product Code: <span>SAMI</span></li>
-                                                        <li>Reward Points: <span>1000</span></li>
                                                         <li>Availability: <span>in Stock</span></li>
                                                     </ul>
                                                 </div>
                                                 <!-- Product Price Description End -->
                                                 <!-- Product Box Quantity Start -->
-                                                <div class="box-quantity mb-30">
+                                                <div class="box-quantity mb-10">
                                                     <div class="quantity-item">
                                                         <label>Qty: </label>
-                                                        <div class="cart-plus-minus">
+                                                        <input type="number" value="1" min="1" max="10" style="height: 45px;" name="qty" id="qty" />
+                                                        <!--<div class="cart-plus-minus">
                                                             <input class="cart-plus-minus-box" type="text" name="qtybutton" value="0">
-                                                        </div>
+                                                        </div>-->
                                                     </div>
                                                 </div>
                                                 <!-- Product Box Quantity End -->
+                                                <!-- Product Box Quantity Start -->
+                            <div class="box-quantity mtb-10">
+                                <div class="quantity-item">
+                                    <label>Size: </label>
+                                        <select>
+                                        <option>S</option>
+                                        <option>M</option>
+                                        <option>L</option>
+                                        </select>
+                                </div>
+                            </div>
+                            <!-- Product Box Quantity End -->
+                            <!-- Product Box Quantity Start -->
+                            <div class="box-quantity mtb-10">
+                                <div class="quantity-item">
+                                    <label>Colour: </label>
+                                       <select>
+                                        <option>Red</option>
+                                        <option>Green</option>
+                                        <option>Blue</option>
+                                        </select>
+                                </div>
+                            </div>
+                            <!-- Product Box Quantity End -->
                                                 <!-- Product Button Actions Start -->
                                                 <div class="product-button-actions">
                                                     <button class="add-to-cart">add to cart</button>
-                                                    <button data-toggle="tooltip" title="Add to Wishlist" class="same-btn mr-15"><i class="pe-7s-like"></i></button>
-                                                    <button data-toggle="tooltip" title="Compare this Product" class="same-btn"><i class="pe-7s-repeat"></i></button>
                                                 </div>
                                                 <!-- Product Button Actions End -->
                                             </div>

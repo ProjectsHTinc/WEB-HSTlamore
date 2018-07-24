@@ -97,7 +97,7 @@ foreach($category_details as $cat){
                                                             <!-- Product Price Start -->
                                                             <div class="pro-price mb-15">
                                                                 <ul class="pro-price-list">
-                                                                    <li class="price">$122.00</li>
+                                                                    <li class="price">₹122.00</li>
                                                                     <li class="mtb-50">
                                                                         <p>Stop your co-workers in their tracks with the stunning new 30-inch diagonal HP LP3065 Flat Panel Monitor. This flagship monitor features best-in-class performance and presentation features on a huge w..</p>
                                                                     </li>
@@ -159,7 +159,7 @@ foreach($category_details as $cat){
                                                         <!-- Product Content Start -->
                                                         <div class="pro-content text-center">
                                                             <h4><a href="<?php echo base_url(); ?>product_details/">Sheepskin Pillow2</a></h4>
-                                                            <p class="price"><span>$241.99</span></p>
+                                                            <p class="price"><span>₹241.99</span></p>
                                                             <div class="action-links2">
                                                                 <a data-toggle="tooltip" title="Add to Cart" href="cart.html">add to cart</a>
                                                             </div>
@@ -246,16 +246,16 @@ foreach($category_details as $cat){
                             </div>
                             <!-- Categories Module End -->
                             <!-- Filter Option Start -->
-                            <div class="flter-option mb-80">
+                            <!--<div class="flter-option mb-80">
                                 <h3>PRICE FILTER</h3>
                                 <form action="#">
                                     <div id="slider-range"></div>
                                     <input type="text" id="amount" class="amount" readonly>
                                 </form>
-                            </div>
+                            </div>-->
                             <!-- Filter Option End -->
                             <!-- Categories Color Start -->
-                            <div class="cat-color mb-80">
+                           <!-- <div class="cat-color mb-80">
                                <h3>Color</h3>
                                 <ul class="cat-color-list">
                                     <li><a href="#">Black (13)</a></li>
@@ -264,7 +264,7 @@ foreach($category_details as $cat){
                                     <li><a href="#">Green (13)</a></li>
                                     <li><a href="#">Red (13)</a></li>
                                 </ul>
-                            </div>
+                            </div>-->
                             <!-- Categories Color End -->
                             
                             
