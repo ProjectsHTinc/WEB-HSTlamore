@@ -40,12 +40,12 @@ class Productmaster extends CI_Controller {
 		$user_role=$this->session->userdata('role_type_id');
 		if($user_role=='1' || $user_role=='2'){
 
-			$product_name=$this->input->post('product_name');
-			$sku_code=$this->input->post('sku_code');
-			$cat_id=$this->input->post('cat_id');
-			$sub_cat_id=$this->input->post('sub_cat_id');
-			$product_desc=$this->input->post('product_desc');
-			$delivery_fee=$this->input->post('delivery_fee');
+			$product_name=$this->db->escape_str($this->input->post('product_name'));
+			$sku_code=$this->db->escape_str($this->input->post('sku_code'));
+			$cat_id=$this->db->escape_str($this->input->post('cat_id'));
+			$sub_cat_id=$this->db->escape_str($this->input->post('sub_cat_id'));
+			$product_desc=$this->db->escape_str($this->input->post('product_desc'));
+			$delivery_fee=$this->db->escape_str($this->input->post('delivery_fee'));
 
 			$product_cover_img = $_FILES['product_cover_img']['name'];
 			if(empty($product_cover_img)){
@@ -71,38 +71,39 @@ class Productmaster extends CI_Controller {
 			}
 
 
-			$prod_actual_price=$this->input->post('prod_actual_price');
-			$prod_mrp_price=$this->input->post('prod_mrp_price');
-			$combined_status=$this->input->post('combined_status');
-			$mas_size=$this->input->post('mas_size');
-			$mas_color=$this->input->post('mas_color');
-			$prod_comb_mrp_price=$this->input->post('prod_comb_mrp_price');
-			$prod_comb_actual_price=$this->input->post('prod_comb_actual_price');
-			$prod_comb_total_stocks=$this->input->post('prod_comb_total_stocks');
-			$prod_default=$this->input->post('prod_default');
+			$prod_actual_price=$this->db->escape_str($this->input->post('prod_actual_price'));
+			$prod_mrp_price=$this->db->escape_str($this->input->post('prod_mrp_price'));
+			$combined_status=$this->db->escape_str($this->input->post('combined_status'));
+			$mas_size=$this->db->escape_str($this->input->post('mas_size'));
+			$mas_color=$this->db->escape_str($this->input->post('mas_color'));
+			$prod_comb_mrp_price=$this->db->escape_str($this->input->post('prod_comb_mrp_price'));
+			$prod_comb_actual_price=$this->db->escape_str($this->input->post('prod_comb_actual_price'));
+			$prod_comb_total_stocks=$this->db->escape_str($this->input->post('prod_comb_total_stocks'));
+			$prod_default=$this->db->escape_str($this->input->post('prod_default'));
 
-			$prod_offer_percentage=$this->input->post('prod_offer_percentage');
-			$prod_return_policy=$this->input->post('prod_return_policy');
-			$prod_cod=$this->input->post('prod_cod');
+			$prod_offer_percentage=$this->db->escape_str($this->input->post('prod_offer_percentage'));
+			$prod_return_policy=$this->db->escape_str($this->input->post('prod_return_policy'));
+			$prod_cod=$this->db->escape_str($this->input->post('prod_cod'));
 
-			$prod_stock_left=$this->input->post('prod_stock_left');
-
-
-			$product_tags=$this->input->post('product_tags');
+			$prod_stock_left=$this->db->escape_str($this->input->post('prod_stock_left'));
 
 
-			$prod_meta_title=$this->input->post('prod_meta_title');
-			$prod_meta_keywords=$this->input->post('prod_meta_keywords');
-			$product_meta_desc=$this->input->post('product_meta_desc');
-			$prod_status=$this->input->post('prod_status');
+			$product_tags=$this->db->escape_str($this->input->post('product_tags'));
 
-			$prod_total_stocks=$this->input->post('prod_total_stocks');
-			$prod_minimum_stocks=$this->input->post('prod_minimum_stocks');
+
+			$prod_meta_title=$this->db->escape_str($this->input->post('prod_meta_title'));
+			$prod_meta_keywords=$this->db->escape_str($this->input->post('prod_meta_keywords'));
+			$product_meta_desc=$this->db->escape_str($this->input->post('product_meta_desc'));
+			$prod_status=$this->db->escape_str($this->input->post('prod_status'));
+
+			$prod_total_stocks=$this->db->escape_str($this->input->post('prod_total_stocks'));
+			$prod_minimum_stocks=$this->db->escape_str($this->input->post('prod_minimum_stocks'));
 
 			$data['res']=$this->productmodel->create_product_item($product_name,$sku_code,$cat_id,$sub_cat_id,$product_desc,$delivery_fee,$prod_cover_img,$prod_size_chart,$prod_actual_price,$prod_mrp_price,$combined_status,$mas_size,$mas_color,$prod_comb_mrp_price,$prod_comb_actual_price,$prod_comb_total_stocks,$prod_default,$prod_offer_percentage,$prod_return_policy,$prod_cod,$prod_stock_left,$product_tags,$prod_meta_title,$prod_meta_keywords,$product_meta_desc,$user_id,$prod_status,$prod_total_stocks,$prod_minimum_stocks);
-			//print_r($data['res']);exit;
+	//	print_r($data['res']);
 			if($data['res']['status']=='success'){
-				$product_id=$dats['res']['prod_last_id'];
+				 $product_id=$data['res']['prod_last_id'];
+			
 				$prd_redirec_id=base64_encode($product_id*9876);
 				redirect('/admin/products/'.$prd_redirec_id.'');
 			}else if($data['res']['status']=='already'){
