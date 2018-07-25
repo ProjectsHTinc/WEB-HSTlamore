@@ -310,19 +310,8 @@ NOTE: main.js, All custom script and plugin activation script in this file.
         $('#cbox_info').slideToggle();
     });
      $('#ship-box').on('click', function () {
-       
-	   if($('input[name="ship-box"]').is(':checked'))
-		{
-			 $('#oldship-box-info').hide();
-			 $('#ship-box-info').show();
-		}else
-		{
-			 $('#oldship-box-info').show();
-			 $('#ship-box-info').hide();
-		}
-	   
-	   // $('#ship-box-info').slideToggle();
-		//$('#oldship-box-info').slideToggle();
+	    $('#ship-box-info').slideToggle();
+		$('#oldship-box-info').slideToggle();
 		
     });
 	

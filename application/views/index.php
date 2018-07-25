@@ -60,11 +60,11 @@
                                     <div class="pro-img">
                                         <a href="<?php echo base_url(); ?>product_details/">
                                             <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/1_1.jpg" alt="single-product">
-                                            <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/1_2.jpg" alt="single-product">
+                                            <!--<img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/1_2.jpg" alt="single-product">-->
                                         </a>
-                                        <div class="quick-view">
+                                        <!--<div class="quick-view">
                                             <a href="#" data-toggle="modal" data-target="#myModal"><i class="pe-7s-look"></i>quick view</a>
-                                        </div>
+                                        </div>-->
                                         <span class="sticker-new">new</span>
                                     </div>
                                     <!-- Product Image End -->
@@ -89,11 +89,11 @@
                                     <div class="pro-img">
                                         <a href="<?php echo base_url(); ?>product_details/">
                                             <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_1.jpg" alt="single-product">
-                                            <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="single-product">
+                                            <!--<img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="single-product">-->
                                         </a>
-                                        <div class="quick-view">
+                                        <!--<div class="quick-view">
                                             <a href="#" data-toggle="modal" data-target="#myModal"><i class="pe-7s-look"></i>quick view</a>
-                                        </div>
+                                        </div>-->
                                         <span class="sticker-new">new</span>
                                     </div>
                                     <!-- Product Image End -->
@@ -118,18 +118,18 @@
                                     <div class="pro-img">
                                         <a href="<?php echo base_url(); ?>product_details/">
                                             <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/3_1.jpg" alt="single-product">
-                                            <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/3_2.jpg" alt="single-product">
+                                            <!--<img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="single-product">-->
                                         </a>
-                                        <div class="quick-view">
+                                        <!--<div class="quick-view">
                                             <a href="#" data-toggle="modal" data-target="#myModal"><i class="pe-7s-look"></i>quick view</a>
-                                        </div>
+                                        </div>-->
                                         <span class="sticker-new">new</span>
                                     </div>
                                     <!-- Product Image End -->
                                     <!-- Product Content Start -->
                                     <div class="pro-content text-center">
-                                        <h4><a href="<?php echo base_url(); ?>product_details/">congue sitamet</a></h4>
-                                        <p class="price"><span>₹241.99</span></p>
+                                        <h4><a href="<?php echo base_url(); ?>product_details/">Carte Postal Clock</a></h4>
+                                        <p class="price"><span>₹2000</span></p>
                                         <div class="action-links2">
                                             <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
                                         </div>
@@ -147,18 +147,18 @@
                                     <div class="pro-img">
                                         <a href="<?php echo base_url(); ?>product_details/">
                                             <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/4_1.jpg" alt="single-product">
-                                            <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="single-product">
+                                            <!--<img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="single-product">-->
                                         </a>
-                                        <div class="quick-view">
+                                        <!--<div class="quick-view">
                                             <a href="#" data-toggle="modal" data-target="#myModal"><i class="pe-7s-look"></i>quick view</a>
-                                        </div>
+                                        </div>-->
                                         <span class="sticker-new">new</span>
                                     </div>
                                     <!-- Product Image End -->
                                     <!-- Product Content Start -->
                                     <div class="pro-content text-center">
-                                        <h4><a href="<?php echo base_url(); ?>product_details/">dictum idrisus</a></h4>
-                                        <p class="price"><span>₹541.99</span></p>
+                                        <h4><a href="<?php echo base_url(); ?>product_details/">Carte Postal Clock</a></h4>
+                                        <p class="price"><span>₹2000</span></p>
                                         <div class="action-links2">
                                             <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
                                         </div>
@@ -175,19 +175,19 @@
                                     <!-- Product Image Start -->
                                     <div class="pro-img">
                                         <a href="<?php echo base_url(); ?>product_details/">
-                                            <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="single-product">
-                                            <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_1.jpg" alt="single-product">
+                                            <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_1.jpg" alt="single-product">
+                                            <!--<img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="single-product">-->
                                         </a>
-                                        <div class="quick-view">
+                                        <!--<div class="quick-view">
                                             <a href="#" data-toggle="modal" data-target="#myModal"><i class="pe-7s-look"></i>quick view</a>
-                                        </div>
+                                        </div>-->
                                         <span class="sticker-new">new</span>
                                     </div>
                                     <!-- Product Image End -->
                                     <!-- Product Content Start -->
                                     <div class="pro-content text-center">
-                                        <h4><a href="<?php echo base_url(); ?>product_details/">Decorative Vase</a></h4>
-                                        <p class="price"><span>₹241.99</span></p>
+                                        <h4><a href="<?php echo base_url(); ?>product_details/">Carte Postal Clock</a></h4>
+                                        <p class="price"><span>₹2000</span></p>
                                         <div class="action-links2">
                                             <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
                                         </div>
@@ -282,8 +282,8 @@
                     <!-- Section Title Start -->
                     <div class="col-xs-12">
                         <div class="section-title text-center mb-40">
-                            <span class="section-desc mb-20">Top sale in this week</span>
-                            <h3 class="section-info">best seller</h3>
+                            <span class="section-desc mb-20">Most Viewed from customers</span>
+                            <h3 class="section-info">popular products</h3>
                         </div>
                     </div>
                     <!-- Section Title End -->
@@ -299,12 +299,12 @@
                                 <div class="pro-img">
                                     <a href="<?php echo base_url(); ?>product_details/">
                                         <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/1_2.jpg" alt="single-product">
-                                        <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/5_1.jpg" alt="single-product">
+                                        <!--<img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/5_1.jpg" alt="single-product">-->
                                     </a>
-                                    <div class="quick-view">
+                                    <!--<div class="quick-view">
                                         <a href="#" data-toggle="modal" data-target="#myModal"><i class="pe-7s-look"></i>quick view</a>
                                     </div>
-                                    <span class="sticker-new">new</span>
+                                    <span class="sticker-new">new</span>-->
                                 </div>
                                 <!-- Product Image End -->
                                 <!-- Product Content Start -->
@@ -324,11 +324,11 @@
                                 <div class="pro-img">
                                     <a href="<?php echo base_url(); ?>product_details/">
                                         <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/3_1.jpg" alt="single-product">
-                                        <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/6_2.jpg" alt="single-product">
+                                        <!--<img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/6_2.jpg" alt="single-product">-->
                                     </a>
-                                    <div class="quick-view">
+                                    <!--<div class="quick-view">
                                         <a href="#" data-toggle="modal" data-target="#myModal"><i class="pe-7s-look"></i>quick view</a>
-                                    </div>
+                                    </div>-->
                                 </div>
                                 <!-- Product Image End -->
                                 <!-- Product Content Start -->
@@ -348,11 +348,11 @@
                                 <div class="pro-img">
                                     <a href="<?php echo base_url(); ?>product_details/">
                                         <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/1_1.jpg" alt="single-product">
-                                        <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="single-product">
+                                        <!--<img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="single-product">-->
                                     </a>
-                                    <div class="quick-view">
+                                    <!--<div class="quick-view">
                                         <a href="#" data-toggle="modal" data-target="#myModal"><i class="pe-7s-look"></i>quick view</a>
-                                    </div>
+                                    </div>-->
                                     <span class="sticker-new">new</span>
                                 </div>
                                 <!-- Product Image End -->
@@ -373,11 +373,11 @@
                                 <div class="pro-img">
                                     <a href="<?php echo base_url(); ?>product_details/">
                                         <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/6_1.jpg" alt="single-product">
-                                        <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/6_2.jpg" alt="single-product">
+                                        <!--<img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/6_2.jpg" alt="single-product">-->
                                     </a>
-                                    <div class="quick-view">
+                                    <!--<div class="quick-view">
                                         <a href="#" data-toggle="modal" data-target="#myModal"><i class="pe-7s-look"></i>quick view</a>
-                                    </div>
+                                    </div>-->
                                     <span class="sticker-new">new</span>
                                 </div>
                                 <!-- Product Image End -->
@@ -398,11 +398,11 @@
                                 <div class="pro-img">
                                     <a href="<?php echo base_url(); ?>product_details/">
                                         <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_1.jpg" alt="single-product">
-                                        <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="single-product">
+                                        <!--<img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="single-product">-->
                                     </a>
-                                    <div class="quick-view">
+                                    <!--<div class="quick-view">
                                         <a href="#" data-toggle="modal" data-target="#myModal"><i class="pe-7s-look"></i>quick view</a>
-                                    </div>
+                                    </div>-->
                                     <span class="sticker-new">new</span>
                                 </div>
                                 <!-- Product Image End -->
@@ -423,11 +423,11 @@
                                 <div class="pro-img">
                                     <a href="<?php echo base_url(); ?>product_details/">
                                         <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/8_1.jpg" alt="single-product">
-                                        <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/3_2.jpg" alt="single-product">
+                                        <!--<img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/3_2.jpg" alt="single-product">-->
                                     </a>
-                                    <div class="quick-view">
+                                    <!--<div class="quick-view">
                                         <a href="#" data-toggle="modal" data-target="#myModal"><i class="pe-7s-look"></i>quick view</a>
-                                    </div>
+                                    </div>-->
                                     <span class="sticker-new">new</span>
                                 </div>
                                 <!-- Product Image End -->
