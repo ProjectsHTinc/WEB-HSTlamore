@@ -66,7 +66,6 @@ class Home extends CI_Controller {
 		$password=$this->input->post('pwdconfirm');
 		$newsletter=$this->input->post('newsletter');
 		$datas['res']=$this->homemodel->customer_registration($name,$mobile,$email,$password,$newsletter);
-
 		}
 	
 	public function login()
@@ -231,6 +230,7 @@ class Home extends CI_Controller {
 		$data['maincat_count'] = $this->homemodel->get_maincat_count();
 		$data['category_details'] = $this->homemodel->get_categorydetails($cat_id);
 		$data['cat_products'] = $this->homemodel->get_cat_products($cat_id);
+		//print_r($data);
 		$this->load->view('front_header',$data);
 		$this->load->view('categories',$data);
 		$this->load->view('front_footer');
@@ -258,8 +258,9 @@ class Home extends CI_Controller {
 	public function cart()
 	{
 		$data['main_catmenu'] = $this->homemodel->get_main_catmenu();
+		$data['cart_list'] = $this->homemodel->cart_list();
 		$this->load->view('front_header',$data);
-		$this->load->view('cart');
+		$this->load->view('cart',$data);
 		$this->load->view('front_footer');
 	}
 	
@@ -282,34 +283,42 @@ class Home extends CI_Controller {
 	{
 		$data['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$cust_id = $this->session->userdata('cust_id');
-		echo $address_value = $this->input->post('address_value');
-		if ($address_value == 'new')
-		{
-			
-		} else {
-			if (isset($_POST['ship-box'])) {
-				echo "Oldnew";
-			} else {
-			   echo "Old";
-			}
-		}
-		/*
-		$mobile=$this->input->post('mobile');
-		$email=$this->input->post('email');
-		$fname=$this->input->post('fname');
-		$lname=$this->input->post('lname');
-		$dob=$this->input->post('dob');
-		$gender=$this->input->post('gender');
-		$newsletter=$this->input->post('newsletter');	
 		
 		if ($cust_id !='') {
+			$address_value = $this->input->post('address_value');
+			$address_id = $this->input->post('address_id');
+			
+			$ncountry_id = $this->input->post('ncountry_id');
+			$nname = $this->input->post('nname');
+			$naddress1 = $this->input->post('naddress1');
+			$naddress2 = $this->input->post('naddress2');
+			$ntown = $this->input->post('ntown');
+			$nstate = $this->input->post('nstate');
+			$nzip = $this->input->post('nzip');
+			$nemail = $this->input->post('nemail');
+			$nphone = $this->input->post('nphone');
+			$nphone1 = $this->input->post('nphone1');
+			$nlandmark = $this->input->post('nlandmark');
+			$ncheckout_mess = $this->input->post('ncheckout_mess');
+			$scheckout_mess = $this->input->post('scheckout_mess');
+			
+			if ($address_value == 'new')
+			{
+				$data['orders']=$this->homemodel->checkout_address($cust_id,$ncountry_id,$nname,$naddress1,$naddress2,$ntown,$nstate,$nzip,$nemail,$nphone,$nphone1,$nlandmark,$ncheckout_mess);
+			} else {
+				if (isset($_POST['ship-box'])) {
+					$data['orders']=$this->homemodel->checkout_address($cust_id,$ncountry_id,$nname,$naddress1,$naddress2,$ntown,$nstate,$nzip,$nemail,$nphone,$nphone1,$nlandmark,$scheckout_mess);
+				} else {
+					$data['orders']=$this->homemodel->checkout_addressid($cust_id,$address_id);
+				}
+			}
+			//print_r($data);
 			$this->load->view('front_header',$data);
-			$this->load->view('cart_process');
+			$this->load->view('cart_process',$data);
 			$this->load->view('front_footer');
-		} else {
+			} else {
 			redirect(base_url()."login/");
 		}
-		*/
 	}
 	
 	
@@ -334,6 +343,14 @@ class Home extends CI_Controller {
 		$data['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$this->load->view('front_header',$data);
 		$this->load->view('contact-us');
+		$this->load->view('front_footer');
+	}
+	
+	public function privacy()
+	{
+		$data['main_catmenu'] = $this->homemodel->get_main_catmenu();
+		$this->load->view('front_header',$data);
+		$this->load->view('privacy');
 		$this->load->view('front_footer');
 	}
 	

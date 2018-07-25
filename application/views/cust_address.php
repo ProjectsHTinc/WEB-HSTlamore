@@ -66,13 +66,13 @@
 								if (count($cust_address)>0) {
 									foreach($cust_address as $rowm){
 								?>
-                               <div class="col-lg-4 col-md-3 col-sm-4" style="padding:20px; min-height:100px; background:#F7F7F7;">
+                               <div class="col-lg-4 col-md-3 col-sm-4" style="padding:20px; min-height:300px; background:#F7F7F7;">
                                <?php if ($rowm->address_mode == '1') {  ?>
                                <p style="font-size:10px; color:#81C341;">
-                               <input type="radio" name="address_id" value="<?php echo $rowm->id; ?>" checked="checked" /> Default Address (<?php echo $rowm->address_type; ?>)</p>
+                               <input type="radio" name="address_id" value="<?php echo $rowm->id; ?>" checked="checked" /> Default Address <?php //echo $rowm->address_type; ?></p>
                               <?php } else { ?>
                               <p style="font-size:10px; color:#81C341;">
-                              <input type="radio" name="address_id" value="<?php echo $rowm->id; ?>"  /> (<?php echo $rowm->address_type; ?>)</p>
+                              <input type="radio" name="address_id" value="<?php echo $rowm->id; ?>"  /> <?php //echo $rowm->address_type; ?></p>
                               <?php } ?>
                                <p><?php echo $rowm->full_name; ?></p>
                                <p><?php echo $rowm->house_no; ?>, <?php echo $rowm->street; ?></p>

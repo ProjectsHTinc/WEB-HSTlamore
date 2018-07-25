@@ -257,6 +257,17 @@ Class Homemodel extends CI_Model
 			
 			$customer_update = "UPDATE cus_address SET address_mode = '1',updated_at =now(), updated_by = '$cust_id' WHERE id = '$address_id' ";
 			$cust_update = $this->db->query($customer_update);
+			
+			
+			$check_address = "SELECT * FROM cus_address WHERE cus_id = '$cust_id' AND id = '$address_id'";
+			$add_res=$this->db->query($check_address);
+					if($add_res->num_rows()>0){
+						foreach($add_res->result() as $add_rows) { 
+							$address_data =  array("address_id"=>$add_rows->id,"address_country_id"=>$add_rows->country_id,"address_state"=>$add_rows->state,"address_city"=>$add_rows->city,"address_pincode"=>$add_rows->pincode,"address_house_no"=>$add_rows->house_no,"address_street"=>$add_rows->street,"address_landmark"=>$add_rows->landmark,"address_full_name"=>$add_rows->full_name,"address_mobile"=>$add_rows->mobile_number,"address_mobile_alter"=>$add_rows->alternative_mobile_number,"address_email"=>$add_rows->email_address,"address_type_id "=>$add_rows->address_type_id);
+						}
+						$this->session->set_userdata($address_data);
+					}
+					
 			$redirect_url = base_url()."cust_address/";
 			header("Location: ".$redirect_url);
    }
@@ -333,10 +344,10 @@ Class Homemodel extends CI_Model
 
 	function get_maincat_count()
 	{
-		$sql="SELECT category_masters.category_name,category_masters.id,COUNT(category_id) AS count
+		$sql="SELECT category_masters.category_name,category_masters.id,COUNT(cat_id) AS count
 			FROM
 				category_masters
-			LEFT JOIN products ON category_masters.id = products.category_id
+			LEFT JOIN products ON category_masters.id = products.cat_id
 			WHERE
 				category_masters.category_name != 'Home' AND parent_id ='1'
 			GROUP BY
@@ -348,10 +359,10 @@ Class Homemodel extends CI_Model
 		
 	function get_subcat_count($cat_id)
 	{
-		$sql = "SELECT category_masters.category_name,category_masters.id,COUNT(category_id) AS count
+		$sql = "SELECT category_masters.category_name,category_masters.id,COUNT(cat_id) AS count
 			FROM
 				category_masters
-			LEFT JOIN products ON category_masters.id = products.category_id
+			LEFT JOIN products ON category_masters.id = products.cat_id
 			WHERE
 				category_masters.category_name != 'Home' AND parent_id ='$cat_id'
 			GROUP BY
@@ -381,19 +392,18 @@ Class Homemodel extends CI_Model
    }
    
    function get_cat_products($cat_id){
-		$sql="SELECT * FROM products WHERE category_id ='$cat_id' AND status = 'Active'";
+		$sql="SELECT * FROM products WHERE cat_id ='$cat_id' AND status = 'Active'";
 	  	$resu=$this->db->query($sql);
 	  	$res=$resu->result();
 	  	return $res;
    }
    
     function get_subcat_products($cat_id){
-		$sql="SELECT * FROM products WHERE sub_category_id ='$cat_id' AND status = 'Active'";
+		$sql="SELECT * FROM products WHERE sub_cat_id ='$cat_id' AND status = 'Active'";
 	  	$resu=$this->db->query($sql);
 	  	$res=$resu->result();
 	  	return $res;
    }
-   
      
    
    	function newproducts(){
@@ -424,6 +434,43 @@ Class Homemodel extends CI_Model
 		return $res;
    }
    
+    function cart_list(){
+		$guest_session = $this->session->userdata('guest_session');
+		$sql = "SELECT * FROM product_cart WHERE browser_sess_id ='$guest_session'";
+		$resu=$this->db->query($sql);
+		$res=$resu->result();
+		return $res;
+   }
+   
+    function checkout_address($cust_id,$ncountry_id,$nname,$naddress1,$naddress2,$ntown,$nstate,$nzip,$nemail,$nphone,$nphone1,$nlandmark,$ncheckout_mess){
+		
+		$check_address="SELECT * FROM cus_address WHERE cus_id = '$cust_id'";
+		$res=$this->db->query($check_address);
+		if($res->num_rows()>0){
+			$address_mode = '0';
+		}else{
+			$address_mode = '1';
+		}
+		$create = "INSERT INTO cus_address(cus_id,country_id,state,city,pincode,house_no,street,landmark,full_name,mobile_number,alternative_mobile_number,email_address,address_type_id,address_mode,status,created_at,created_by) VALUES('$cust_id','$ncountry_id','$nstate','$ntown','$nzip','$naddress1','$naddress2','$nlandmark','$nname','$nphone','$nphone1','$nemail','1','$address_mode','Active',now(),'$cust_id')";
+		$res = $this->db->query($create);
+		$address_id = $this->db->insert_id();
+		
+		$today = date("Ymd");
+		$rand = strtoupper(substr(uniqid(sha1(time())),0,4));
+		$order_id = $today . $rand;
+		
+		$res =  array("cust_id"=>$cust_id,"order_id"=>$order_id,"address_id"=>$address_id);
+		return $res;
+   }
+   
+   function checkout_addressid($cust_id,$address_id){
+		
+		$today = date("Ymd");
+		$rand = strtoupper(substr(uniqid(sha1(time())),0,4));
+		$order_id = $today . $rand;
+		$res =  array("cust_id"=>$cust_id,"order_id"=>$order_id,"address_id"=>$address_id);
+		return $res;
+   }
    
    
    

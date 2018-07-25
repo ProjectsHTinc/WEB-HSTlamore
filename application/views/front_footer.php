@@ -28,7 +28,7 @@
                                     <ul class="footer-list">
                                         <li><a href="#">about us</a></li>
                                         <li><a href="#">delivery information</a></li>
-                                        <li><a href="#">privacy policy</a></li>
+                                        <li><a href="<?php echo base_url(); ?>privacy/">privacy policy</a></li>
                                         <li><a href="#">terms & conditions</a></li>
                                         <li><a href="#">warranty</a></li>
                                         <li><a href="#">FAQ</a></li>
