@@ -166,6 +166,16 @@ Class Homemodel extends CI_Model
 					
 					$update_sql = "UPDATE customers SET last_login =NOW(),login_count='$login_count' WHERE id='$cust_id'";
 				 	$update_result = $this->db->query($update_sql);
+					
+					$check_address = "SELECT * FROM cus_address WHERE cus_id = '$cust_id' AND address_mode = '1'";
+					$add_res=$this->db->query($check_address);
+					if($add_res->num_rows()>0){
+						foreach($add_res->result() as $add_rows) { 
+							$address_data =  array("address_id"=>$add_rows->id,"address_country_id"=>$add_rows->country_id,"address_state"=>$add_rows->state,"address_city"=>$add_rows->city,"address_pincode"=>$add_rows->pincode,"address_house_no"=>$add_rows->house_no,"address_street"=>$add_rows->street,"address_landmark"=>$add_rows->landmark,"address_full_name"=>$add_rows->full_name,"address_mobile"=>$add_rows->mobile_number,"address_mobile_alter"=>$add_rows->alternative_mobile_number,"address_email"=>$add_rows->email_address,"address_type_id "=>$add_rows->address_type_id);
+						}
+						$this->session->set_userdata($address_data);
+					}
+					
 				echo "login";
 					}else{
 				echo "error";
@@ -223,8 +233,54 @@ Class Homemodel extends CI_Model
 			header("Location: ".$redirect_url);
    }
 
+
+	function get_cust_address($cust_id){
+		$sql="SELECT A.*, B.country_name, C.address_type FROM cus_address A, country_master B, address_master C WHERE A.cus_id = '$cust_id' AND A.country_id = B.id AND A.address_type_id  = C.id AND A.status = 'Active' ORDER BY A.address_mode DESC";
+	  	$resu=$this->db->query($sql);
+	  	$res=$resu->result();
+	  	return $res;
+   }
+   
+   
+   function cust_default_address($cust_id,$address_id){
+			$check_user = "SELECT * FROM cus_address WHERE cus_id = '$cust_id'";
+			$res=$this->db->query($check_user);
+
+			if($res->num_rows()>0){
+				foreach($res->result() as $rows) { 
+					$add_id = $rows->id;
+					
+					$c_update = "UPDATE cus_address SET address_mode = '0',updated_at =now(), updated_by = '$cust_id' WHERE id  ='$add_id'";
+					$cu_update = $this->db->query($c_update);
+				}
+			}
+			
+			$customer_update = "UPDATE cus_address SET address_mode = '1',updated_at =now(), updated_by = '$cust_id' WHERE id = '$address_id' ";
+			$cust_update = $this->db->query($customer_update);
+			$redirect_url = base_url()."cust_address/";
+			header("Location: ".$redirect_url);
+   }
+   
+   function cust_address_delete($address_id,$cust_id){
+			
+			$del_address = "DELETE FROM cus_address WHERE id = '$address_id'";
+			$res=$this->db->query($del_address);
+						
+			$check_user = "SELECT * FROM cus_address WHERE cus_id = '$cust_id' LIMIT 1";
+			$res=$this->db->query($check_user);
+			if($res->num_rows()>0){
+				foreach($res->result() as $rows) { 
+					$add_id = $rows->id;
+					$c_update = "UPDATE cus_address SET address_mode = '1',updated_at =now(), updated_by = '$cust_id' WHERE id = '$add_id'";
+					$cu_update = $this->db->query($c_update);
+				}
+			}
+			$redirect_url = base_url()."cust_address/";
+			header("Location: ".$redirect_url);
+   }
+   
+   
 	function cust_change_password($cust_id,$password){
-	   
 			$pwd = md5($password);
 			$customer_update = "UPDATE customers SET password = '$pwd',updated_at =now(), updated_by = '$cust_id' WHERE id  ='$cust_id'";
 			$cust_update = $this->db->query($customer_update);
@@ -260,7 +316,7 @@ Class Homemodel extends CI_Model
    
 	function get_main_catmenu()
 	{
-		$sql="SELECT * FROM category_masters WHERE category_name !='Home' AND status = 'Active' AND parent_id ='1'";
+		$sql="SELECT * FROM category_masters WHERE category_name !='Home' AND parent_id ='1' AND status = 'Active'";
 		$resu=$this->db->query($sql);
 		$res=$resu->result();
 		return $res;
@@ -268,7 +324,7 @@ Class Homemodel extends CI_Model
 		
 	function get_sub_catmenu($cat_id)
 	{
-		$sql="SELECT * FROM category_masters WHERE category_name !='Home' AND status = 'Active' AND parent_id ='$cat_id'";
+		$sql="SELECT * FROM category_masters WHERE category_name !='Home' AND parent_id ='$cat_id' AND status = 'Active'";
 		$resu=$this->db->query($sql);
 		$res=$resu->result();
 		return $res;
@@ -305,26 +361,40 @@ Class Homemodel extends CI_Model
 		return $res;
 	}
 	
+	function countrylist(){
+		$sql="SELECT * FROM country_master WHERE status = 'Active'";
+	  	$resu=$this->db->query($sql);
+	  	$res=$resu->result();
+	  	return $res;
+   }
  	function categorylist(){
 		$sql="SELECT * FROM category_masters WHERE category_name !='Home' AND status = 'Active'";
 	  	$resu=$this->db->query($sql);
 	  	$res=$resu->result();
 	  	return $res;
    }
-   
-   function get_cat_products(){
-		$sql="SELECT * FROM category_masters WHERE category_name !='Home' AND status = 'Active'";
+	function get_categorydetails($cat_id){
+		$sql="SELECT * FROM category_masters WHERE id ='$cat_id' AND status = 'Active'";
 	  	$resu=$this->db->query($sql);
 	  	$res=$resu->result();
 	  	return $res;
    }
    
-    function get_subcat_products(){
-		$sql="SELECT * FROM category_masters WHERE category_name !='Home' AND status = 'Active'";
+   function get_cat_products($cat_id){
+		$sql="SELECT * FROM products WHERE category_id ='$cat_id' AND status = 'Active'";
 	  	$resu=$this->db->query($sql);
 	  	$res=$resu->result();
 	  	return $res;
    }
+   
+    function get_subcat_products($cat_id){
+		$sql="SELECT * FROM products WHERE sub_category_id ='$cat_id' AND status = 'Active'";
+	  	$resu=$this->db->query($sql);
+	  	$res=$resu->result();
+	  	return $res;
+   }
+   
+     
    
    	function newproducts(){
 		$sql = "SELECT * FROM products WHERE status='Active' ORDER BY created_at LIMIT 10";

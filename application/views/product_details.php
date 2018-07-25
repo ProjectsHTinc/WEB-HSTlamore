@@ -68,8 +68,8 @@
                             <!-- Product Price Start -->
                             <div class="pro-price mb-20">
                                <ul class="pro-price-list">
-                                   <li class="price">$241.99</li>
-                                   <li class="tax">Ex Tax: $199.99</li>
+                                   <li class="price">₹241.99</li>
+                                   <li class="tax">Ex Tax: ₹199.99</li>
                                </ul>
                             </div>
                             <!-- Product Price End -->
@@ -77,18 +77,42 @@
                             <div class="product-price-desc">
                                 <ul class="pro-desc-list">
                                     <li>Product Code: <span>SAMI</span></li>
-                                    <li>Reward Points: <span>1000</span></li>
                                     <li>Availability: <span>in Stock</span></li>
                                 </ul>
                             </div>
                             <!-- Product Price Description End -->
                             <!-- Product Box Quantity Start -->
-                            <div class="box-quantity mtb-20">
+                            <div class="box-quantity mtb-10">
                                 <div class="quantity-item">
                                     <label>Qty: </label>
+                                    <input type="number" value="1" min="1" max="10" style="height: 45px;"  name="qty" id="qty" /><!--
                                     <div class="cart-plus-minus">
                                         <input class="cart-plus-minus-box" type="text" name="qtybutton" value="0">
-                                    </div>
+                                    </div>-->
+                                </div>
+                            </div>
+                            <!-- Product Box Quantity End -->
+                             <!-- Product Box Quantity Start -->
+                            <div class="box-quantity mtb-10">
+                                <div class="quantity-item">
+                                    <label>Size: </label>
+                                        <select>
+                                        <option>S</option>
+                                        <option>M</option>
+                                        <option>L</option>
+                                        </select>
+                                </div>
+                            </div>
+                            <!-- Product Box Quantity End -->
+                            <!-- Product Box Quantity Start -->
+                            <div class="box-quantity mtb-10">
+                                <div class="quantity-item">
+                                    <label>Colour: </label>
+                                       <select>
+                                        <option>Red</option>
+                                        <option>Green</option>
+                                        <option>Blue</option>
+                                        </select>
                                 </div>
                             </div>
                             <!-- Product Box Quantity End -->
@@ -96,7 +120,6 @@
                             <div class="product-button-actions">
                                <button class="add-to-cart">add to cart</button>
                                <a href="wish-list.html" data-toggle="tooltip" title="Add to Wishlist" class="same-btn mr-15"><i class="pe-7s-like"></i></a>
-                               <button data-toggle="tooltip" title="Compare this Product" class="same-btn"><i class="pe-7s-repeat"></i></button>
                             </div>
                             <!-- Product Button Actions End -->
                             <!-- Product Social Link Share Start -->
@@ -248,7 +271,7 @@
                             <!-- Product Content Start -->
                             <div class="pro-content text-center">
                                 <h4><a href="product-page.html">Decorative Vase</a></h4>
-                                <p class="price"><span>$241.99</span></p>
+                                <p class="price"><span>₹241.99</span></p>
                                 <div class="action-links2">
                                     <a data-toggle="tooltip" title="Add to Cart" href="cart.html">add to cart</a>
                                 </div>
@@ -272,7 +295,7 @@
                             <!-- Product Content Start -->
                             <div class="pro-content text-center">
                                 <h4><a href="product-page.html">Decorative Vase</a></h4>
-                                <p class="price"><span>$241.99</span></p>
+                                <p class="price"><span>₹241.99</span></p>
                                 <div class="action-links2">
                                     <a data-toggle="tooltip" title="Add to Cart" href="cart.html">add to cart</a>
                                 </div>
@@ -297,7 +320,7 @@
                             <!-- Product Content Start -->
                             <div class="pro-content text-center">
                                 <h4><a href="product-page.html">Decorative Vase</a></h4>
-                                <p class="price"><span>$241.99</span></p>
+                                <p class="price"><span>₹241.99</span></p>
                                 <div class="action-links2">
                                     <a data-toggle="tooltip" title="Add to Cart" href="cart.html">add to cart</a>
                                 </div>
@@ -322,7 +345,7 @@
                             <!-- Product Content Start -->
                             <div class="pro-content text-center">
                                 <h4><a href="product-page.html">Decorative Vase</a></h4>
-                                <p class="price"><span>$241.99</span></p>
+                                <p class="price"><span>₹241.99</span></p>
                                 <div class="action-links2">
                                     <a data-toggle="tooltip" title="Add to Cart" href="cart.html">add to cart</a>
                                 </div>
@@ -347,7 +370,7 @@
                             <!-- Product Content Start -->
                             <div class="pro-content text-center">
                                 <h4><a href="product-page.html">Decorative Vase</a></h4>
-                                <p class="price"><span>$241.99</span></p>
+                                <p class="price"><span>₹241.99</span></p>
                                 <div class="action-links2">
                                     <a data-toggle="tooltip" title="Add to Cart" href="cart.html">add to cart</a>
                                 </div>
@@ -372,7 +395,7 @@
                             <!-- Product Content Start -->
                             <div class="pro-content text-center">
                                 <h4><a href="product-page.html">Decorative Vase</a></h4>
-                                <p class="price"><span>$241.99</span></p>
+                                <p class="price"><span>₹241.99</span></p>
                                 <div class="action-links2">
                                     <a data-toggle="tooltip" title="Add to Cart" href="cart.html">add to cart</a>
                                 </div>

@@ -187,8 +187,8 @@ NOTE: main.js, All custom script and plugin activation script in this file.
     /*----------------------------
     10. Cart Box Quantity Selection
     -----------------------------*/
-	 $(".cart-plus-minus").append('<div class="dec qtybutton">-</div><div class="inc qtybutton">+</div>');
-	  $(".qtybutton").on("click", function() {
+	 $(".cart-plus-minus").append('<div class="dec qty">-</div><div class="inc qtybutton">+</div>');
+	  $(".qty").on("click", function() {
 		var $button = $(this);
 		var oldValue = $button.parent().find("input").val();
 		if ($button.text() == "+") {
@@ -310,8 +310,22 @@ NOTE: main.js, All custom script and plugin activation script in this file.
         $('#cbox_info').slideToggle();
     });
      $('#ship-box').on('click', function () {
-        $('#ship-box-info').slideToggle();
+       
+	   if($('input[name="ship-box"]').is(':checked'))
+		{
+			 $('#oldship-box-info').hide();
+			 $('#ship-box-info').show();
+		}else
+		{
+			 $('#oldship-box-info').show();
+			 $('#ship-box-info').hide();
+		}
+	   
+	   // $('#ship-box-info').slideToggle();
+		//$('#oldship-box-info').slideToggle();
+		
     });
+	
     
     /*----------------------------
     18. ScrollUp Activation

@@ -59,21 +59,40 @@
                                 <li><a href="<?php echo base_url(); ?>logout/">Logout</a></li>
                             </ul>
                         </div>
-                        <div class="col-lg-10 col-md-10">
-                            <!-- Tab panes -->
-                            <div class="tab-content dashboard-content mt-all-40">
-                                
-                                
-                                <div id="address" class="tab-pane fade in active">
-                                    <p>The following addresses will be used on the checkout page by default.</p>
-                                    <h4 class="billing-address">Billing address</h4>
-                                    <a class="view" href="#">edit</a>
-                                    <p>steven smith</p>
-                                    <p>Australia</p>   
-                                </div>
-                                
+                        <div class="col-lg-10 col-md-10" style="border:1px solid #F7F7F7;">
+                        <h4 class="billing-address">Billing address</h4>
+                        <form class="form-horizontal pb-100" name="registration"  id="registration" method="post" action="<?php echo base_url(); ?>home/cust_default_address/">
+								<?php
+								if (count($cust_address)>0) {
+									foreach($cust_address as $rowm){
+								?>
+                               <div class="col-lg-4 col-md-3 col-sm-4" style="padding:20px; min-height:100px; background:#F7F7F7;">
+                               <?php if ($rowm->address_mode == '1') {  ?>
+                               <p style="font-size:10px; color:#81C341;">
+                               <input type="radio" name="address_id" value="<?php echo $rowm->id; ?>" checked="checked" /> Default Address (<?php echo $rowm->address_type; ?>)</p>
+                              <?php } else { ?>
+                              <p style="font-size:10px; color:#81C341;">
+                              <input type="radio" name="address_id" value="<?php echo $rowm->id; ?>"  /> (<?php echo $rowm->address_type; ?>)</p>
+                              <?php } ?>
+                               <p><?php echo $rowm->full_name; ?></p>
+                               <p><?php echo $rowm->house_no; ?>, <?php echo $rowm->street; ?></p>
+                               <p><?php echo $rowm->city; ?>, <?php echo $rowm->state; ?></p>
+                               <p><?php echo $rowm->country_name; ?></p>
+                               <p>Mobile Number  : <?php echo $rowm->mobile_number ; ?>, <?php echo $rowm->alternative_mobile_number  ; ?></p><br />
+                               <p>Landmark : <?php echo $rowm->landmark; ?></p><br />
+                               <p><a href="<?php echo base_url(); ?>home/cust_address_delete/<?php echo $rowm->id; ?>/" style="color:#FAA320;" onclick="return confirm('Are you sure?')">Delete</a></p>
+                           </div>
+                           <?php
+									}
+								}
+							?>
+                              
+                           <div class="register-box mt-40 mb-20">
+								<button type="submit" class="return-customer-btn f-right">Save</button>
+							</div>
                             </div>
-                        </div>
+                            </form>
+
                     </div>
                 </div>
             </div>

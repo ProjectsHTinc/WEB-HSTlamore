@@ -64,7 +64,7 @@
                             <div class="tab-content dashboard-content mt-all-40">
                                 <div id="dashboard" class="tab-pane fade in active">
                                     <h3>Dashboard </h3>
-                                    <p>From your account dashboard. you can easily check & view your <a href="#">recent orders</a>, manage your <a href="#">shipping and billing addresses</a> and <a href="#">edit your password and account details.</a></p>
+                                    <p>From your account dashboard. you can easily check & view your <a href="<?php echo base_url(); ?>cust_orders/">recent orders</a>, manage your <a href="<?php echo base_url(); ?>cust_address/">shipping and billing addresses</a> and edit <a href="<?php echo base_url(); ?>cust_change_password/">your password</a> and <a href="<?php echo base_url(); ?>cust_details/">account details.</a></p>
                                 </div>
                             </div>
                         </div>
