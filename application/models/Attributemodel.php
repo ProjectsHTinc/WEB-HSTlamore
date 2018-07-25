@@ -50,6 +50,19 @@ Class Attributemodel extends CI_Model
       return $res->result();
    }
 
+   function get_all_active_size_attr(){
+     $select="SELECT atm.attribute_type_name,am.* FROM attribute_masters AS am LEFT JOIN attribute_type_master AS atm ON atm.id=am.attribute_type WHERE am.status='Active' AND am.attribute_type='1'";
+     $res=$this->db->query($select);
+      return $res->result();
+   }
+
+   function get_all_active_color_attr(){
+     $select="SELECT atm.attribute_type_name,am.* FROM attribute_masters AS am LEFT JOIN attribute_type_master AS atm ON atm.id=am.attribute_type WHERE am.status='Active' AND am.attribute_type='2'";
+     $res=$this->db->query($select);
+      return $res->result();
+   }
+
+
    function get_attribute_edit($att_id){
        $id=base64_decode($att_id)/9876;
        $select="SELECT * FROM attribute_masters WHERE id='$id'";

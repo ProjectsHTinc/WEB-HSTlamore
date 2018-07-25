@@ -165,7 +165,7 @@
 	</div>
 </div>
 <script>
-('#master').addClass("active");
+
  $('#cat_status').val('<?php echo $rows->status; ?>');
 $('#adminform').validate({ // initialize the plugin
     rules: {

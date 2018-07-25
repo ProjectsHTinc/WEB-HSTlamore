@@ -75,6 +75,7 @@ Class Categorymodel extends CI_Model
       return $res->result();
    }
 
+
    function get_all_parent_category(){
      $select="SELECT * FROM category_masters WHERE  parent_id='1'";
      $res=$this->db->query($select);
@@ -121,6 +122,27 @@ Class Categorymodel extends CI_Model
    }
  }
 
+
+ function get_all_active_category(){
+   $select="SELECT * FROM category_masters WHERE id!='1' AND status='Active'";
+   $res=$this->db->query($select);
+    return $res->result();
+ }
+
+  function get_sub_cat_id($cat_id){
+    $select="SELECT id,category_name FROM category_masters WHERE parent_id='$cat_id' AND status='Active'";
+    $res=$this->db->query($select);
+    if($res){
+          $sub_cat_data=$res->result();
+         $data = array("status" => "success",'sub_cat_id'=>$sub_cat_data);
+         return $data;
+     }else{
+         $data = array("status" => "failed");
+         return $data;
+     }
+
+
+  }
 
 
 

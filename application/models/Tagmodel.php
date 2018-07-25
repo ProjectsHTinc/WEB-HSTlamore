@@ -52,14 +52,14 @@ Class Tagmodel extends CI_Model
     }
    }
 
-
-
-
-
-
-
    function get_all_tag(){
      $select="SELECT * FROM tag_masters";
+     $res=$this->db->query($select);
+      return $res->result();
+   }
+
+   function get_all_active_tags(){
+     $select="SELECT * FROM tag_masters WHERE status='Active'";
      $res=$this->db->query($select);
       return $res->result();
    }

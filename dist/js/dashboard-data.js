@@ -1,6 +1,6 @@
 /*Dashboard Init*/
- 
-"use strict"; 
+
+"use strict";
 
 /*****Ready function start*****/
 $(document).ready(function(){
@@ -31,14 +31,14 @@ $(document).ready(function(){
 				pointBackgroundColor: "rgba(252,176,59,0.4)",
 				data: [28, 48, 40, 19, 86, 27, 90],
 			}
-			
+
 		]
 		};
-		
+
 		var areaChart = new Chart(ctx1, {
 			type:"line",
 			data:data1,
-			
+
 			options: {
 				tooltips: {
 					mode:"label"
@@ -48,7 +48,7 @@ $(document).ready(function(){
 						hitRadius:90
 					}
 				},
-				
+
 				scales: {
 					yAxes: [{
 						stacked: true,
@@ -84,7 +84,7 @@ $(document).ready(function(){
 					cornerRadius:0,
 					footerFontFamily:"'Varela Round'"
 				}
-				
+
 			}
 		});
 	}
@@ -111,7 +111,7 @@ $(document).ready(function(){
 				]
 			}]
 		};
-		
+
 		var pieChart  = new Chart(ctx6,{
 			type: 'pie',
 			data: data6,
@@ -140,22 +140,10 @@ $(document).ready(function(){
 /*****Ready function end*****/
 
 /*****Load function start*****/
-$(window).load(function(){
-	window.setTimeout(function(){
-		$.toast({
-			heading: 'Welcome to kenny',
-			text: 'Use the predefined ones, or specify a custom position object.',
-			position: 'top-right',
-			loaderBg:'#ea65a2',
-			icon: 'success',
-			hideAfter: 3000, 
-			stack: 6
-		});
-	}, 3000);
-});
+
 /*****Load function* end*****/
 
-var sparklineLogin = function() { 
+var sparklineLogin = function() {
 	if( $('#sparkline_1').length > 0 ){
 		$("#sparkline_1").sparkline([2,4,4,6,8,5,6,4,8,6,6,2 ], {
 			type: 'line',
@@ -167,7 +155,7 @@ var sparklineLogin = function() {
 			highlightLineColor: 'rgba(0, 0, 0, 0.2)',
 			highlightSpotColor: '#566FC9'
 		});
-	}	
+	}
 	if( $('#sparkline_2').length > 0 ){
 		$("#sparkline_2").sparkline([0,2,8,6,8], {
 			type: 'bar',
@@ -179,7 +167,7 @@ var sparklineLogin = function() {
 			barColor: '#3cb878',
 			highlightSpotColor: '#3cb878'
 		});
-	}	
+	}
 	if( $('#sparkline_6').length > 0 ){
 		$("#sparkline_6").sparkline([0, 23, 43, 35, 44, 45, 56, 37, 40, 45, 56, 7, 10], {
 			type: 'line',

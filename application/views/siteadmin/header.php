@@ -149,51 +149,22 @@
                             <a href="<?php echo base_url(); ?>admin/tags">Tags</a>
                         </li>
                         <li>
-                            <a href="">Zip code Masters</a>
+                            <a href="<?php echo base_url(); ?>admin/zipcode">Zip code Masters</a>
                         </li>
 
                     </ul>
                 </li>
                 <li>
-                    <a href="javascript:void(0);" data-toggle="collapse" data-target="#app_dr"><i class="icon-grid mr-10"></i>Apps <span class="pull-right"><span class="label label-info mr-10">9</span><i class="fa fa-fw fa-angle-down"></i></span></a>
+                    <a id="products" href="javascript:void(0);" data-toggle="collapse" data-target="#app_dr"><i class="icon-grid mr-10"></i>Products <span class="pull-right"><i class="fa fa-fw fa-angle-down"></i></span></a>
                     <ul id="app_dr" class="collapse collapse-level-1">
                         <li>
-                            <a href="chats.html">chats</a>
+                            <a href="<?php echo base_url(); ?>admin/products">Create Products</a>
                         </li>
                         <li>
-                            <a href="calendar.html">calendar</a>
+                            <a href="<?php echo base_url(); ?>admin/view_products">View Products</a>
                         </li>
-                        <li>
-                            <a href="weather.html">weather</a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0);" data-toggle="collapse" data-target="#email_dr">Email<span class="pull-right"><i class="fa fa-fw fa-angle-down"></i></span></a>
-                            <ul id="email_dr" class="collapse">
-                                <li>
-                                    <a href="inbox.html">inbox</a>
-                                </li>
-                                <li>
-                                    <a href="inbox-detail.html">detail email</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0);" data-toggle="collapse" data-target="#contact_dr">Contacts<span class="pull-right"><i class="fa fa-fw fa-angle-down"></i></span></a>
-                            <ul id="contact_dr" class="collapse">
-                                <li>
-                                    <a href="contact-list.html">list</a>
-                                </li>
-                                <li>
-                                    <a href="contact-card.html">cards</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="file-manager.html">File Manager</a>
-                        </li>
-                        <li>
-                            <a href="todo-tasklist.html">To Do/Tasklist</a>
-                        </li>
+
+
                     </ul>
                 </li>
                 <li>
@@ -305,67 +276,7 @@
                         </li>
                     </ul>
                 </li>
-                <li>
-                    <a href="javascript:void(0);" data-toggle="collapse" data-target="#chart_dr"><i class="icon-graph mr-10"></i>Charts <span class="pull-right"><span class="label label-primary mr-10">7</span><i class="fa fa-fw fa-angle-down"></i></span></a>
-                    <ul id="chart_dr" class="collapse collapse-level-1">
-                        <li>
-                            <a href="flot-chart.html">Flot Chart</a>
-                        </li>
-                        <li>
-                            <a href="morris-chart.html">Morris Chart</a>
-                        </li>
-                        <li>
-                            <a href="chart.js.html">chartjs</a>
-                        </li>
-                        <li>
-                            <a href="chartist.html">chartist</a>
-                        </li>
-                        <li>
-                            <a href="easy-pie-chart.html">Easy Pie Chart</a>
-                        </li>
-                        <li>
-                            <a href="sparkline.html">Sparkline</a>
-                        </li>
-                        <li>
-                            <a href="peity-chart.html">Peity Chart</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="javascript:void(0);" data-toggle="collapse" data-target="#table_dr"><i class="icon-list mr-10"></i>Tables<span class="pull-right"><i class="fa fa-fw fa-angle-down"></i></span></a>
-                    <ul id="table_dr" class="collapse collapse-level-1">
-                        <li>
-                            <a href="basic-table.html">Basic Table</a>
-                        </li>
-                        <li>
-                            <a href="bootstrap-table.html">Bootstrap Table</a>
-                        </li>
-                        <li>
-                            <a href="data-table.html">Data Table</a>
-                        </li>
-                        <li>
-                            <a href="export-table.html"><span class="pull-right"><span class="label label-warning">New</span></span>Export Table</a>
-                        </li>
-                        <li>
-                            <a href="responsive-data-table.html"><span class="pull-right"><span class="label label-warning">New</span></span>RSPV DataTable</a>
-                        </li>
-                        <li>
-                            <a href="responsive-table.html">Responsive Table</a>
-                        </li>
-                        <li>
-                            <a href="editable-table.html">Editable Table</a>
-                        </li>
-                        <li>
-                            <a href="foo-table.html">Foo Table</a>
-                        </li>
-                        <li>
-                            <a href="jsgrid-table.html">Jsgrid Table</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="widgets.html"><i class="icon-drawar mr-10"></i>widgets</a>
-                </li>
+
                 <li>
                     <a href="javascript:void(0);" data-toggle="collapse" data-target="#icon_dr"><i class="icon-options mr-10"></i>Icons<span class="pull-right"><i class="fa fa-fw fa-angle-down"></i></span></a>
                     <ul id="icon_dr" class="collapse collapse-level-1">
@@ -389,93 +300,6 @@
                         </li>
                     </ul>
                 </li>
-                <li>
-                    <a href="javascript:void(0);" data-toggle="collapse" data-target="#pages_dr"><i class="icon-layers mr-10"></i>Special Pages<span class="pull-right"><span class="label label-danger mr-10">12</span><i class="fa fa-fw fa-angle-down"></i></span></a>
-                    <ul id="pages_dr" class="collapse collapse-level-1">
-                        <li>
-                            <a href="blank.html">Blank Page</a>
-                        </li>
-                        <li>
-                            <a href="login.html">Login Page</a>
-                        </li>
-                        <li>
-                            <a href="signup.html">Register</a>
-                        </li>
-                        <li>
-                            <a href="forgot-password.html">Recover Password</a>
-                        </li>
-                        <li>
-                            <a href="reset-password.html">reset Password</a>
-                        </li>
-                        <li>
-                            <a href="locked.html">Lock Screen</a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0);" data-toggle="collapse" data-target="#invoice_dr">Invoice<span class="pull-right"><i class="fa fa-fw fa-angle-down"></i></span></a>
-                            <ul id="invoice_dr" class="collapse">
-                                <li>
-                                    <a href="invoice.html">Invoice</a>
-                                </li>
-                                <li>
-                                    <a href="invoice-archive.html">Invoice Archive</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="404.html">Error 404</a>
-                        </li>
-                        <li>
-                            <a href="500.html">Error 500</a>
-                        </li>
-                        <li>
-                            <a href="gallery.html">Gallery</a>
-                        </li>
-                        <li>
-                            <a href="timeline.html">Timeline</a>
-                        </li>
-                        <li>
-                            <a href="faq.html">FAQ</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="javascript:void(0);" data-toggle="collapse" data-target="#maps_dr"><i class="icon-map mr-10"></i>maps<span class="pull-right"><i class="fa fa-fw fa-angle-down"></i></span></a>
-                    <ul id="maps_dr" class="collapse collapse-level-1">
-                        <li>
-                            <a href="vector-map.html">Vector Map</a>
-                        </li>
-                        <li>
-                            <a href="google-map.html">Google Map</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="documentation.html"><i class="icon-doc mr-10"></i>documentation</a>
-                </li>
-                <li>
-                    <a href="javascript:void(0);" data-toggle="collapse" data-target="#dropdown_dr_lv1"><i class="icon-arrow-down-circle mr-10"></i>Dropdown leavel 1<span class="pull-right"><i class="fa fa-fw fa-angle-down"></i></span></a>
-                    <ul id="dropdown_dr_lv1" class="collapse collapse-level-1">
-                        <li>
-                            <a href="#">Dropdown Item</a>
-                        </li>
-                        <li>
-                            <a href="#">Dropdown Item</a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0);" data-toggle="collapse" data-target="#dropdown_dr_lv2">Dropdown leavel 2<span class="pull-right"><i class="fa fa-fw fa-angle-down"></i></span></a>
-                            <ul id="dropdown_dr_lv2" class="collapse collapse-level-2">
-                                <li>
-                                    <a href="#">Dropdown Item</a>
-                                </li>
-                                <li>
-                                    <a href="#">Dropdown Item</a>
-                                </li>
-                                <li>
-                                    <a href="#">Dropdown Item</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
+
             </ul>
         </div>

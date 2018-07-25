@@ -96,5 +96,5 @@
   </div>
 </div>
 <script>
-('#master').addClass("active");
+
 </script>

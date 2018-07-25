@@ -146,7 +146,7 @@
 
 <script>
 $('#att_type').attr("style", "pointer-events: none;");
-('#master').addClass("active");
+
 $('#adminform').validate({
 	  ignore: ":hidden",
     rules: {

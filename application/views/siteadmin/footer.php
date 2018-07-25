@@ -43,7 +43,7 @@ hr{
     <script src="<?php echo base_url(); ?>assets/bower_components/raphael/raphael.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/bower_components/morris.js/morris.min.js"></script>
     <script src="<?php echo base_url(); ?>dist/js/morris-data.js"></script>
-	  <!-- <script src="<?php echo base_url(); ?>assets/bower_components/jquery-toast-plugin/dist/jquery.toast.min.js"></script> -->
+	  <script src="<?php echo base_url(); ?>assets/bower_components/jquery-toast-plugin/dist/jquery.toast.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/dist/js/init.js"></script>
     <script src="<?php echo base_url(); ?>assets/dist/js/dashboard-data.js"></script>
     <script src="<?php echo base_url(); ?>assets/dist/js/sweetalert2.min.js"></script>

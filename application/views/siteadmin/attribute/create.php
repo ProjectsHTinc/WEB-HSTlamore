@@ -198,7 +198,7 @@
 </div>
 
 <script>
-('#master').addClass("active");
+
 $("#size_div").hide();
 	$("#color_div").hide();
 $('#att_type').on('change', function() {

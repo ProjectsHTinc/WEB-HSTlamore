@@ -197,7 +197,7 @@
 	</div>
 </div>
 <script>
-('#master').addClass("active");
+
 $('#adminform').validate({ // initialize the plugin
     rules: {
         cat_name: {required: true,

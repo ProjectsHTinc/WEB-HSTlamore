@@ -3,27 +3,18 @@
 
 $(document).ready(function() {
 	"use strict";
-	
-	$.toast({
-		heading: 'Welcome to kenny',
-		text: 'Use the predefined ones, or specify a custom position object.',
-		position: 'top-right',
-		loaderBg:'#3cb878',
-		icon: 'error',
-		hideAfter: 3000, 
-		stack: 6
-	});
-	
+
+
 	$('.tst1').on('click',function(e){
-	    $.toast().reset('all'); 
+	    $.toast().reset('all');
 		$("body").removeAttr('class');
 		$.toast({
-            heading: 'Welcome to kenny',
+            heading: 'Welcome to dfgfd',
             text: 'Use the predefined ones, or specify a custom position object.',
             position: 'top-right',
             loaderBg:'#3cb878',
             icon: 'info',
-            hideAfter: 3000, 
+            hideAfter: 3000,
             stack: 6
         });
 		return false;
@@ -33,37 +24,37 @@ $(document).ready(function() {
         $.toast().reset('all');
 		$("body").removeAttr('class');
 		$.toast({
-            heading: 'Welcome to kenny',
+            heading: 'Welcome to ',
             text: 'Use the predefined ones, or specify a custom position object.',
             position: 'top-right',
             loaderBg:'#3cb878',
             icon: 'warning',
-            hideAfter: 3500, 
+            hideAfter: 3500,
             stack: 6
         });
 		return false;
 	});
-	
+
 	$('.tst3').on('click',function(e){
         $.toast().reset('all');
 		$("body").removeAttr('class');
 		$.toast({
-            heading: 'Welcome to kenny',
+            heading: 'Welcome to 12',
             text: 'Use the predefined ones, or specify a custom position object.',
             position: 'top-right',
             loaderBg:'#3cb878',
             icon: 'success',
-            hideAfter: 3500, 
+            hideAfter: 3500,
             stack: 6
           });
-		return false;  
+		return false;
 	});
 
 	$('.tst4').on('click',function(e){
 		$.toast().reset('all');
 		$("body").removeAttr('class');
 		$.toast({
-            heading: 'Welcome to kenny',
+            heading: 'Welcome to 34',
             text: 'Use the predefined ones, or specify a custom position object.',
             position: 'top-right',
             loaderBg:'#3cb878',
@@ -72,9 +63,9 @@ $(document).ready(function() {
         });
 		return false;
     });
-	
+
 	$('.tst5').on('click',function(e){
-	    $.toast().reset('all');   
+	    $.toast().reset('all');
 		$("body").removeAttr('class');
 		$.toast({
             heading: 'top left',
@@ -86,7 +77,7 @@ $(document).ready(function() {
         });
 		return false;
     });
-	
+
 	$('.tst6').on('click',function(e){
 		$.toast().reset('all');
 		$("body").removeAttr('class');
@@ -100,7 +91,7 @@ $(document).ready(function() {
         });
 		return false;
     });
-	
+
 	$('.tst7').on('click',function(e){
 		$.toast().reset('all');
 		$("body").removeAttr('class');
@@ -114,9 +105,9 @@ $(document).ready(function() {
         });
 		return false;
     });
-	
+
 	$('.tst8').on('click',function(e){
-	    $.toast().reset('all');   
+	    $.toast().reset('all');
 		$("body").removeAttr('class');
 		$.toast({
             heading: 'bottom right',
@@ -128,9 +119,9 @@ $(document).ready(function() {
         });
 		return false;
 	});
-	
+
 	$('.tst9').on('click',function(e){
-	    $.toast().reset('all');   
+	    $.toast().reset('all');
 		$("body").removeAttr('class').removeClass("bottom-center-fullwidth").addClass("top-center-fullwidth");
 		$.toast({
             heading: 'top center',
@@ -142,7 +133,7 @@ $(document).ready(function() {
         });
 		return false;
 	});
-	
+
 	$('.tst10').on('click',function(e){
 	    $.toast().reset('all');
 		$("body").removeAttr('class').addClass("bottom-center-fullwidth");
@@ -157,4 +148,3 @@ $(document).ready(function() {
 		return false;
 	});
 });
-          

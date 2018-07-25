@@ -98,7 +98,7 @@
 </div>
 
 <script>
-('#master').addClass("active");
+
 
 $('#adminform').validate({
 	  ignore: ":hidden",

@@ -64,7 +64,11 @@ Class Specificationmodel extends CI_Model
      $res=$this->db->query($select);
       return $res->result();
    }
-
+   function get_all_active_specs(){
+     $select="SELECT * FROM specification_masters WHERE status='Active'";
+     $res=$this->db->query($select);
+      return $res->result();
+   }
 
 
    function get_specification_edit($spec_id){
