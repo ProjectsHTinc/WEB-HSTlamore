@@ -59,6 +59,7 @@
                 <div class="form-group">
                   <label class="control-label mb-10">Category</label>
                   <select class="form-control" data-placeholder="Choose a Category" tabindex="1" name="cat_id" id="cat_id" onchange="getsubcat()">
+											<option value="">--select--</option>
 										<?php foreach($res_cat as $rows_cat){ ?>
 											<option value="<?php echo $rows_cat->id; ?>"><?php echo $rows_cat->category_name; ?></option>
 										<?php } ?>
@@ -194,7 +195,7 @@
 								<div class="form-group">
 									<label class="control-label"></label>
 									<div class="">
-												<input type="radio" name="prod_default" id="prod_default_1" value="1" checked>
+												<input type="radio" name="prod_default[]" id="prod_default_1" value="1" checked>
 												<label for="radio1">Set as Default</label>
 									</div>
 								</div>
@@ -370,7 +371,7 @@ $("#append").click( function(e) {
 
           e.preventDefault();
 
-        $(".inc").append('<div class="row com_div" id="com_div"><a href="#" class="remove_this"><i class="fa fa-minus-circle"></i></a><div  class="form-group"><div class="col-md-2"><div class="form-group"><label class="control-label mb-10">Select Size</label><select class="form-control" data-placeholder="Choose a Category" tabindex="1" name="mas_size[]" id="mas_size"><?php foreach($res_size as $row_size){ ?><option value="<?php echo $row_size->id;?>"><?php echo $row_size->attribute_value; ?></option><?php } ?></select></div></div><div class="col-md-2"><div class="form-group"><label class="control-label mb-10">Select Color</label><select class="form-control" data-placeholder="Choose a Color" tabindex="1" name="mas_color[]" id="mas_color"><?php foreach($res_color as $row_color ){ ?><option value="<?php echo  $row_color->id; ?>"><?php echo  $row_color->attribute_name; ?></option><?php } ?></select></div></div><div class="col-md-2"><div class="form-group"><label class="control-label mb-10">M.R.P Price</label><input type="text" id="prod_comb_mrp_price_' + numberIncr + '" name="prod_comb_mrp_price[]" class="form-control" placeholder=""></div></div><div class="col-md-2"><div class="form-group"><label class="control-label mb-10">Actual Price</label><input type="text" id="prod_comb_actual_price_' + numberIncr + '" name="prod_comb_actual_price[]" class="form-control" placeholder=""></div></div><div class="col-md-2"><div class="form-group"><label  class="control-labelmb-10">Total Stocks</label><input type="text" id="prod_comb_total_stocks_' + numberIncr + '" name="prod_comb_total_stocks[]" class="form-control prod_comb_total_stocks" placeholder="" required="required"></div></div><div class="col-md-2"><div class="form-group"><label class="control-label"></label><div class=""><input type="radio" name="prod_default" id="prod_default" value="1" required><label for="radio1">Set as Default</label> </div></div></div></div></div>');
+        $(".inc").append('<div class="row com_div" id="com_div"><a href="#" class="remove_this"><i class="fa fa-minus-circle"></i></a><div  class="form-group"><div class="col-md-2"><div class="form-group"><label class="control-label mb-10">Select Size</label><select class="form-control" data-placeholder="Choose a Category" tabindex="1" name="mas_size[]" id="mas_size"><?php foreach($res_size as $row_size){ ?><option value="<?php echo $row_size->id;?>"><?php echo $row_size->attribute_value; ?></option><?php } ?></select></div></div><div class="col-md-2"><div class="form-group"><label class="control-label mb-10">Select Color</label><select class="form-control" data-placeholder="Choose a Color" tabindex="1" name="mas_color[]" id="mas_color"><?php foreach($res_color as $row_color ){ ?><option value="<?php echo  $row_color->id; ?>"><?php echo  $row_color->attribute_name; ?></option><?php } ?></select></div></div><div class="col-md-2"><div class="form-group"><label class="control-label mb-10">M.R.P Price</label><input type="text" id="prod_comb_mrp_price_' + numberIncr + '" name="prod_comb_mrp_price[]" class="form-control" placeholder=""></div></div><div class="col-md-2"><div class="form-group"><label class="control-label mb-10">Actual Price</label><input type="text" id="prod_comb_actual_price_' + numberIncr + '" name="prod_comb_actual_price[]" class="form-control" placeholder=""></div></div><div class="col-md-2"><div class="form-group"><label  class="control-labelmb-10">Total Stocks</label><input type="text" id="prod_comb_total_stocks_' + numberIncr + '" name="prod_comb_total_stocks[]" class="form-control prod_comb_total_stocks" placeholder="" required="required"></div></div><div class="col-md-2"><div class="form-group"><label class="control-label"></label><div class=""><input type="radio" name="prod_default[]" id="prod_default" value="1" required><label for="radio1">Set as Default</label> </div></div></div></div></div>');
 
 
 				// $('#prod_comb_mrp_price').rules('add',  { required: true });

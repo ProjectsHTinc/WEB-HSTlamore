@@ -226,6 +226,98 @@
 					</div>
 
 
+					<div class="row" id="cover">
+								<div class="col-md-6">
+									<div class="panel panel-default card-view">
+										<div class="panel-heading">
+											<div class="pull-left">
+												<h6 class="panel-title txt-dark">Product Cover image</h6>
+											</div>
+											<div class="clearfix"></div>
+										</div>
+										<div class="panel-wrapper collapse in">
+											<div class="panel-body">
+												<div class="row">
+													<div class="col-sm-12 col-xs-12">
+														<div class="form-wrap">
+															<form class="form-horizontal" method="post" name="product_cover_img_form" id="product_cover_img_form" enctype="multipart/form-data" action="<?php echo base_url(); ?>productmaster/upload_cover_img">
+																<div class="form-group">
+																	<div class="text-center">
+																		<div class="input-group">
+																		<img src="<?php echo base_url(); ?>assets/products/<?php echo $rows_prod->product_cover_img; ?>" style="width:100px;">
+																			<input type="hidden" class="form-control" id="product_token"  name="product_token" value="<?php echo base64_encode($rows_prod->id*9876); ?>">
+																		</div>
+																	</div>
+																</div>
+																<div class="form-group">
+																	<div class="col-sm-9">
+																		<div class="input-group">
+																			<input type="file" class="form-control" id="product_cover_img"  name="product_cover_img">
+																		</div>
+																	</div>
+																</div>
+																<div class="form-group mb-0">
+																	<div class="col-sm-offset-3 col-sm-9">
+																		<button type="submit" class="btn btn-info ">Update Cover images</button>
+																	</div>
+																</div>
+															</form>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-md-6" id="">
+									<div class="panel panel-default card-view">
+										<div class="panel-heading">
+											<div class="pull-left">
+												<h6 class="panel-title txt-dark">Product size chart</h6>
+											</div>
+											<div class="clearfix"></div>
+										</div>
+										<div class="panel-wrapper collapse in">
+											<div class="panel-body">
+												<div class="row">
+													<div class="col-sm-12 col-xs-12">
+														<div class="form-wrap">
+															<form class="form-horizontal" method="post" name="prod_size_chart_form" id="prod_size_chart_form" action="<?php echo base_url(); ?>productmaster/upload_size_chart" enctype="multipart/form-data">
+																<div class="form-group">
+																	<div class="text-center">
+																		<div class="input-group">
+																			<?php if(empty($rows_prod->prod_size_chart)){
+																				echo "No Image Found";
+																			}else{ ?>
+																				<img src="<?php echo base_url(); ?>assets/products/charts/<?php echo $rows_prod->prod_size_chart; ?>" style="width:100px;">
+																		<?php 	} ?>
+																			<input type="hidden" class="form-control" id="product_token"  name="product_token" value="<?php echo base64_encode($rows_prod->id*9876); ?>">
+																		</div>
+																	</div>
+																</div>
+																<div class="form-group">
+																	<div class="col-sm-9">
+																		<div class="input-group">
+																			<input type="file" class="form-control" id="product_size_chart"  name="product_size_chart">
+																		</div>
+																	</div>
+																</div>
+																<div class="form-group mb-0">
+																	<div class="col-sm-offset-3 col-sm-9">
+																		<button type="submit" class="btn btn-info ">Update Size Chart</button>
+																	</div>
+																</div>
+															</form>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
 					<!-- Row -->
 			<div class="row">
 				<div class="col-sm-12">
@@ -537,4 +629,23 @@ function getsubcat(){
 					    }
 					    });
 }
+
+		$("#product_cover_img_form").validate({
+			  ignore: ":hidden",
+				rules: {
+				  	product_cover_img: {required: true,accept: "jpg,jpeg,png"  }
+					},
+			 	messages: {
+			    	product_cover_img: { required:"Select images",accept:"Please upload .jpg or .png ." }
+			      }
+      });
+			$("#prod_size_chart_form").validate({
+					ignore: ":hidden",
+					rules: {
+							product_size_chart: {required: true,accept: "jpg,jpeg,png"  }
+						},
+					messages: {
+							product_size_chart: { required:"Select images",accept:"Please upload .jpg or .png ." }
+							}
+				});
   </script>

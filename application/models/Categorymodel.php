@@ -124,7 +124,7 @@ Class Categorymodel extends CI_Model
 
 
  function get_all_active_category(){
-   $select="SELECT * FROM category_masters WHERE id!='1' AND status='Active'";
+   $select="SELECT * FROM category_masters WHERE parent_id='1' AND status='Active'";
    $res=$this->db->query($select);
     return $res->result();
  }

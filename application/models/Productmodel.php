@@ -51,7 +51,7 @@ Class Productmodel extends CI_Model
           $check ="SELECT * FROM product_combined WHERE mas_color_id='$mas_color_id' AND mas_size_id='$mas_size_id' AND product_id='$last_prod_id'";
           $result=$this->db->query($check);
           if($result->num_rows()==0){
-            $reg_query="INSERT INTO product_combined (product_id,mas_size_id,mas_color_id,prod_mrp_price,prod_actual_price,prod_default,total_stocks,stocks_left,status,created_at,created_by) VALUES('$last_prod_id','$mas_size_id','$mas_color_id','$prod_comb_mrp_price_id','$prod_comb_actual_price_id','$prod_default_id','$prod_comb_total_stocks_id','$prod_comb_total_stocks_id','Active',NOW(),'$user_id')";
+            $reg_query="INSERT INTO product_combined (product_id,mas_size_id,mas_color_id,prod_mrp_price,prod_actual_price,prod_default,total_stocks,stocks_left,status,created_at,created_by) VALUES('$last_prod_id','$mas_size_id','$mas_color_id','$prod_comb_mrp_price_id','$prod_comb_actual_price_id','$prod_default[$i]','$prod_comb_total_stocks_id','$prod_comb_total_stocks_id','Active',NOW(),'$user_id')";
            $req_q=$this->db->query($reg_query);
          }else{
          }
@@ -363,6 +363,34 @@ Class Productmodel extends CI_Model
       }
     }
    }
+
+
+    function upload_size_chart($product_token,$prod_size_chart,$user_id){
+       $id=base64_decode($product_token)/9876;
+      $update_specs="UPDATE products SET prod_size_chart='$prod_size_chart',updated_at=NOW(),updated_by='$user_id' WHERE id='$id'";
+      $result_stocks=$this->db->query($update_specs);
+      if($result_stocks){
+        $data = array("status" => "success");
+        return $data;
+      }else{
+        $data = array("status" => "failed");
+        return $data;
+      }
+    }
+
+
+    function upload_cover_img($product_token,$product_cover_img,$user_id){
+      $id=base64_decode($product_token)/9876;
+     $update_specs="UPDATE products SET product_cover_img='$product_cover_img',updated_at=NOW(),updated_by='$user_id' WHERE id='$id'";
+     $result_stocks=$this->db->query($update_specs);
+     if($result_stocks){
+       $data = array("status" => "success");
+       return $data;
+     }else{
+       $data = array("status" => "failed");
+       return $data;
+     }
+    }
 
 
 

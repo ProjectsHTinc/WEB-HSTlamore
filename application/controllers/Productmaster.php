@@ -103,7 +103,7 @@ class Productmaster extends CI_Controller {
 	//	print_r($data['res']);
 			if($data['res']['status']=='success'){
 				 $product_id=$data['res']['prod_last_id'];
-			
+
 				$prd_redirec_id=base64_encode($product_id*9876);
 				redirect('/admin/products/'.$prd_redirec_id.'');
 			}else if($data['res']['status']=='already'){
@@ -193,6 +193,62 @@ class Productmaster extends CI_Controller {
 			$this->load->view('siteadmin/login');
 		}
 	}
+
+
+		public function upload_size_chart(){
+			$data=$this->session->userdata();
+			$user_id=$this->session->userdata('id');
+			$user_role=$this->session->userdata('role_type_id');
+					if($user_role=='1' || $user_role=='2'){
+							$product_token=$this->db->escape_str($this->input->post('product_token'));
+							$product_size_chart = $_FILES['product_size_chart']['name'];
+							if(empty($product_size_chart)){
+								$prod_size_chart='';
+							}else{
+								$temp = pathinfo($product_size_chart, PATHINFO_EXTENSION);
+								$prod_size_chart = 'CH_'.round(microtime(true)) . '.' . $temp;
+								$uploaddir = 'assets/products/charts/';
+								$trade_file = $uploaddir.$prod_size_chart;
+								move_uploaded_file($_FILES['product_size_chart']['tmp_name'], $trade_file);
+							}
+							$data['res']=$this->productmodel->upload_size_chart($product_token,$prod_size_chart,$user_id);
+							if($data['res']['status']=='success'){
+								redirect('/admin/products/'.$product_token.'#cover');
+							}else{
+							redirect('/admin/products');
+							}
+					}else{
+							$this->load->view('siteadmin/login');
+					}
+		}
+
+
+		public function upload_cover_img(){
+			$data=$this->session->userdata();
+			$user_id=$this->session->userdata('id');
+			$user_role=$this->session->userdata('role_type_id');
+					if($user_role=='1' || $user_role=='2'){
+							$product_token=$this->db->escape_str($this->input->post('product_token'));
+							$product_size_chart = $_FILES['product_cover_img']['name'];
+							if(empty($product_size_chart)){
+								$product_cover_img='';
+							}else{
+								$temp = pathinfo($product_size_chart, PATHINFO_EXTENSION);
+								$product_cover_img = 'CH_'.round(microtime(true)) . '.' . $temp;
+								$uploaddir = 'assets/products/';
+								$trade_file = $uploaddir.$product_cover_img;
+								move_uploaded_file($_FILES['product_cover_img']['tmp_name'], $trade_file);
+							}
+							$data['res']=$this->productmodel->upload_cover_img($product_token,$product_cover_img,$user_id);
+							if($data['res']['status']=='success'){
+								redirect('/admin/products/'.$product_token.'#cover');
+							}else{
+							redirect('/admin/products');
+							}
+					}else{
+							$this->load->view('siteadmin/login');
+					}
+		}
 
 	public function edit_combined_products()
 	{
