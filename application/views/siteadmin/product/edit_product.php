@@ -210,6 +210,37 @@
 																</div>
 																<!--/span-->
 															</div>
+
+															<div class="seprator-block"></div>
+
+															<h6 class="txt-dark capitalize-font"><i class="icon-notebook mr-10"></i>Meta Tags </h6>
+															<hr>
+															<div class="row">
+																<div class="col-md-6">
+																	<div class="form-group">
+																		<label class="control-label mb-10">Product meta title</label>
+																		<input type="text" id="prod_meta_title" name="prod_meta_title" class="form-control" placeholder=""  value="<?php echo $rows_prod->product_meta_title; ?>">
+																	</div>
+																</div>
+																<!--/span-->
+																<div class="col-md-6">
+																	<div class="form-group">
+																		<label class="control-label mb-10">Product meta keywords</label>
+																	<input type="text" id="prod_meta_keywords" name="prod_meta_keywords" class="form-control" placeholder="" value="<?php echo $rows_prod->product_meta_keywords; ?>">
+																	</div>
+																</div>
+																<!--/span-->
+															</div>
+															<div class="row">
+																<div class="col-md-12">
+																	<div class="form-group">
+																		<label class="control-label mb-10">Product meta description</label>
+																	 <textarea class="form-control" name="product_meta_desc" id="product_meta_desc"><?php echo $rows_prod->product_meta_desc; ?></textarea>
+																	</div>
+																</div>
+
+															</div>
+
 														</div>
 														<div class="form-actions mt-10">
 															<button type="submit" class="btn btn-success  mr-10"> Update</button>
@@ -348,6 +379,7 @@
 													<th>Color</th>
 													<th>Price</th>
 													<th>Total Stocks / Left</th>
+														<th>default</th>
 													<th>status</th>
 													<th>Action</th>
 												</tr>
@@ -359,6 +391,7 @@
 													<th>Color</th>
 													<th>Price</th>
 													<th>Total Stocks / Left</th>
+													<th>default</th>
 													<th>status</th>
 													<th>Action</th>
 												</tr>
@@ -371,6 +404,11 @@
 													<td><?php echo $rows_comb->attribute_name; ?></td>
 													<td><?php echo $rows_comb->prod_actual_price; ?></td>
 													<td><?php echo $rows_comb->total_stocks; ?> / <?php echo $rows_comb->stocks_left; ?></td>
+													<td>	<?php if($rows_comb->prod_default=='1'){ ?>
+														<span class="pe-7s-cart"></span>
+												<?php	}else{
+
+													} ?></td>
 													<td><?php if($rows_comb->status=='Active'){ ?>
 														<button class="btn  btn-success btn-rounded">Active</button>
 													<?php }else{ ?>
@@ -462,7 +500,38 @@
 	</div>
 	<!-- /Row -->
 
+	<!-- Row -->
+<div class="row" id="tags">
+<div class="col-sm-12">
+	<div class="panel panel-default card-view">
+		<div class="panel-heading">
+			<div class="pull-left">
+				<h6 class="panel-title txt-dark">List  of  tags</h6>
+			</div>
+			<div class="pull-right">
+				<div class=" btn btn-info ">
+					<a  href="<?php echo base_url(); ?>admin/add_tags/<?php echo base64_encode($rows_prod->id*9876); ?>" class="addmore" id="specs">Add tags </a>
+				</div>
 
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="panel-wrapper collapse in">
+			<div class="panel-body">
+				<div class="table-wrap">
+					<?php foreach($res_prod_tag as $rows_tag_name){ ?>
+							<button class="btn btn-warning btn-rounded btn-lable-wrap right-label" onclick="delete_tags('<?php echo base64_encode($rows_tag_name->id*9876); ?>')"><span class="btn-text"><?php echo $rows_tag_name->tag_name; ?></span> <span class="btn-label"><i class="fa fa-times"></i> </span></button>
+				<?php	} ?>
+
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<!-- /Row -->
 
 
   </div>
@@ -470,8 +539,48 @@
 
 <script>
  $('#datable_2').DataTable();
-function deletecomb(a){
-	var prod_id=a
+function delete_tags(tag_id){
+	var tag_id=tag_id;
+			swal({
+    title: "Are you sure?",
+    text: "You want to delete all combined products",
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonColor: '#DD6B55',
+    confirmButtonText: 'Yes, I am sure!',
+    cancelButtonText: "No, cancel it!"
+ }).then(
+       function () {
+				 $.ajax({
+						 url: "<?php echo base_url(); ?>productmaster/get_delete_prod_tags",
+						 type: 'POST',
+						data:{tag_id:tag_id},
+						 success: function(response) {
+						 //	alert(response);
+						 if (response == "success") {
+							 $.toast({
+										 heading: 'Tag Deleted',
+										 text: 'Product tag deleted Successfully',
+										 position: 'top-right',
+										 loaderBg:'#3cb878',
+										icon: 'success',
+										hideAfter: 3500,
+										 stack: 6
+									 });
+									 $("#tags").load(location.href+" #tags>*","");
+								 } else{
+										 sweetAlert("Oops...", response, "error");
+								 }
+						 }
+				 });
+			 },
+       function () { return false; });
+}
+
+
+
+function deletecomb(a_id){
+	var prod_id=a_id;
 			swal({
     title: "Are you sure?",
     text: "You want to delete all combined products",
@@ -560,12 +669,18 @@ function deletecomb(a){
 				prod_mrp_price:{required:true,digits: true},
 				prod_return_policy: {required: true },
 				prod_stock_left: {required: true },
+				prod_meta_title: {required: true },
+				prod_meta_keywords: {required: true },
+				product_meta_desc: {required: true },
 				prod_total_stocks: {required: true,digits:true },
 				prod_minimum_stocks:{required:true,digits:true,le: '#prod_total_stocks' }
 
 		},
       messages: {
           product_name: { required:"Enter  product name",remote:"Product name already exist" },
+					prod_meta_title: { required:"Enter  meta title"},
+					prod_meta_keywords: { required:"Enter  meta keywords"},
+					product_meta_desc: { required:"Enter meta description"},
 					product_desc: { required:"Enter  product description" },
           sku_code: { required:"Enter  SKU CODE",remote:"sku code already exist"},
 					prod_mrp_price: { required:"Enter  m.r.p price"},

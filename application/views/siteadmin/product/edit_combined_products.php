@@ -88,7 +88,13 @@
                               </select>
                                 <script> $('#comb_status').val('<?php echo $row_comb->status; ?>');</script>
                             </div>
-
+														<div class="form-group">
+															<label class="control-label"></label>
+															<div class="">
+																		<input type="radio" name="prod_default" id="prod_default_1" value="1" <?php echo ($row_comb->prod_default==1 ? 'checked' : '');?>>
+																		<label for="radio1">Set as Default</label>
+															</div>
+														</div>
 
 														<button type="submit" class="btn btn-success mr-10">Update </button>
 

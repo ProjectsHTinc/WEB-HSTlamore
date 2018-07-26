@@ -305,7 +305,10 @@ class Productmaster extends CI_Controller {
 				$prod_minimum_stocks=$this->db->escape_str($this->input->post('prod_minimum_stocks'));
 				$prod_cod=$this->db->escape_str($this->input->post('prod_cod'));
 				$prod_status=$this->db->escape_str($this->input->post('prod_status'));
-				$data=$this->productmodel->update_prod_info($product_token,$sku_code,$product_name,$cat_id,$sub_cat_id,$product_desc,$delivery_fee,$prod_actual_price,$prod_mrp_price,$prod_offer_percentage,$prod_return_policy,$prod_total_stocks,$prod_minimum_stocks,$prod_cod,$prod_status,$user_id);
+				$prod_meta_title=$this->db->escape_str($this->input->post('prod_meta_title'));
+				$prod_meta_keywords=$this->db->escape_str($this->input->post('prod_meta_keywords'));
+				$product_meta_desc=$this->db->escape_str($this->input->post('product_meta_desc'));
+				$data=$this->productmodel->update_prod_info($product_token,$sku_code,$product_name,$cat_id,$sub_cat_id,$product_desc,$delivery_fee,$prod_actual_price,$prod_mrp_price,$prod_offer_percentage,$prod_return_policy,$prod_total_stocks,$prod_minimum_stocks,$prod_cod,$prod_status,$user_id,$prod_meta_title,$prod_meta_keywords,$product_meta_desc);
 
 			}else{
 				$this->load->view('siteadmin/login');
@@ -325,11 +328,12 @@ class Productmaster extends CI_Controller {
 						$product_id=$this->db->escape_str($this->input->post('product_id'));
 						$combined_token=$this->db->escape_str($this->input->post('combined_token'));
 						$total_stocks=$this->db->escape_str($this->input->post('total_stocks'));
+						$prod_default=$this->db->escape_str($this->input->post('prod_default'));
 						$comb_status=$this->db->escape_str($this->input->post('comb_status'));
-						$data['res']=$this->productmodel->update_combined_products($mas_size,$mas_color,$prod_actual_price,$prod_mrp_price,$product_id,$combined_token,$total_stocks,$comb_status,$user_id);
+						$data['res']=$this->productmodel->update_combined_products($mas_size,$mas_color,$prod_actual_price,$prod_mrp_price,$product_id,$combined_token,$total_stocks,$comb_status,$user_id,$prod_default);
 						if($data['res']['status']=='success'){
 							$prd_redirec_id=base64_encode($product_id*9876);
-							redirect('/admin/products/'.$prd_redirec_id.'');
+							redirect('/admin/products/'.$prd_redirec_id.'#combined');
 						}else if($data['res']['status']=='already'){
 							$this->session->set_flashdata('in','already exist');
 							redirect('/admin/edit_combined_products/'.$combined_token.'');
@@ -373,8 +377,9 @@ class Productmaster extends CI_Controller {
 							$prod_mrp_price=$this->db->escape_str($this->input->post('prod_mrp_price'));
 							$product_token=$this->db->escape_str($this->input->post('product_id'));
 							$total_stocks=$this->db->escape_str($this->input->post('total_stocks'));
+							$prod_default=$this->db->escape_str($this->input->post('prod_default'));
 							$comb_status=$this->db->escape_str($this->input->post('comb_status'));
-							$data['res']=$this->productmodel->create_combined_products($mas_size,$mas_color,$prod_actual_price,$prod_mrp_price,$product_token,$total_stocks,$comb_status,$user_id);
+							$data['res']=$this->productmodel->create_combined_products($mas_size,$mas_color,$prod_actual_price,$prod_mrp_price,$product_token,$total_stocks,$comb_status,$user_id,$prod_default);
 							$prd_redirec_id=$product_token;
 							if($data['res']['status']=='success'){
 								redirect('/admin/products/'.$prd_redirec_id.'#combined');
@@ -486,5 +491,53 @@ class Productmaster extends CI_Controller {
 			}
 
 
+			public function add_tags()
+			{
+				$data=$this->session->userdata();
+				$user_id=$this->session->userdata('id');
+				$user_role=$this->session->userdata('role_type_id');
+					if($user_role=='1' || $user_role=='2'){
+						$prod_id=$this->uri->segment(3);
+						$data['res_tag_value']=$this->productmodel->get_all_active_tags_prod($prod_id);
+						$this->load->view('siteadmin/header',$data);
+						$this->load->view('siteadmin/product/add_tag_product',$data);
+						$this->load->view('siteadmin/footer');
+				}else{
+					$this->load->view('siteadmin/login');
+				}
+			}
+
+
+
+			public function add_tag_product()
+			{
+				$data=$this->session->userdata();
+				$user_id=$this->session->userdata('id');
+				$user_role=$this->session->userdata('role_type_id');
+					if($user_role=='1' || $user_role=='2'){
+				 	$product_token=$this->db->escape_str($this->input->post('product_token'));
+					$product_tags=$this->input->post('product_tags');
+					$data['res']=$this->productmodel->get_update_product_tags($product_token,$product_tags,$user_id);
+					if($data['res']['status']=='success'){
+						redirect('/admin/products/'.$product_token.'#tags');
+					}else{
+					redirect('/admin/products/'.$product_token.'#tags');
+					}
+				}else{
+					$this->load->view('siteadmin/login');
+				}
+			}
+
+			public function get_delete_prod_tags(){
+				$data=$this->session->userdata();
+				$user_id=$this->session->userdata('id');
+				$user_role=$this->session->userdata('role_type_id');
+					if($user_role=='1' || $user_role=='2'){
+						$tag_id=$this->db->escape_str($this->input->post('tag_id'));
+						$data=$this->productmodel->get_delete_prod_tags($tag_id,$user_id);
+					}else{
+
+					}
+			}
 
 }

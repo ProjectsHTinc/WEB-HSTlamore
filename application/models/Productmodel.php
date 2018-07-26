@@ -163,7 +163,7 @@ Class Productmodel extends CI_Model
 
    function get_prod_tag_edit($product_id){
        $id=base64_decode($product_id)/9876;
-       $select="SELECT * FROM product_tags WHERE product_id='$id'";
+       $select="SELECT pt.id,tm.tag_name FROM product_tags AS pt LEFT JOIN tag_masters AS tm ON tm.id=pt.tag_id WHERE pt.product_id='$id'";
        $res=$this->db->query($select);
        return $res->result();
    }
@@ -184,9 +184,9 @@ Class Productmodel extends CI_Model
 
 
 
-   function update_prod_info($product_token,$sku_code,$product_name,$cat_id,$sub_cat_id,$product_desc,$delivery_fee,$prod_actual_price,$prod_mrp_price,$prod_offer_percentage,$prod_return_policy,$prod_total_stocks,$prod_minimum_stocks,$prod_cod,$prod_status,$user_id){
+   function update_prod_info($product_token,$sku_code,$product_name,$cat_id,$sub_cat_id,$product_desc,$delivery_fee,$prod_actual_price,$prod_mrp_price,$prod_offer_percentage,$prod_return_policy,$prod_total_stocks,$prod_minimum_stocks,$prod_cod,$prod_status,$user_id,$prod_meta_title,$prod_meta_keywords,$product_meta_desc){
     $id=base64_decode($product_token)/9876;
-    $update="UPDATE products SET sku_code='$sku_code',product_name='$product_name',cat_id='$cat_id',sub_cat_id='$sub_cat_id',product_description='$product_desc',delivery_fee_status='$delivery_fee',prod_actual_price='$prod_actual_price',prod_mrp_price='$prod_mrp_price',offer_percentage='$prod_offer_percentage',prod_return_policy='$prod_return_policy',total_stocks='$prod_total_stocks',min_stocks_status='$prod_minimum_stocks',prod_cod='$prod_cod',status='$prod_status',updated_at=NOW(),updated_by='$user_id' WHERE id='$id'";
+    $update="UPDATE products SET sku_code='$sku_code',product_name='$product_name',cat_id='$cat_id',sub_cat_id='$sub_cat_id',product_description='$product_desc',delivery_fee_status='$delivery_fee',prod_actual_price='$prod_actual_price',prod_mrp_price='$prod_mrp_price',offer_percentage='$prod_offer_percentage',prod_return_policy='$prod_return_policy',total_stocks='$prod_total_stocks',min_stocks_status='$prod_minimum_stocks',prod_cod='$prod_cod',status='$prod_status',updated_at=NOW(),updated_by='$user_id',product_meta_title='$prod_meta_title',product_meta_desc='$product_meta_desc',product_meta_keywords='$prod_meta_keywords' WHERE id='$id'";
    $res=$this->db->query($update);
    $check_total_stocks="SELECT sum(total_stocks) as combined_total_stocks FROM product_combined WHERE product_id='$id'";
    $result_stocks=$this->db->query($check_total_stocks);
@@ -211,7 +211,7 @@ Class Productmodel extends CI_Model
   }
 
 
-   function update_combined_products($mas_size,$mas_color,$prod_actual_price,$prod_mrp_price,$product_id,$combined_token,$total_stocks,$comb_status,$user_id){
+   function update_combined_products($mas_size,$mas_color,$prod_actual_price,$prod_mrp_price,$product_id,$combined_token,$total_stocks,$comb_status,$user_id,$prod_default){
        $id=base64_decode($combined_token)/9876;
        if(empty($product_id)){
 
@@ -222,7 +222,12 @@ Class Productmodel extends CI_Model
            $data = array("status" => "already");
            return $data;
          }else{
-           $update="UPDATE product_combined SET mas_size_id='$mas_size',mas_color_id='$mas_color',prod_actual_price='$prod_actual_price',prod_mrp_price='$prod_mrp_price',stocks_left='$total_stocks',total_stocks='$total_stocks',status='$comb_status',updated_at=NOW(),updated_by='$user_id' WHERE id='$id'";
+           if($prod_default=='1'){
+             $update_total_main="UPDATE product_combined SET prod_default='0' WHERE product_id='$product_id'";
+             $result_stocks=$this->db->query($update_total_main);
+
+           }
+           $update="UPDATE product_combined SET mas_size_id='$mas_size',mas_color_id='$mas_color',prod_actual_price='$prod_actual_price',prod_mrp_price='$prod_mrp_price',stocks_left='$total_stocks',total_stocks='$total_stocks',status='$comb_status',prod_default='$prod_default',updated_at=NOW(),updated_by='$user_id' WHERE id='$id'";
            $res=$this->db->query($update);
 
            //-----Increase product count ------//
@@ -250,19 +255,26 @@ Class Productmodel extends CI_Model
 
 
 
-   function create_combined_products($mas_size,$mas_color,$prod_actual_price,$prod_mrp_price,$product_token,$total_stocks,$comb_status,$user_id){
+   function create_combined_products($mas_size,$mas_color,$prod_actual_price,$prod_mrp_price,$product_token,$total_stocks,$comb_status,$user_id,$prod_default){
       $product_id=base64_decode($product_token)/9876;
      if(empty($product_id)){
 
      }else{
+
         $check_exist="SELECT * FROM product_combined WHERE  product_id='$product_id' AND mas_color_id='$mas_color' AND mas_size_id='$mas_size'";
        $res_exist=$this->db->query($check_exist);
        if($res_exist->num_rows()>0){
          $data = array("status" => "already");
          return $data;
        }else{
+
+         if($prod_default=='1'){
+           $update_total_main="UPDATE product_combined SET prod_default='0' WHERE product_id='$product_id'";
+           $result_stocks=$this->db->query($update_total_main);
+
+         }
          $insert="INSERT INTO product_combined (product_id,mas_size_id,mas_color_id,prod_mrp_price,prod_actual_price,stocks_left,total_stocks,status
-         ,created_at,created_by) VALUES ('$product_id','$mas_size','$mas_color','$prod_mrp_price','$prod_actual_price','$total_stocks','$total_stocks','$comb_status',NOW(),'$user_id')";
+         ,created_at,created_by,prod_default) VALUES ('$product_id','$mas_size','$mas_color','$prod_mrp_price','$prod_actual_price','$total_stocks','$total_stocks','$comb_status',NOW(),'$user_id','$prod_default')";
          $res=$this->db->query($insert);
 
           //--SET Combined Product--//
@@ -392,6 +404,46 @@ Class Productmodel extends CI_Model
      }
     }
 
+      function get_all_active_tags_prod($prod_id){
+        $id=base64_decode($prod_id)/9876;
+        $select="SELECT a.tag_name,a.id FROM tag_masters a WHERE NOT EXISTS  (SELECT * FROM  product_tags AS b WHERE a.id = b.tag_id AND  b.product_id='$id') AND a.status='Active'";
+        $res=$this->db->query($select);
+        return $res->result();
+      }
+
+      function get_update_product_tags($product_token,$product_tags,$user_id){
+          $id=base64_decode($product_token)/9876;
+          $tag_cnt=count($product_tags);
+          for($i=0;$i<$tag_cnt;$i++){
+          $product_tags_id=$product_tags[$i];
+
+           $check ="SELECT * FROM product_tags WHERE product_id='$id' AND tag_id='$product_tags_id'";
+           $result=$this->db->query($check);
+           if($result->num_rows()==0){
+           $reg_query="INSERT INTO product_tags (product_id,tag_id,status,created_at,created_by) VALUES('$id','$product_tags_id','Active',NOW(),'$user_id')";
+            $req_q=$this->db->query($reg_query);
+          }else{
+          }
+         }
+         if($req_q){
+           $data = array("status" => "success");
+           return $data;
+         }else{
+           $data = array("status" => "failed");
+           return $data;
+         }
+      }
+
+      function get_delete_prod_tags($tag_id,$user_id){
+        $product_tag_id=base64_decode($tag_id)/9876;
+        $delete_comb="DELETE FROM product_tags WHERE id='$product_tag_id'";
+        $result_stocks=$this->db->query($delete_comb);
+        if($result_stocks){
+          echo "success";
+        }else{
+          echo "failure";
+        }
+      }
 
 
 

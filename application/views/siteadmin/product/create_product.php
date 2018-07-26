@@ -24,7 +24,7 @@
 					<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
 					  <ol class="breadcrumb">
 						<li><a href="">Dashboard</a></li>
-						<li><a href="<?php echo base_url(); ?>admin/zipcode"><span>Product </span></a></li>
+						<li><a href="<?php echo base_url(); ?>admin/view_products"><span>Product </span></a></li>
 						<li class="active"><span>Create</span></li>
 					  </ol>
 					</div>
@@ -328,7 +328,7 @@
 
         </fieldset>
         <p>
-            <button id="SaveAccount" class="btn btn-primary submit">Submit form</button>
+            <button id="SaveAccount" class="btn btn-primary submit">Create Product</button>
         </p>
       </form>
     </div>
