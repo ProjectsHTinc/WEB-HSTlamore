@@ -1,5 +1,4 @@
 <?php
-
 Class Productmodel extends CI_Model
 {
 
@@ -443,6 +442,36 @@ Class Productmodel extends CI_Model
         }else{
           echo "failure";
         }
+      }
+
+
+      function   get_delete_prod_gallery($gal_id,$user_id){
+        $product_gal_id=base64_decode($gal_id)/9876;
+        $delete_comb="DELETE FROM product_gallery WHERE id='$product_gal_id'";
+        $result_stocks=$this->db->query($delete_comb);
+        if($result_stocks){
+          echo "success";
+        }else{
+          echo "failure";
+        }
+      }
+
+      function get_upload_gallery_file($product_token,$file_name,$user_id){
+        $id=base64_decode($product_token)/9876;
+        $tag_cnt=count($file_name);
+        for($i=0;$i<$tag_cnt;$i++){
+        $product_gal=$file_name[$i];
+         $reg_query="INSERT INTO product_gallery (product_id,gallery_img,status,created_at,created_by) VALUES('$id','$product_gal','Active',NOW(),'$user_id')";
+          $req_q=$this->db->query($reg_query);
+
+       }
+       if($req_q){
+         $data = array("status" => "success");
+         return $data;
+       }else{
+         $data = array("status" => "failed");
+         return $data;
+       }
       }
 
 

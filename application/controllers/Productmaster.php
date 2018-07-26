@@ -470,13 +470,10 @@ class Productmaster extends CI_Controller {
 							$spec_id=$this->db->escape_str($this->input->post('spec_id'));
 							$spec_value=$this->db->escape_str($this->input->post('spec_value'));
 							 $product_token=$this->db->escape_str($this->input->post('product_token'));
-
 							$spec_status=$this->db->escape_str($this->input->post('spec_status'));
 							$spec_token=$this->db->escape_str($this->input->post('spec_token'));
 							$data['res']=$this->productmodel->update_specification($spec_id,$spec_value,$product_token,$spec_status,$user_id,$spec_token);
 						 	$prd_redirec_id=$product_token;
-							// echo $data['res']['status'];
-							// exit;
 							if($data['res']['status']=='success'){
 								redirect('/admin/products/'.$prd_redirec_id.'#combined');
 							}else if($data['res']['status']=='already'){
@@ -537,6 +534,46 @@ class Productmaster extends CI_Controller {
 						$data=$this->productmodel->get_delete_prod_tags($tag_id,$user_id);
 					}else{
 
+					}
+			}
+
+
+
+			public function get_delete_prod_gallery(){
+				$data=$this->session->userdata();
+				$user_id=$this->session->userdata('id');
+				$user_role=$this->session->userdata('role_type_id');
+					if($user_role=='1' || $user_role=='2'){
+						$gal_id=$this->db->escape_str($this->input->post('gal_id'));
+						$data=$this->productmodel->get_delete_prod_gallery($gal_id,$user_id);
+					}else{
+
+					}
+			}
+
+			public function product_gallery(){
+				$data=$this->session->userdata();
+				$user_id=$this->session->userdata('id');
+				$user_role=$this->session->userdata('role_type_id');
+					if($user_role=='1' || $user_role=='2'){
+						$product_token=$this->db->escape_str($this->input->post('product_token'));
+						$name_array = $_FILES['files']['name'];
+						$tmp_name_array = $_FILES['files']['tmp_name'];
+						$count_tmp_name_array = count($tmp_name_array);
+						$static_final_name = time();
+						for($i = 0; $i < $count_tmp_name_array; $i++){
+						 $extension = pathinfo($name_array[$i] , PATHINFO_EXTENSION);
+						 $file_name[]=$static_final_name.$i.".".$extension;
+						move_uploaded_file($tmp_name_array[$i], "assets/products/images/".$static_final_name.$i.".".$extension);
+					}
+						$data['res']=$this->productmodel->get_upload_gallery_file($product_token,$file_name,$user_id);
+						if($data['res']['status']=='success'){
+							redirect('/admin/products/'.$product_token.'#tags');
+						}else{
+						redirect('/admin/products/'.$product_token.'#tags');
+						}
+					}else{
+						$this->load->view('siteadmin/login');
 					}
 			}
 

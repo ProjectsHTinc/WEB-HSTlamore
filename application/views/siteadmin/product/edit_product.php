@@ -3,6 +3,7 @@
 <link href="<?php echo base_url(); ?>assets/bower_components/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" type="text/css"/>
 <link href="<?php echo base_url(); ?>assets/bower_components/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.css" rel="stylesheet" type="text/css"/>
 <link href="<?php echo base_url(); ?>assets/bower_components/multiselect/css/multi-select.css" rel="stylesheet" type="text/css"/>
+<link href="<?php echo base_url(); ?>assets/bower_components/dropzone/dist/dropzone.css" rel="stylesheet" type="text/css"/>
 
 <script src="<?php echo base_url(); ?>assets/bower_components/select2/dist/js/select2.full.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/bower_components/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
@@ -11,6 +12,7 @@
 <script src="<?php echo base_url(); ?>assets/bower_components/bootstrap-switch/dist/js/bootstrap-switch.min.js"></script>
 <script src="<?php echo base_url(); ?>dist/js/form-advance-data.js"></script>
 <script src="<?php echo base_url(); ?>dist/js/dropdown-bootstrap-extended.js"></script>
+	<script src="<?php echo base_url(); ?>assets/bower_components/dropzone/dist/dropzone.js"></script>
 <!-- <script src="<?php echo base_url(); ?>dist/js/toast-data.js"></script> -->
 <style>
 .addmore{
@@ -533,17 +535,160 @@
 </div>
 <!-- /Row -->
 
+<!-- Row -->
+			<div class="row" id="gallery">
+				<div class="col-sm-12">
+					<div class="panel panel-default card-view">
+						<div class="panel-heading">
+							<div class="pull-left">
+								<h6 class="panel-title txt-dark">Product Gallery </h6>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+						<div class="panel-wrapper collapse in">
+							<div class="panel-body">
+								<p class="text-muted">Drag and Drop the multiple image files here </p>
+								<div class="mt-40">
+									<form action="<?php echo base_url(); ?>productmaster/product_gallery" method="post" name="prod_gallery_form" id="prod_gallery_form" enctype="multipart/form-data">
+										<div class="form-group">
+											<div class="field" align="left">
+									  <h3>Upload your images</h3>
+									  <input type="file" id="files" name="files[]" multiple  required/>
+										</div>
+										  <input type="hidden" id="product_token" name="product_token" value="<?php echo base64_encode($rows_prod->id*9876); ?>" accept="image/*"/>
+										</div>
+										<div class="form-group">
+										</div>
+										<button type="submit" class="btn btn-success mr-10">Update </button>
+									</form>
+									<p class="text-muted">Gallery images  </p>
+									<div class="row">
+										<?php  foreach($res_galley as $rows_gallery){  ?>
+	       				<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+							<div class="panel panel-default card-view pa-0">
+								<div class="panel-wrapper collapse in">
+									<div class="panel-body pa-0">
+										<article class="col-item">
+											<div class="photo">
+												<div class="options">
+
+
+													<button class="btn btn-info btn-icon-anim btn-circle" onclick="delete_gallery('<?php echo base64_encode($rows_gallery->id*9876); ?>')"><i class="icon-trash"></i></button>
+												</div>
+
+												<a href="#"> <img src="<?php echo base_url(); ?>assets/products/images/<?php echo $rows_gallery->gallery_img; ?>" class="img-responsive" alt="Product Image"> </a>
+											</div>
+
+										</article>
+									</div>
+								</div>
+							</div>
+						</div>
+					<?php } ?>
+
+
+
+					</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /Row -->
+
+
 
   </div>
 </div>
-
+<style>
+.imageThumb {
+  max-height: 75px;
+  border: 2px solid;
+  padding: 1px;
+  cursor: pointer;
+}
+.pip {
+  display: inline-block;
+  margin: 10px 10px 0 0;
+}
+.col-item .photo img{
+	width: 100%;
+	height: 200px;
+}
+</style>
 <script>
  $('#datable_2').DataTable();
+ if (window.File && window.FileList && window.FileReader) {
+	$("#files").on("change", function(e) {
+		var files = e.target.files,
+			filesLength = files.length;
+		for (var i = 0; i < filesLength; i++) {
+			var f = files[i]
+			var fileReader = new FileReader();
+			fileReader.onload = (function(e) {
+				var file = e.target;
+				$("<span class=\"pip\">" +
+					"<img class=\"imageThumb\" src=\"" + e.target.result + "\" title=\"" + file.name + "\"/>" +
+					"<br/>" +
+					"</span>").insertAfter("#files");
+
+
+
+
+			});
+			fileReader.readAsDataURL(f);
+		}
+	});
+} else {
+	alert("Your browser doesn't support to File API")
+}
+
+function delete_gallery(prod_gall_id){
+	var gal_id=prod_gall_id;
+			swal({
+		title: "Are you sure?",
+		text: "You want to delete image",
+		type: "warning",
+		showCancelButton: true,
+		confirmButtonColor: '#DD6B55',
+		confirmButtonText: 'Yes, I am sure!',
+		cancelButtonText: "No, cancel it!"
+ }).then(
+			 function () {
+				 $.ajax({
+						 url: "<?php echo base_url(); ?>productmaster/get_delete_prod_gallery",
+						 type: 'POST',
+						data:{gal_id:gal_id},
+						 success: function(response) {
+						 //	alert(response);
+						 if (response == "success") {
+							 $.toast({
+										 heading: 'Tag Deleted',
+										 text: 'Product images deleted Successfully',
+										 position: 'top-right',
+										 loaderBg:'#3cb878',
+										icon: 'success',
+										hideAfter: 3500,
+										 stack: 6
+									 });
+									 $("#gallery").load(location.href+" #gallery>*","");
+								 } else{
+										 sweetAlert("Oops...", response, "error");
+								 }
+						 }
+				 });
+			 },
+			 function () { return false; });
+}
+
+
 function delete_tags(tag_id){
 	var tag_id=tag_id;
 			swal({
     title: "Are you sure?",
-    text: "You want to delete all combined products",
+    text: "You want to delete tag",
     type: "warning",
     showCancelButton: true,
     confirmButtonColor: '#DD6B55',
@@ -763,4 +908,15 @@ function getsubcat(){
 							product_size_chart: { required:"Select images",accept:"Please upload .jpg or .png ." }
 							}
 				});
+
+				$("#product_gallery_form").validate({
+						ignore: ":hidden",
+						rules: {
+								'files[]': {"required": true},
+							},
+						messages: {
+								"files[]": { required:"Select images",accept:"Please upload .jpg or .png ." }
+								}
+					});
+
   </script>
