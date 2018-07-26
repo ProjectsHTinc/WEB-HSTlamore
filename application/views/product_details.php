@@ -1,3 +1,20 @@
+<?php
+if (count($product_details)>0){
+	foreach($product_details as $prod){ 
+		$product_id = $prod->id;
+		$product_name = $prod->product_name;
+		$sku_code = $prod->sku_code;
+		$product_description = $prod->product_description;
+		$combined_status = $prod->combined_status;
+		
+		if ($combined_status =='1'){
+			$size_result = $this->homemodel->get_size($product_id);
+			$colour_result = $this->homemodel->get_colour($product_id);
+		}
+	}
+}
+?>
+
         <!-- Page Breadcrumb Start -->
         <div class="main-breadcrumb mb-100">
             <div class="container">
@@ -49,10 +66,11 @@
                     </div>
                     <!-- Thumbnail Description Start -->
                     <div class="col-sm-7">
+                     <form id="product-form" class="contact-form" action="" method="post">
                         <div class="thubnail-desc fix">
-                            <h2 class="product-header">Sheepskin Pillow2</h2>
+                            <h2 class="product-header mb-20"><?php echo $product_name; ?></h2>
                             <!-- Product Rating Start -->
-                            <div class="rating-summary fix mtb-20">
+                            <!--<div class="rating-summary fix mtb-20">
                                 <div class="rating f-left mr-10">
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
@@ -63,9 +81,20 @@
                                     <a href="#">0 reviews</a> /
                                     <a href="#">Write a review</a>
                                 </div>
-                            </div>
+                            </div>-->
                             <!-- Product Rating End -->
-                            <!-- Product Price Start -->
+                             <!-- Product Price Description Start -->
+                            <div class="product-price-desc mb-20">
+                                <ul class="pro-desc-list">
+                                    <li>Product Code: <span>SAMI</span></li>
+                                    <li>Availability: <span>in Stock</span></li>
+                                </ul>
+                            </div>
+                            <!-- Product Price Description End -->
+                           
+                           
+                             <?php if ($combined_status =='1') { ?>
+                             <!-- Product Price Start -->
                             <div class="pro-price mb-20">
                                <ul class="pro-price-list">
                                    <li class="price">₹241.99</li>
@@ -73,14 +102,7 @@
                                </ul>
                             </div>
                             <!-- Product Price End -->
-                            <!-- Product Price Description Start -->
-                            <div class="product-price-desc">
-                                <ul class="pro-desc-list">
-                                    <li>Product Code: <span>SAMI</span></li>
-                                    <li>Availability: <span>in Stock</span></li>
-                                </ul>
-                            </div>
-                            <!-- Product Price Description End -->
+                            
                             <!-- Product Box Quantity Start -->
                             <div class="box-quantity mtb-10">
                                 <div class="quantity-item">
@@ -97,9 +119,11 @@
                                 <div class="quantity-item">
                                     <label>Size: </label>
                                         <select>
-                                        <option>S</option>
-                                        <option>M</option>
-                                        <option>L</option>
+                                       <?php if ($size_result >0) {
+											foreach($size_result as $size){ 
+												echo '<option value='.$size->id.'>'.$size->attribute_value.'</option>';
+											} 
+										} ?>
                                         </select>
                                 </div>
                             </div>
@@ -109,16 +133,41 @@
                                 <div class="quantity-item">
                                     <label>Colour: </label>
                                        <select>
-                                        <option>Red</option>
-                                        <option>Green</option>
-                                        <option>Blue</option>
+                                          <?php if ($colour_result >0) {
+											foreach($colour_result as $color){ 
+												echo '<option value='.$color->id.'>'.$color->attribute_name.'</option>';
+											} 
+										} ?>
                                         </select>
                                 </div>
                             </div>
                             <!-- Product Box Quantity End -->
+                            <?php } else { ?>
+                            
+                             <!-- Product Price Start -->
+                            <div class="pro-price mb-20">
+                               <ul class="pro-price-list">
+                                   <li class="price">₹241.99</li>
+                                   <li class="tax">Ex Tax: ₹199.99</li>
+                               </ul>
+                            </div>
+                            <!-- Product Price End -->
+                            
+                            <!-- Product Box Quantity Start -->
+                            <div class="box-quantity mtb-10">
+                                <div class="quantity-item">
+                                    <label>Qty: </label>
+                                    <input type="number" value="1" min="1" max="10" style="height: 45px;"  name="qty" id="qty" /><!--
+                                    <div class="cart-plus-minus">
+                                        <input class="cart-plus-minus-box" type="text" name="qtybutton" value="0">
+                                    </div>-->
+                                </div>
+                            </div>
+                            <!-- Product Box Quantity End -->
+                            <?php } ?>
                             <!-- Product Button Actions Start -->
                             <div class="product-button-actions">
-                               <button class="add-to-cart">add to cart</button>
+                               <button type="submit" class="add-to-cart">add to cart</button>
                                <a href="wish-list.html" data-toggle="tooltip" title="Add to Wishlist" class="same-btn mr-15"><i class="pe-7s-like"></i></a>
                             </div>
                             <!-- Product Button Actions End -->
@@ -165,6 +214,7 @@
                             </div>
                             <!-- Product Social Link Share End -->
                         </div>
+                        </form>
                     </div>
                     <!-- Thumbnail Description End -->
                 </div>

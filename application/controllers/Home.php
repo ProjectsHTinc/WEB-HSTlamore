@@ -226,6 +226,7 @@ class Home extends CI_Controller {
 	
 	public function categories($cat_id,$cat_name)
 	{
+		//echo $this->uri->segment(2);exit;
 		$data['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$data['maincat_count'] = $this->homemodel->get_maincat_count();
 		$data['category_details'] = $this->homemodel->get_categorydetails($cat_id);
@@ -235,7 +236,7 @@ class Home extends CI_Controller {
 		$this->load->view('categories',$data);
 		$this->load->view('front_footer');
 	}
-		public function subcategories($cat_id,$cat_name)
+	public function subcategories($cat_id,$cat_name)
 	{
 		$data['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$data['maincat_count'] = $this->homemodel->get_maincat_count();
@@ -247,11 +248,13 @@ class Home extends CI_Controller {
 		$this->load->view('front_footer');
 	}
 	
-	public function product_details()
+	public function product_details($prod_id,$prod_name)
 	{
 		$data['main_catmenu'] = $this->homemodel->get_main_catmenu();
+		$data['product_details'] = $this->homemodel->get_productdetails($prod_id);
+		//print_r($data);
 		$this->load->view('front_header',$data);
-		$this->load->view('product_details');
+		$this->load->view('product_details',$data);
 		$this->load->view('front_footer');
 	}
 	

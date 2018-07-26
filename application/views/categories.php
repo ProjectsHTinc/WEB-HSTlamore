@@ -1,13 +1,15 @@
 <?php
-foreach($category_details as $cat){ 
-	$base_cat_id = $cat->id;
-	$cat_name = $cat->category_name;
-	$cat_desc = $cat->category_desc;
-	$cat_image = $cat->category_image;
-	if ($cat_image == ''){
-		$cat_image = 'no_category.png';
+if (count($category_details)>0){
+	foreach($category_details as $cat){ 
+		$base_cat_id = $cat->id;
+		$cat_name = $cat->category_name;
+		$cat_desc = $cat->category_desc;
+		$cat_image = $cat->category_image;
+		if ($cat_image == ''){
+			$cat_image = 'no_category.png';
+		}
+		$cat_image_url = base_url()."assets/category/".$cat_image;
 	}
-	$cat_image_url = base_url()."assets/category/".$cat_image;
 }
 ?>
         <!-- Page Breadcrumb Start -->
@@ -63,105 +65,51 @@ foreach($category_details as $cat){
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="tab-content categorie-list ">
-                                        <div id="list-view" class="tab-pane fade">
-                                            <div class="row">                                              
-                                               <?php
-											if (count($cat_products)>0){
-												foreach($cat_products as $prod){ 
-                                            ?>  
-                                                
-                                                
-                                                <!-- Main Single Product Start -->
-                                                <div class="main-single-product fix">
-                                                    <div class="col-sm-4">
-                                                        <!-- Single Product Start -->
-                                                        <div class="single-product">
-                                                            <!-- Product Image Start -->
-                                                            <div class="pro-img">
-                                                                <a href="<?php echo base_url(); ?>product_details/">
-                                                                    <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_1.jpg" alt="single-product">
-                                                                </a>
-                                                                <div class="quick-view">
-                                                                    <a href="#" data-toggle="modal" data-target="#myModal"><i class="pe-7s-look"></i>quick view</a>
-                                                                </div>
-                                                                <span class="sticker-new">new</span>
-                                                            </div>
-                                                            <!-- Product Image End -->
-                                                        </div>
-                                                        <!-- Single Product End -->
-                                                    </div>
-                                                    <div class="col-sm-8">
-                                                        <!-- Product Content Start -->
-                                                        <div class="thubnail-desc fix">
-                                                            <h4 class="product-header"><a href="<?php echo base_url(); ?>product_details/">Carte Postal Clock</a></h4>
-                                                            <!-- Product Price Start -->
-                                                            <div class="pro-price mb-15">
-                                                                <ul class="pro-price-list">
-                                                                    <li class="price">₹122.00</li>
-                                                                    <li class="mtb-50">
-                                                                        <p>Stop your co-workers in their tracks with the stunning new 30-inch diagonal HP LP3065 Flat Panel Monitor. This flagship monitor features best-in-class performance and presentation features on a huge w..</p>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                            <!-- Product Price End -->
-                                                            <!-- Product Button Actions Start -->
-                                                            <div class="product-button-actions">
-                                                                <button class="add-to-cart" data-toggle="tooltip" title="Add to Cart">add to cart</button>
-                                                                <a href="wish-list.html" data-toggle="tooltip" title="Add to Wishlist" class="same-btn mr-15"><i class="pe-7s-like"></i></a>
-                                                                <button data-toggle="tooltip" title="Compare this Product" class="same-btn"><i class="pe-7s-repeat"></i></button>
-                                                            </div>
-                                                            <!-- Product Button Actions End -->
-                                                        </div>
-                                                        <!-- Product Content End -->
-                                                    </div>
-                                                </div>
-                                                <!-- Main Single Product Start -->
-  											<?php
-												}
-											}
-											?>
-                                            </div>
-                                            <!-- Row End -->
-                                           
-                                        </div>
-                                        <!-- #list-view End -->
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
                                         
                                         <div id="grid-view" class="tab-pane fade in active mt-40">
                                             <div class="row">
                                             <?php
 											if (count($cat_products)>0){
 												foreach($cat_products as $prod){ 
+												$sproduct_id = $prod->id;
+												$product_id = $prod->id * 663399;
+												$enc_product_name = strtolower(preg_replace("/[^\w]/", "-", $prod->product_name));
+												$enc_product_id = base64_encode($product_id);
+												
+												$combined_status = $prod->combined_status;
+												
+												$posteddate = date("d-m-Y",strtotime($prod->created_at));
+                                               	$check_date = date("d-m-Y",strtotime("-15 day"));
                                             ?>
                                                 <div class="col-md-4 col-sm-6">
                                                     <!-- Single Product Start -->
                                                     <div class="single-product">
                                                         <!-- Product Image Start -->
                                                         <div class="pro-img">
-                                                            <a href="<?php echo base_url(); ?>product_details/">
-                                                                <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/1_1.jpg" alt="single-product">
-                                                                <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/1_2.jpg" alt="single-product">
+                                                            <a href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/">
+                                                               <img class="primary-img" src="<?php echo base_url(); ?>assets/products/<?php echo $prod->product_cover_img; ?>" alt="single-product">
                                                             </a>
-                                                            <div class="quick-view">
+                                                            <!--<div class="quick-view">
                                                                 <a href="#" data-toggle="modal" data-target="#myModal"><i class="pe-7s-look"></i>quick view</a>
-                                                            </div>
-                                                            <span class="sticker-new">new</span>
+                                                            </div>-->
+                                                            <?php 
+                                                                if (strtotime($posteddate) >= strtotime($check_date)) 
+                                                                {
+                                                                     echo '<span class="sticker-new">new</span>';
+                                                                } 
+                                                               ?>
                                                         </div>
                                                         <!-- Product Image End -->
                                                         <!-- Product Content Start -->
                                                         <div class="pro-content text-center">
-                                                            <h4><a href="<?php echo base_url(); ?>product_details/">Sheepskin Pillow2</a></h4>
-                                                            <p class="price"><span>₹241.99</span></p>
+                                                            <h4><a href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/"><?php echo $prod->product_name; ?></a></h4>
+                                                            <p class="price"><span>₹<?php echo $prod->prod_actual_price; ?></span></p>
                                                             <div class="action-links2">
-                                                                <a data-toggle="tooltip" title="Add to Cart" href="cart.html">add to cart</a>
+                                                            <?php if ($combined_status == '1'){ ?>
+                                                            	<a data-toggle="tooltip" title="View Products" href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/" style="background:#FAA320;">view products</a>
+                                                            <?php } else { ?>
+                                                                <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
+                                                             <?php }?>
                                                             </div>
                                                         </div>
                                                         <!-- Product Content End -->
