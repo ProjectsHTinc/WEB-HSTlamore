@@ -1503,16 +1503,17 @@ ul.pull-left.home-4-search i {
     height: 46px;
     border-radius: 0px;
     padding: 0 30px;
-    border: 1px solid #1a1a1a;
+    border: 1px solid #FAA320;
     color: #fff;
-    background: #1a1a1a;
+    background: #FAA320;
     font-size: 14px;
     text-transform: uppercase;
     font-weight: 600;
 }
 
 .product-button-actions .add-to-cart:hover {
-    background: #555;
+	border: 1px solid #81C341;
+    background: #81C341;
 }
 
 .product-button-actions .same-btn {
