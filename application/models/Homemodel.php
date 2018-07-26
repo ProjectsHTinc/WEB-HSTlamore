@@ -405,20 +405,28 @@ Class Homemodel extends CI_Model
 	  	return $res;
    }
    
-       function get_productdetails($prod_id){
+   function get_productdetails($prod_id){
 		$sql="SELECT * FROM products WHERE id ='$prod_id' AND status = 'Active'";
 	  	$resu=$this->db->query($sql);
 	  	$res=$resu->result();
 	  	return $res;
    }
-   function get_size($prod_id){
-		$sql="SELECT B.id,B.attribute_value FROM product_combined A, attribute_masters B WHERE A.mas_size_id = B.attribute_type AND A.product_id = '$prod_id' AND B.attribute_type ='1' AND A.status = 'Active'";
+   
+   function get_cproduct_details($prod_id){
+		$sql="SELECT * FROM product_combined WHERE product_id ='$prod_id' AND prod_default = '1' AND status = 'Active' ";
 	  	$resu=$this->db->query($sql);
 	  	$res=$resu->result();
 	  	return $res;
    }
-      function get_colour($prod_id){
-		$sql="SELECT B.id,B.attribute_name,B.attribute_value FROM product_combined A, attribute_masters B WHERE A.mas_size_id = B.attribute_type AND A.product_id = '$prod_id' AND B.attribute_type ='2' AND A.status = 'Active'";
+   
+   function get_size($prod_id){
+		$sql="SELECT B.id, B.attribute_value FROM product_combined A, attribute_masters B WHERE A.mas_size_id = B.id AND A.product_id = '$prod_id' AND B.attribute_type = '1' AND A.status = 'Active' GROUP BY A.mas_size_id";
+	  	$resu=$this->db->query($sql);
+	  	$res=$resu->result();
+	  	return $res;
+   }
+      function get_colour($product_id,$c_size_id){
+		$sql="SELECT B.id,B.attribute_name,B.attribute_value FROM product_combined A, attribute_masters B WHERE A.mas_color_id = B.id AND A.product_id = '$product_id' AND A.mas_size_id = '$c_size_id' AND B.attribute_type ='2' AND A.status = 'Active'  GROUP BY A.mas_color_id";
 	  	$resu=$this->db->query($sql);
 	  	$res=$resu->result();
 	  	return $res;

@@ -5,16 +5,27 @@ if (count($product_details)>0){
 		$product_name = $prod->product_name;
 		$sku_code = $prod->sku_code;
 		$product_description = $prod->product_description;
+		$prod_mrp_price = $prod->prod_mrp_price ;
+		$prod_actual_price = $prod->prod_actual_price;
 		$combined_status = $prod->combined_status;
 		
 		if ($combined_status =='1'){
-			$size_result = $this->homemodel->get_size($product_id);
-			$colour_result = $this->homemodel->get_colour($product_id);
+			$cproduct_details = $this->homemodel->get_cproduct_details($product_id);
+			if (count($cproduct_details)>0){
+				foreach($cproduct_details as $cprod){ 
+					$c_product_id = $cprod->id;
+					$c_size_id = $cprod->mas_size_id;
+					$c_color_id = $cprod->mas_color_id;
+					$c_prod_actual_price = $cprod->prod_actual_price;
+					$c_mrp_price = $cprod->prod_mrp_price;
+				}
+			}
+			$c_size_result = $this->homemodel->get_size($product_id);
+			$c_colour_result = $this->homemodel->get_colour($product_id,$c_size_id);
 		}
 	}
 }
 ?>
-
         <!-- Page Breadcrumb Start -->
         <div class="main-breadcrumb mb-100">
             <div class="container">
@@ -66,7 +77,7 @@ if (count($product_details)>0){
                     </div>
                     <!-- Thumbnail Description Start -->
                     <div class="col-sm-7">
-                     <form id="product-form" class="contact-form" action="" method="post">
+                     <form id="product-form" name="product-form" class="contact-form" action="" method="post">
                         <div class="thubnail-desc fix">
                             <h2 class="product-header mb-20"><?php echo $product_name; ?></h2>
                             <!-- Product Rating Start -->
@@ -86,19 +97,19 @@ if (count($product_details)>0){
                              <!-- Product Price Description Start -->
                             <div class="product-price-desc mb-20">
                                 <ul class="pro-desc-list">
-                                    <li>Product Code: <span>SAMI</span></li>
-                                    <li>Availability: <span>in Stock</span></li>
+                                    <li>Product Code: <span><?php echo $sku_code; ?></span></li>
+                                    <!--<li>Availability: <span>in Stock</span></li>-->
                                 </ul>
                             </div>
                             <!-- Product Price Description End -->
                            
-                           
                              <?php if ($combined_status =='1') { ?>
+                             
                              <!-- Product Price Start -->
                             <div class="pro-price mb-20">
                                <ul class="pro-price-list">
-                                   <li class="price">₹241.99</li>
-                                   <li class="tax">Ex Tax: ₹199.99</li>
+                                   <li class="price">₹<span id="act_price"><?php echo $c_prod_actual_price;?></span></li>
+                                   <li class="tax">₹<span id="mrp_price"><?php echo $c_mrp_price;?></span></li>
                                </ul>
                             </div>
                             <!-- Product Price End -->
@@ -118,13 +129,14 @@ if (count($product_details)>0){
                             <div class="box-quantity mtb-10">
                                 <div class="quantity-item">
                                     <label>Size: </label>
-                                        <select>
-                                       <?php if ($size_result >0) {
-											foreach($size_result as $size){ 
-												echo '<option value='.$size->id.'>'.$size->attribute_value.'</option>';
+                                     <select name="product_size" id="product_size" onchange="disp_colours()">
+                                     <option value=''>Select Size</option>
+                                       <?php if ($c_size_result >0) {
+											foreach($c_size_result as $size){ 
+												echo '<option value="'.$size->id.'">'.$size->attribute_value.'</option>';
 											} 
 										} ?>
-                                        </select>
+                                       </select><script> $('#product_size').val('<?php echo $c_size_id; ?>');</script>
                                 </div>
                             </div>
                             <!-- Product Box Quantity End -->
@@ -132,23 +144,25 @@ if (count($product_details)>0){
                             <div class="box-quantity mtb-10">
                                 <div class="quantity-item">
                                     <label>Colour: </label>
-                                       <select>
-                                          <?php if ($colour_result >0) {
-											foreach($colour_result as $color){ 
-												echo '<option value='.$color->id.'>'.$color->attribute_name.'</option>';
+                                       <select name="product_colour" id="product_colour">
+                                       <option value=''>Select Colour</option>
+                                          <?php if ($c_colour_result >0) {
+											foreach($c_colour_result as $color){ 
+												echo '<option value="'.$color->id.'">'.$color->attribute_name.'</option>';
 											} 
 										} ?>
-                                        </select>
+                                       </select><script> $('#product_colour').val('<?php echo $c_color_id; ?>');</script>
                                 </div>
                             </div>
                             <!-- Product Box Quantity End -->
+                            <input type="hidden" name="product_id" id="product_id" value="<?php echo $product_id; ?>" />
                             <?php } else { ?>
                             
                              <!-- Product Price Start -->
                             <div class="pro-price mb-20">
                                <ul class="pro-price-list">
-                                   <li class="price">₹241.99</li>
-                                   <li class="tax">Ex Tax: ₹199.99</li>
+                                   <li class="price">₹<?php echo $prod_actual_price;?></li>
+                                   <li class="tax">₹<?php echo $prod_mrp_price;?></li>
                                </ul>
                             </div>
                             <!-- Product Price End -->
@@ -164,6 +178,7 @@ if (count($product_details)>0){
                                 </div>
                             </div>
                             <!-- Product Box Quantity End -->
+                            <input type="hidden" name="product_id" id="product_id" value="<?php echo $product_id; ?>" />
                             <?php } ?>
                             <!-- Product Button Actions Start -->
                             <div class="product-button-actions">
@@ -235,9 +250,7 @@ if (count($product_details)>0){
                         <!-- Product Thumbnail Tab Content Start -->
                         <div class="tab-content thumb-content">
                             <div id="detail" class="tab-pane fade in active pb-40">
-                                <p class="mb-10">Samsung Galaxy Tab 10.1, is the world’s thinnest tablet, measuring 8.6 mm thickness, running with Android 3.0 Honeycomb OS on a 1GHz dual-core Tegra 2 processor, similar to its younger brother Samsung Galaxy Tab 8.9.</p>
-                                <p class="mb-10">Samsung Galaxy Tab 10.1 gives pure Android 3.0 experience, adding its new TouchWiz UX or TouchWiz 4.0 – includes a live panel, which lets you to customize with different content, such as your pictures, bookmarks, and social feeds, sporting a 10.1 inches WXGA capacitive touch screen with 1280 x 800 pixels of resolution, equipped with 3 megapixel rear camera with LED flash and a 2 megapixel front camera, HSPA+ connectivity up to 21Mbps, 720p HD video recording capability, 1080p HD playback, DLNA support, Bluetooth 2.1, USB 2.0, gyroscope, Wi-Fi 802.11 a/b/g/n, micro-SD slot, 3.5mm headphone jack, and SIM slot, including the Samsung Stick – a Bluetooth microphone that can be carried in a pocket like a pen and sound dock with powered subwoofer.</p>
-                                <p class="mb-10">Samsung Galaxy Tab 10.1 will come in 16GB / 32GB / 64GB verities and pre-loaded with Social Hub, Reader’s Hub, Music Hub and Samsung Mini Apps Tray – which gives you access to more commonly used apps to help ease multitasking and it is capable of Adobe Flash Player 10.2, powered by 6860mAh battery that gives you 10hours of video-playback time. äö</p>
+                                <p class="mb-10"><?php echo $product_description; ?></p>
                             </div>
                             <div id="review" class="tab-pane fade">
                                 <!-- Reviews Start -->
@@ -460,3 +473,39 @@ if (count($product_details)>0){
             <!-- Container End -->
         </div>
         <!-- Best Seller Products End -->
+<script>
+function disp_colours()
+	{
+		var product_id = $('#product_id').val();
+		var product_size = $('#product_size').val();
+		var result = '';
+		
+		//make the ajax call
+		$.ajax({
+		url: '<?php echo base_url(); ?>home/disp_colour_price/',
+		type: 'POST',
+		data: {event_id : <?php echo $event_id; ?>,size_id : product_size},
+		success: function(data) {
+		var dataArray = JSON.parse(data);
+		if (dataArray.length>0) {
+			result +="<fieldset><p class='event-desc-head'>Select Time</p><div class='form-group'><div class='col-md-4'><select class='form-control input-lg select_booking' id='show_time' onchange='disp_plan()'><option value=''>Select Time</option>";
+
+			for (var i = 0; i < dataArray.length; i++){
+				var id = dataArray[i].id;
+				var show_time = dataArray[i].show_time;
+				
+				result +="<option value='"+show_time+"'>"+show_time+"</option>";
+			};
+				result +="</select></div></div></fieldset>";
+
+			$("#plan_time").html(result).show();
+		} else {
+			result +="No Records found!..";
+			$("#plan_time").html(result).show();
+			$('#plan_details').hide();
+			$('#plan_seats').hide();
+		}
+		}
+		});
+	}
+</script>

@@ -1492,7 +1492,10 @@ ul.pull-left.home-4-search i {
 .pro-desc-list li {
     color: #1a1a1a;
 }
-
+.tax{
+	 -webkit-text-decoration-line: line-through; /* Safari */
+     text-decoration-line: line-through; 
+}
 .pro-desc-list li span {
     margin-left: 5px;
 }

@@ -1,7 +1,7 @@
 <?php 
 	$guest_data = 'lil'.$_SESSION["__ci_last_regenerate"];
 	$this->session->set_userdata('guest_session', $guest_data);
-	echo '<pre>' . print_r($_SESSION, TRUE) . '</pre>';
+	//echo '<pre>' . print_r($_SESSION, TRUE) . '</pre>';
 ?>
 <!doctype html>
 <html class="no-js" lang="en-US">
