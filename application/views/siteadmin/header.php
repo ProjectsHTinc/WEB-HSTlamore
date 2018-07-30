@@ -180,79 +180,16 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="javascript:void(0);" data-toggle="collapse" data-target="#form_dr"><i class=" icon-flag mr-10"></i>Forms<span class="pull-right"><i class="fa fa-fw fa-angle-down"></i></span></a>
+                    <a href="javascript:void(0);" data-toggle="collapse" data-target="#form_dr"><i class=" icon-flag mr-10"></i>Customer<span class="pull-right"><i class="fa fa-fw fa-angle-down"></i></span></a>
                     <ul id="form_dr" class="collapse collapse-level-1">
                         <li>
-                            <a href="form-element.html">Basic Forms</a>
+                            <a href="<?php echo base_url(); ?>admin/customers">View Customers</a>
                         </li>
-                        <li>
-                            <a href="form-layout.html">form Layout</a>
-                        </li>
-                        <li>
-                            <a href="form-advanced.html">Form Advanced</a>
-                        </li>
-                        <li>
-                            <a href="form-mask.html">Form Mask</a>
-                        </li>
-                        <li>
-                            <a href="form-picker.html">Form Picker</a>
-                        </li>
-                        <li>
-                            <a href="form-validation.html">form Validation</a>
-                        </li>
-                        <li>
-                            <a href="form-wizard.html">Form Wizard</a>
-                        </li>
-                        <li>
-                            <a href="form-x-editable.html">X-Editable</a>
-                        </li>
-                        <li>
-                            <a href="cropperjs.html">Cropperjs</a>
-                        </li>
-                        <li>
-                            <a href="form-file-upload.html">File Upload</a>
-                        </li>
-                        <li>
-                            <a href="dropzone.html">Dropzone</a>
-                        </li>
-                        <li>
-                            <a href="bootstrap-wysihtml5.html">Bootstrap Wysihtml5</a>
-                        </li>
-                        <li>
-                            <a href="tinymce-wysihtml5.html">Tinymce Wysihtml5</a>
-                        </li>
-                        <li>
-                            <a href="summernote-wysihtml5.html">summernote</a>
-                        </li>
-                        <li>
-                            <a href="typeahead-js.html">typeahead</a>
-                        </li>
+
                     </ul>
                 </li>
 
-                <li>
-                    <a href="javascript:void(0);" data-toggle="collapse" data-target="#icon_dr"><i class="icon-options mr-10"></i>Icons<span class="pull-right"><i class="fa fa-fw fa-angle-down"></i></span></a>
-                    <ul id="icon_dr" class="collapse collapse-level-1">
-                        <li>
-                            <a href="fontawesome.html">Fontawesome</a>
-                        </li>
-                        <li>
-                            <a href="themify.html">Themify</a>
-                        </li>
-                        <li>
-                            <a href="linea-icon.html">Linea</a>
-                        </li>
-                        <li>
-                            <a href="simple-line-icons.html">Simple Line</a>
-                        </li>
-                        <li>
-                            <a href="pe-icon-7.html">Pe-icon-7</a>
-                        </li>
-                        <li>
-                            <a href="glyphicons.html">Glyphicons</a>
-                        </li>
-                    </ul>
-                </li>
+        
 
             </ul>
         </div>
