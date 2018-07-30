@@ -80,6 +80,7 @@ Class Specificationmodel extends CI_Model
 
    function update_spec_name($spec_name,$spec_status,$user_id,$spec_id){
    $id=base64_decode($spec_id)/9876;
+
    $update="UPDATE specification_masters SET spec_name='$spec_name',status='$spec_status',updated_at=NOW(),updated_by='$user_id' WHERE id='$id'";
    $res=$this->db->query($update);
    if($res){

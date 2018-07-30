@@ -39,18 +39,19 @@ Class Productmodel extends CI_Model
 
        if($combined_status=='1'){
          $combined_cnt=count($mas_size);
-         for($i=0;$i<$combined_cnt;$i++){
+         for($i=0;$i< count($mas_size);$i++){
            $mas_color_id=$mas_color[$i];
            $mas_size_id=$mas_size[$i];
            $prod_comb_mrp_price_id=$prod_comb_mrp_price[$i];
            $prod_comb_actual_price_id=$prod_comb_actual_price[$i];
-           $prod_default_id=$prod_default;
+          $prod_default_id=$prod_default[$i];
+
 
            $prod_comb_total_stocks_id=$prod_comb_total_stocks[$i];
           $check ="SELECT * FROM product_combined WHERE mas_color_id='$mas_color_id' AND mas_size_id='$mas_size_id' AND product_id='$last_prod_id'";
           $result=$this->db->query($check);
           if($result->num_rows()==0){
-            $reg_query="INSERT INTO product_combined (product_id,mas_size_id,mas_color_id,prod_mrp_price,prod_actual_price,prod_default,total_stocks,stocks_left,status,created_at,created_by) VALUES('$last_prod_id','$mas_size_id','$mas_color_id','$prod_comb_mrp_price_id','$prod_comb_actual_price_id','$prod_default[$i]','$prod_comb_total_stocks_id','$prod_comb_total_stocks_id','Active',NOW(),'$user_id')";
+            $reg_query="INSERT INTO product_combined (product_id,mas_size_id,mas_color_id,prod_mrp_price,prod_actual_price,prod_default,total_stocks,stocks_left,status,created_at,created_by) VALUES('$last_prod_id','$mas_size_id','$mas_color_id','$prod_comb_mrp_price_id','$prod_comb_actual_price_id','$prod_default_id','$prod_comb_total_stocks_id','$prod_comb_total_stocks_id','Active',NOW(),'$user_id')";
            $req_q=$this->db->query($reg_query);
          }else{
          }
@@ -183,17 +184,25 @@ Class Productmodel extends CI_Model
 
 
 
-   function update_prod_info($product_token,$sku_code,$product_name,$cat_id,$sub_cat_id,$product_desc,$delivery_fee,$prod_actual_price,$prod_mrp_price,$prod_offer_percentage,$prod_return_policy,$prod_total_stocks,$prod_minimum_stocks,$prod_cod,$prod_status,$user_id,$prod_meta_title,$prod_meta_keywords,$product_meta_desc){
+   function update_prod_info($product_token,$sku_code,$product_name,$cat_id,$sub_cat_id,$product_desc,$delivery_fee,$prod_actual_price,$prod_mrp_price,$prod_offer_percentage,$prod_return_policy,$prod_total_stocks,$prod_minimum_stocks,$prod_cod,$prod_status,$user_id,$prod_meta_title,$prod_meta_keywords,$product_meta_desc,$combined_status){
     $id=base64_decode($product_token)/9876;
     $update="UPDATE products SET sku_code='$sku_code',product_name='$product_name',cat_id='$cat_id',sub_cat_id='$sub_cat_id',product_description='$product_desc',delivery_fee_status='$delivery_fee',prod_actual_price='$prod_actual_price',prod_mrp_price='$prod_mrp_price',offer_percentage='$prod_offer_percentage',prod_return_policy='$prod_return_policy',total_stocks='$prod_total_stocks',min_stocks_status='$prod_minimum_stocks',prod_cod='$prod_cod',status='$prod_status',updated_at=NOW(),updated_by='$user_id',product_meta_title='$prod_meta_title',product_meta_desc='$product_meta_desc',product_meta_keywords='$prod_meta_keywords' WHERE id='$id'";
    $res=$this->db->query($update);
-   $check_total_stocks="SELECT sum(total_stocks) as combined_total_stocks FROM product_combined WHERE product_id='$id'";
-   $result_stocks=$this->db->query($check_total_stocks);
-   $res_stocks=$result_stocks->result();
-   foreach($res_stocks as $row_tot_stocks){}
-   $tota_stocks= $row_tot_stocks->combined_total_stocks;
-   $update_total_main="UPDATE products SET total_stocks='$tota_stocks',stocks_left='$tota_stocks' WHERE id='$id'";
-   $result_stocks=$this->db->query($update_total_main);
+        if($combined_status=='1'){
+          $check_total_stocks="SELECT sum(total_stocks) as combined_total_stocks FROM product_combined WHERE product_id='$id'";
+          $result_stocks=$this->db->query($check_total_stocks);
+          $res_stocks=$result_stocks->result();
+          foreach($res_stocks as $row_tot_stocks){}
+          $tota_stocks= $row_tot_stocks->combined_total_stocks;
+          $update_total_main="UPDATE products SET total_stocks='$tota_stocks',stocks_left='$tota_stocks' WHERE id='$id'";
+          $result_stocks=$this->db->query($update_total_main);
+        }else{
+          $update_total_main="UPDATE products SET total_stocks='$prod_total_stocks',stocks_left='$prod_total_stocks' WHERE id='$id'";
+          $result_stocks=$this->db->query($update_total_main);
+        }
+
+
+
    if($res){
       echo "success";
     }else{

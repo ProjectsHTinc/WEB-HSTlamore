@@ -115,8 +115,8 @@ $("#comb_form").validate({
 rules: {
     mas_size: {required: true },
     mas_color: {  required: true },
-    prod_actual_price:{required:true,digits: true},
-    prod_mrp_price:{required:true,digits: true},
+    prod_actual_price:{required:true,number: true},
+    prod_mrp_price:{required:true,number: true},
 	   comb_status:{required:true},
     total_stocks: {required: true,digits:true }
 },
@@ -124,7 +124,7 @@ rules: {
           mas_size: { required:"Select size" },
 					mas_color: { required:"Select Color" },
 					prod_mrp_price: { required:"Enter  m.r.p price"},
-					prod_actual_price: { required:"Enter  actual price"},
+					prod_actual_price: { required:"Enter  actual price", number: "Decimal Numbers Only"},
 					total_stocks: {required:"Enter total stocks" },
 					comb_status:{required:"Select status"}
       }

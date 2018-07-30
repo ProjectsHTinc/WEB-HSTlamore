@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Kenny I Fast build Admin dashboard for any platform</title>
+    <title>Lila moreAdmin</title>
     <meta name="description" content="" />
     <meta name="keywords" content="a" />
     <meta name="author" content="" />

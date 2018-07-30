@@ -195,7 +195,7 @@
 								<div class="form-group">
 									<label class="control-label"></label>
 									<div class="">
-												<input type="radio" name="prod_default[]" id="prod_default_1" value="1" checked>
+												<input type="radio" name="prod_default[]" id="prod_default_1" value="1" checked >
 												<label for="radio1">Set as Default</label>
 									</div>
 								</div>
@@ -297,10 +297,15 @@
 						</div>
 					</div>
 					<div class="col-md-6">
-						<div class="form-group">
+						<!-- <div class="form-group">
 								<label class="control-label mb-10">Product Minimum stocks remain</label>
 							<input type="text" id="prod_minimum_stocks" name="prod_minimum_stocks" class="form-control" placeholder="">
-						</div>
+						</div> -->
+						<label class="control-label mb-10">Product display </label>
+					<select class="form-control" data-placeholder="Choose a Sub Category" tabindex="1" name="prod_status" id="prod_status">
+						<option value="Active">Active</option>
+						<option value="Inactive">Inactive</option>
+					</select>
 					</div>
 				</div>
 				<div class="row">
@@ -316,11 +321,7 @@
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
-							<label class="control-label mb-10">Product display </label>
-						<select class="form-control" data-placeholder="Choose a Sub Category" tabindex="1" name="prod_status" id="prod_status">
-							<option value="Active">Active</option>
-							<option value="Inactive">Inactive</option>
-						</select>
+
 						</div>
 					</div>
 				</div>
@@ -439,8 +440,8 @@ $('#com_div').hide();
 				cat_id: {required: true },
 				product_desc: {  required: true },
 		 		product_cover_img: {required: true,accept: "jpg,jpeg,png" },
-				prod_actual_price:{required:true,digits: true},
-				prod_mrp_price:{required:true,digits: true},
+				prod_actual_price:{required:true,number: true},
+				prod_mrp_price:{required:true,number: true},
 				prod_return_policy: {required: true },
 				prod_stock_left: {required: true },
 
@@ -448,10 +449,10 @@ $('#com_div').hide();
 				prod_meta_keywords: {required: true },
 				product_meta_desc: {required: true },
 				prod_total_stocks: {required: true,digits:true },
-				prod_minimum_stocks:{required:true,digits:true,le: '#prod_total_stocks' },
-				prod_default: "required",
-				'prod_comb_actual_price[]': {"required": true,digits: true},
-				'prod_comb_mrp_price[]': {"required": true,digits: true},
+				prod_minimum_stocks:{required:false,digits:true,le: '#prod_total_stocks' },
+				"prod_default[]": "required",
+				'prod_comb_actual_price[]': {"required": true,number: true},
+				'prod_comb_mrp_price[]': {"required": true,number: true},
 				'product_tags[]': {"required": true},
 				'prod_comb_total_stocks[]':{"required": true,digits: true}
 		},
@@ -471,6 +472,8 @@ $('#com_div').hide();
 
 					cat_id:{required:"Select Category"},
 					'product_tags[]': {"required": "Select tags"},
+					'prod_comb_actual_price[]': {"required": "enter actual price"},
+					'prod_comb_mrp_price[]': {"required": "enter the mrp price"},
 					product_cover_img:{required:"Select cover image", accept:"Please upload .jpg or .png .",fileSize:"File must be JPG or PNG, less than 200kb"}
 
       }
@@ -509,4 +512,5 @@ function getsubcat(){
 					    }
 					    });
 }
+
   </script>

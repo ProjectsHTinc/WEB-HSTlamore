@@ -144,6 +144,7 @@
 																	<div class="form-group">
 																		<label class="control-label mb-10">Product Actual Price<small class="notes">(Note : Actual Price)</small></label>
 																			<input type="text" id="prod_actual_price" name="prod_actual_price" class="form-control"   value="<?php echo $rows_prod->prod_actual_price; ?>">
+																				<input type="hidden" id="combined_status" name="combined_status" class="form-control"   value="<?php echo $rows_prod->combined_status; ?>">
 																	</div>
 																</div>
 																<!--/span-->
@@ -182,24 +183,19 @@
 																<!--/span-->
 																<div class="col-md-6">
 																	<div class="form-group">
-																		<label class="control-label mb-10">Product Minimum stocks remain</label>
-																	<input type="text" id="prod_minimum_stocks" name="prod_minimum_stocks" class="form-control" placeholder="" value="<?php echo $rows_prod->min_stocks_status; ?>">
+																		<!-- <label class="control-label mb-10">Product Minimum stocks remain</label>
+																	<input type="text" id="prod_minimum_stocks" name="prod_minimum_stocks" class="form-control" placeholder="" value="<?php echo $rows_prod->min_stocks_status; ?>"> -->
+																	<label class="control-label mb-10">Cash  on Delivery</label>
+																	<select class="form-control" data-placeholder="Choose a Category" tabindex="1" name="prod_cod" id="prod_cod">
+																		<option value="Not Available">Not Available</option>
+																		<option value="Available">Available</option>
+																	</select>
+																		<script> $('#prod_cod').val('<?php echo $rows_prod->prod_cod; ?>');</script>
 																	</div>
 																</div>
 																<!--/span-->
 															</div>
 															<div class="row">
-																<div class="col-md-6">
-																	<div class="form-group">
-																		<label class="control-label mb-10">Cash  on Delivery</label>
-																		<select class="form-control" data-placeholder="Choose a Category" tabindex="1" name="prod_cod" id="prod_cod">
-																			<option value="Not Available">Not Available</option>
-																			<option value="Available">Available</option>
-																		</select>
-																			<script> $('#prod_cod').val('<?php echo $rows_prod->prod_cod; ?>');</script>
-																	</div>
-																</div>
-																<!--/span-->
 																<div class="col-md-6">
 																	<div class="form-group">
 																		<label class="control-label mb-10">Product display </label>
@@ -208,6 +204,12 @@
 																		<option value="Inactive">Inactive</option>
 																	</select>
 																			<script> $('#prod_status').val('<?php echo $rows_prod->status; ?>');</script>
+																	</div>
+																</div>
+																<!--/span-->
+																<div class="col-md-6">
+																	<div class="form-group">
+
 																	</div>
 																</div>
 																<!--/span-->
@@ -810,15 +812,15 @@ function deletecomb(a_id){
 						  },
 				cat_id: {required: true },
 				product_desc: {  required: true },
-				prod_actual_price:{required:true,digits: true},
-				prod_mrp_price:{required:true,digits: true},
+				prod_actual_price:{required:true,number: true},
+				prod_mrp_price:{required:true,number: true},
 				prod_return_policy: {required: true },
 				prod_stock_left: {required: true },
 				prod_meta_title: {required: true },
 				prod_meta_keywords: {required: true },
 				product_meta_desc: {required: true },
 				prod_total_stocks: {required: true,digits:true },
-				prod_minimum_stocks:{required:true,digits:true,le: '#prod_total_stocks' }
+				prod_minimum_stocks:{required:false,digits:true,le: '#prod_total_stocks' }
 
 		},
       messages: {

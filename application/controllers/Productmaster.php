@@ -308,7 +308,8 @@ class Productmaster extends CI_Controller {
 				$prod_meta_title=$this->db->escape_str($this->input->post('prod_meta_title'));
 				$prod_meta_keywords=$this->db->escape_str($this->input->post('prod_meta_keywords'));
 				$product_meta_desc=$this->db->escape_str($this->input->post('product_meta_desc'));
-				$data=$this->productmodel->update_prod_info($product_token,$sku_code,$product_name,$cat_id,$sub_cat_id,$product_desc,$delivery_fee,$prod_actual_price,$prod_mrp_price,$prod_offer_percentage,$prod_return_policy,$prod_total_stocks,$prod_minimum_stocks,$prod_cod,$prod_status,$user_id,$prod_meta_title,$prod_meta_keywords,$product_meta_desc);
+				$combined_status=$this->db->escape_str($this->input->post('combined_status'));
+				$data=$this->productmodel->update_prod_info($product_token,$sku_code,$product_name,$cat_id,$sub_cat_id,$product_desc,$delivery_fee,$prod_actual_price,$prod_mrp_price,$prod_offer_percentage,$prod_return_policy,$prod_total_stocks,$prod_minimum_stocks,$prod_cod,$prod_status,$user_id,$prod_meta_title,$prod_meta_keywords,$product_meta_desc,$combined_status);
 
 			}else{
 				$this->load->view('siteadmin/login');

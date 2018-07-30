@@ -168,62 +168,15 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="javascript:void(0);" data-toggle="collapse" data-target="#ui_dr"><i class="icon-vector mr-10"></i>UI Elements<span class="pull-right"><i class="fa fa-fw fa-angle-down"></i></span></a>
+                    <a href="javascript:void(0);" data-toggle="collapse" data-target="#ui_dr"><i class="icon-vector mr-10"></i>Promotional <span class="pull-right"><i class="fa fa-fw fa-angle-down"></i></span></a>
                     <ul id="ui_dr" class="collapse collapse-level-1">
                         <li>
-                            <a href="panels-wells.html">Panels & Wells</a>
+                            <a href="<?php echo base_url(); ?>admin/banner">Banners</a>
                         </li>
                         <li>
-                            <a href="modals.html">Modals</a>
+                            <a href="<?php echo base_url(); ?>admin/ads">Ads Banner</a>
                         </li>
-                        <li>
-                            <a href="sweetalert.html">Sweet Alerts</a>
-                        </li>
-                        <li>
-                            <a href="notifications.html">notifications</a>
-                        </li>
-                        <li>
-                            <a href="typography.html">Typography</a>
-                        </li>
-                        <li>
-                            <a href="buttons.html">Buttons</a>
-                        </li>
-                        <li>
-                            <a href="accordion-toggle.html">Accordion / Toggles</a>
-                        </li>
-                        <li>
-                            <a href="tabs.html">Tabs</a>
-                        </li>
-                        <li>
-                            <a href="progressbars.html">Progress bars</a>
-                        </li>
-                        <li>
-                            <a href="skills-counter.html">Skills & Counters</a>
-                        </li>
-                        <li>
-                            <a href="pricing.html">Pricing Tables</a>
-                        </li>
-                        <li>
-                            <a href="nestable.html">Nestables</a>
-                        </li>
-                        <li>
-                            <a href="dorpdown.html">Dropdowns</a>
-                        </li>
-                        <li>
-                            <a href="bootstrap-treeview.html">Tree View</a>
-                        </li>
-                        <li>
-                            <a href="carousel.html">Carousel</a>
-                        </li>
-                        <li>
-                            <a href="range-slider.html">Range Slider</a>
-                        </li>
-                        <li>
-                            <a href="grid-styles.html">Grid</a>
-                        </li>
-                        <li>
-                            <a href="bootstrap-ui.html">Bootstrap UI</a>
-                        </li>
+
                     </ul>
                 </li>
                 <li>

@@ -15,15 +15,24 @@ Class Categorymodel extends CI_Model
     if(empty($cat_name)){
 
     }else{
-      $insert_query="INSERT INTO category_masters (parent_id,category_name,category_image,category_thumbnail,category_desc,category_meta_title,category_meta_desc,category_keywords,status,created_at,created_by) VALUES('1','$cat_name','$cat_cover_img','$cat_thumb_img','$cat_desc','$cat_meta_title','$cat_meta_desc','$cat_meta_keywords','$cat_status',NOW(),'$user_id')";
-      $res=$this->db->query($insert_query);
-      if($res){
-               $data = array("status" => "success");
-               return $data;
-           }else{
-               $data = array("status" => "failed");
-               return $data;
-           }
+      $select="SELECT * FROM category_masters WHERE category_name='$cat_name'";
+      $res=$this->db->query($select);
+     if($res->num_rows()>0){
+       $data = array("status" => "Already Exist");
+       return $data;
+     }else{
+       $insert_query="INSERT INTO category_masters (parent_id,category_name,category_image,category_thumbnail,category_desc,category_meta_title,category_meta_desc,category_keywords,status,created_at,created_by) VALUES('1','$cat_name','$cat_cover_img','$cat_thumb_img','$cat_desc','$cat_meta_title','$cat_meta_desc','$cat_meta_keywords','$cat_status',NOW(),'$user_id')";
+       $res=$this->db->query($insert_query);
+       if($res){
+                $data = array("status" => "success");
+                return $data;
+            }else{
+                $data = array("status" => "failed");
+                return $data;
+            }
+
+     }
+
     }
    }
    function check_category($cat_name,$user_id){

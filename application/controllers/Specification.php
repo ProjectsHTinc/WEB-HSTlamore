@@ -47,8 +47,9 @@ class Specification extends CI_Controller {
 		$user_role=$this->session->userdata('role_type_id');
 		if($user_role=='1' || $user_role=='2'){
 			$spec_name= $this->db->escape_str($this->input->post('spec_name'));
+			$spec_id= $this->db->escape_str($this->input->post('spec_id'));
 			$spec_status=$this->input->post('spec_status');
-			$data=$this->specificationmodel->create_spec_name($spec_name,$spec_status,$user_id);
+			$data=$this->specificationmodel->update_spec_name($spec_name,$spec_status,$user_id,$spec_id);
 		}else{
 			redirect('/');
 		}
