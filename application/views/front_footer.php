@@ -294,7 +294,7 @@
 	<script type="text/javascript">
 	$(window).load(function() {
 	 // start to load the first set of data
-        var guest_session = '<?php  echo $_SESSION['guest_session']; ?>';
+       // var guest_session = '<?php  //echo $_SESSION['guest_session']; ?>';
 		//alert(guest_session);
         //ajxCartdetails(guest_session_id);
 	});

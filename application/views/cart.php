@@ -27,7 +27,10 @@
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <!-- Form Start -->
-                        <form name="checkout"  id="checkout" method="post" action="<?php echo base_url(); ?>home/checkout/">
+                        <?php
+                        if (count($cart_list)>0){
+						?>
+                        <form name="checkout" id="checkout" method="post" action="<?php echo base_url(); ?>home/updatecart/">
                             <!-- Table Content Start -->
                             <div class="table-content table-responsive mb-50">
                                 <table>
@@ -42,26 +45,46 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    <?php 
+									$total_amount = '0';
+									foreach($cart_list as $clist){ 
+										$cart_id = $clist->id;
+										$sproduct_id = $clist->product_id;
+										$product_combined_id = $clist->product_combined_id;
+										$product_id = $clist->product_id * 663399;
+										$enc_product_name = strtolower(preg_replace("/[^\w]/", "-", $clist->product_name));
+										$enc_product_id = base64_encode($product_id);
+										$stotal = $clist->total_amount;
+										$price = $clist->price;;
+										
+										if ($product_combined_id >0){
+											$cproduct_details = $this->homemodel->get_colour_size($product_combined_id);
+											if (count($cproduct_details)>0){
+												foreach($cproduct_details as $cprod){ 
+													 $product_size = $cprod->size;
+													 $product_colour = $cprod->attribute_name;
+												}
+											} 
+										}else {
+												$product_size = '';
+												$product_colour = '';
+											}
+									?>
                                         <tr>
                                             <td class="product-thumbnail">
-                                                <a href="#"><img src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="cart-image" /></a>
+                                                <a href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/"><img src="<?php echo base_url(); ?>assets/products/<?php echo $clist->product_cover_img; ?>" alt="cart-image" /></a>
                                             </td>
-                                            <td class="product-name"><a href="#">dictum idrisus</a></td>
-                                            <td class="product-price"><span class="amount">₹165.00</span></td>
-                                            <td class="product-quantity"><input type="number" value="2" min="1" max="10" /></td>
-                                            <td class="product-subtotal">₹165.00</td>
-                                            <td class="product-remove"> <a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></td>
+                                            <td class="product-name"><a href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/"><?php echo $clist->product_name; ?></a><br /><?php echo $product_size;?>, <?php echo $product_colour;?></td>
+                                            <td class="product-price"><span class="amount">₹<?php echo $clist->price; ?></span></td>
+                                            <td class="product-quantity"><input name="quantity[]" type="number" value="<?php echo $clist->quantity; ?>" min="1" max="10" /></td>
+                                            <td class="product-subtotal">₹<?php echo $clist->total_amount; ?></td>
+                                            <td class="product-remove"> <a href="<?php echo base_url(); ?>home/deletecart/<?php echo $cart_id; ?>/" onclick="return confirm('Are you sure?')"><i class="fa fa-times" aria-hidden="true"></i></a></td>
                                         </tr>
-                                        <tr>
-                                            <td class="product-thumbnail">
-                                                <a href="#"><img src="<?php echo base_url(); ?>assets/front/img/new-products/6_2.jpg" alt="cart-image" /></a>
-                                            </td>
-                                            <td class="product-name"><a href="#">Carte Postal Clock</a></td>
-                                            <td class="product-price"><span class="amount">₹50.00</span></td>
-                                            <td class="product-quantity"><input type="number" value="1" min="1" max="10" /></td>
-                                            <td class="product-subtotal">₹50.00</td>
-                                            <td class="product-remove"> <a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></td>
-                                        </tr>
+                                        <input type="hidden" name="cart_id[]" value="<?php echo $cart_id; ?>" />
+                                        <input type="hidden" name="price[]" value="<?php echo $price; ?>" />
+                                       <?php 
+									   $total_amount = $total_amount + $stotal;
+									   } ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -71,7 +94,7 @@
                                 <div class="col-md-8 col-sm-7 col-xs-12">
                                     <div class="buttons-cart">
                                         <input type="submit" value="Update Cart" />
-                                        <a href="#">Continue Shopping</a>
+                                        <a href="<?php echo base_url(); ?>">Continue Shopping</a>
                                     </div>
                                 </div>
                                 <!-- Cart Button Start -->
@@ -84,18 +107,18 @@
                                             <tbody>
                                                 <tr class="cart-subtotal">
                                                     <th>Subtotal</th>
-                                                    <td><span class="amount">₹215.00</span></td>
+                                                    <td><span class="amount">₹<?php echo number_format((float)$total_amount, 2, '.', ''); ?></span></td>
                                                 </tr>
                                                 <tr class="order-total">
                                                     <th>Total</th>
                                                     <td>
-                                                        <strong><span class="amount">₹215.00</span></strong>
+                                                        <strong><span class="amount">₹<?php echo number_format((float)$total_amount, 2, '.', ''); ?></span></strong>
                                                     </td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                         <div class="wc-proceed-to-checkout">
-                                            <a href="<?php echo base_url(); ?>home/checkout/"">Proceed to Checkout</a>
+                                            <a href="<?php echo base_url(); ?>home/checkout/">Proceed to Checkout</a>
                                         </div>
                                     </div>
                                 </div>
@@ -103,6 +126,7 @@
                             </div>
                             <!-- Row End -->
                         </form>
+                        <?php } ?>
                         <!-- Form End -->
                     </div>
                 </div>

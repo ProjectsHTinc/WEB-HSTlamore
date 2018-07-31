@@ -45,7 +45,7 @@ Class Homemodel extends CI_Model
         $route = "transactional";
 
         //Prepare you post parameters
-        $postData = array(
+        $postdatas = array(
             'authkey' => $authKey,
             'mobiles' => $mobileNumber,
             'message' => $message,
@@ -62,7 +62,7 @@ Class Homemodel extends CI_Model
             CURLOPT_URL => $url,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => $postData
+            CURLOPT_POSTFIELDS => $postdatas
             //,CURLOPT_FOLLOWLOCATION => true
         ));
 
@@ -90,6 +90,28 @@ Class Homemodel extends CI_Model
 		$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?";
 		$password = substr( str_shuffle( $chars ), 0, $length );
 		return $password;
+	}
+	
+	function generate_orderid() {
+			$check_order = "SELECT * FROM purchase_order ORDER BY id DESC LIMIT 1";
+			$res=$this->db->query($check_order);
+
+			if($res->num_rows()>0){
+				foreach($res->result() as $rows) { 
+					$old_order_id = $rows->id;
+				}
+				$order_id = $old_order_id+1;
+			} else {
+				$order_id = 1;
+			}
+			
+		$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+		$unique_ref = substr( str_shuffle( $chars ), 0, 8 );
+		
+      	$unique_order_id = 'LAM-'.$unique_ref.'-'.$order_id;
+    	//echo 'Our unique reference number is: '.$unique_order_id;  
+		//exit;
+		return $unique_order_id;
 	}
 
    function exist_email($email){
@@ -145,13 +167,23 @@ Class Homemodel extends CI_Model
 		}
    }
 
+	function zipcode_check($zipcode){
+		$check_email="SELECT * FROM zipcode_masters WHERE zip_code='$zipcode'";
+		$res=$this->db->query($check_email);
+		
+		if($res->num_rows()>0){
+			echo "true";
+		}else{
+			echo "false";
+		}
+   }
 
 	function customer_login($username,$password){
 		
 			$pwd = md5($password);
-			
 			$check_user = "SELECT * FROM customers WHERE password = '$pwd' AND status = 'Active' AND (phone_number = '$username' OR email = '$username')";
 			$res=$this->db->query($check_user);
+		
 
 			if($res->num_rows()>0){
 				foreach($res->result() as $rows) { 
@@ -161,20 +193,11 @@ Class Homemodel extends CI_Model
 					$cust_mobile = $rows->phone_number;
 					$cust_email = $rows->email;
 				}
-				 	$data =  array("cust_id"=>$cust_id,"cust_name" => $cust_name,"cust_mobile"=>$cust_mobile,"cust_email"=>$cust_email);
+				 	$data =  array("cust_session_id"=>$cust_id,"cust_name" => $cust_name,"cust_mobile"=>$cust_mobile,"cust_email"=>$cust_email);
    	            	$this->session->set_userdata($data);
 					
 					$update_sql = "UPDATE customers SET last_login =NOW(),login_count='$login_count' WHERE id='$cust_id'";
 				 	$update_result = $this->db->query($update_sql);
-					
-					$check_address = "SELECT * FROM cus_address WHERE cus_id = '$cust_id' AND address_mode = '1'";
-					$add_res=$this->db->query($check_address);
-					if($add_res->num_rows()>0){
-						foreach($add_res->result() as $add_rows) { 
-							$address_data =  array("address_id"=>$add_rows->id,"address_country_id"=>$add_rows->country_id,"address_state"=>$add_rows->state,"address_city"=>$add_rows->city,"address_pincode"=>$add_rows->pincode,"address_house_no"=>$add_rows->house_no,"address_street"=>$add_rows->street,"address_landmark"=>$add_rows->landmark,"address_full_name"=>$add_rows->full_name,"address_mobile"=>$add_rows->mobile_number,"address_mobile_alter"=>$add_rows->alternative_mobile_number,"address_email"=>$add_rows->email_address,"address_type_id "=>$add_rows->address_type_id);
-						}
-						$this->session->set_userdata($address_data);
-					}
 					
 				echo "login";
 					}else{
@@ -223,14 +246,18 @@ Class Homemodel extends CI_Model
 			$cust_update = $this->db->query($customer_update);
 
 			if ($cust_pic !="") {
-				echo $customer_details_update = "UPDATE customer_details SET first_name = '$fname',last_name = '$lname',birth_date  = '$dob',gender  ='$gender',newsletter_status ='$newsletter',profile_picture = '$cust_pic',updated_at =now(), updated_by = '$cust_id' WHERE id  ='$cust_id'";
+				$customer_details_update = "UPDATE customer_details SET first_name = '$fname',last_name = '$lname',birth_date  = '$dob',gender  ='$gender',newsletter_status ='$newsletter',profile_picture = '$cust_pic',updated_at =now(), updated_by = '$cust_id' WHERE id  ='$cust_id'";
 			} else {
-				echo $customer_details_update = "UPDATE customer_details SET first_name = '$fname',last_name = '$lname',birth_date = '$dob',gender  ='$gender',newsletter_status ='$newsletter',updated_at =now(),updated_by = '$cust_id' WHERE id  ='$cust_id'";
+				$customer_details_update = "UPDATE customer_details SET first_name = '$fname',last_name = '$lname',birth_date = '$dob',gender  ='$gender',newsletter_status ='$newsletter',updated_at =now(),updated_by = '$cust_id' WHERE id  ='$cust_id'";
 			}
 			$cust_detail_update = $this->db->query($customer_details_update);
-			 
-			$redirect_url = base_url()."cust_details/";
-			header("Location: ".$redirect_url);
+			
+			if ($cust_detail_update){
+				$datas=array('status'=>'success');
+			}else {
+				$datas=array('status'=>'failure');;
+			}
+			return $datas;
    }
 
 
@@ -241,7 +268,13 @@ Class Homemodel extends CI_Model
 	  	return $res;
    }
    
-   
+   function get_cust_address_default($cust_id){
+   		 $check_address = "SELECT * FROM cus_address WHERE cus_id = '$cust_id' AND address_mode = '1'";
+		$add_res=$this->db->query($check_address);
+		$res=$add_res->result();
+	  	return $res;
+	}
+
    function cust_default_address($cust_id,$address_id){
 			$check_user = "SELECT * FROM cus_address WHERE cus_id = '$cust_id'";
 			$res=$this->db->query($check_user);
@@ -263,13 +296,17 @@ Class Homemodel extends CI_Model
 			$add_res=$this->db->query($check_address);
 					if($add_res->num_rows()>0){
 						foreach($add_res->result() as $add_rows) { 
-							$address_data =  array("address_id"=>$add_rows->id,"address_country_id"=>$add_rows->country_id,"address_state"=>$add_rows->state,"address_city"=>$add_rows->city,"address_pincode"=>$add_rows->pincode,"address_house_no"=>$add_rows->house_no,"address_street"=>$add_rows->street,"address_landmark"=>$add_rows->landmark,"address_full_name"=>$add_rows->full_name,"address_mobile"=>$add_rows->mobile_number,"address_mobile_alter"=>$add_rows->alternative_mobile_number,"address_email"=>$add_rows->email_address,"address_type_id "=>$add_rows->address_type_id);
+							$address_datas =  array("address_id"=>$add_rows->id,"address_country_id"=>$add_rows->country_id,"address_state"=>$add_rows->state,"address_city"=>$add_rows->city,"address_pincode"=>$add_rows->pincode,"address_house_no"=>$add_rows->house_no,"address_street"=>$add_rows->street,"address_landmark"=>$add_rows->landmark,"address_full_name"=>$add_rows->full_name,"address_mobile"=>$add_rows->mobile_number,"address_mobile_alter"=>$add_rows->alternative_mobile_number,"address_email"=>$add_rows->email_address,"address_type_id "=>$add_rows->address_type_id);
 						}
-						$this->session->set_userdata($address_data);
+						$this->session->set_userdata($address_datas);
 					}
-					
-			$redirect_url = base_url()."cust_address/";
-			header("Location: ".$redirect_url);
+			
+			if ($cust_update){
+				$datas=array('status'=>'success');
+			}else {
+				$datas=array('status'=>'failure');;
+			}
+			return $datas;
    }
    
    function cust_address_delete($address_id,$cust_id){
@@ -286,8 +323,8 @@ Class Homemodel extends CI_Model
 					$cu_update = $this->db->query($c_update);
 				}
 			}
-			$redirect_url = base_url()."cust_address/";
-			header("Location: ".$redirect_url);
+			$datas=array('status'=>'success');
+			return $datas;
    }
    
    
@@ -299,9 +336,14 @@ Class Homemodel extends CI_Model
 			$datas = $this->session->userdata();
 			$this->session->unset_userdata($datas);
 			$this->session->sess_destroy();
-			 
-			$redirect_url = base_url()."login/";
-			header("Location: ".$redirect_url);
+			
+			if ($cust_update){
+				$datas=array('status'=>'success');
+			}else {
+				$datas=array('status'=>'failure');;
+			}
+			return $datas;
+			
    }
 
 	function reset_password($email){
@@ -406,6 +448,10 @@ Class Homemodel extends CI_Model
    }
    
    function get_productdetails($prod_id){
+	   
+	   	$c_update = "UPDATE product_view_count SET view_count = view_count+1 WHERE product_id = '$prod_id'";
+		$c_update = $this->db->query($c_update);
+		
 		$sql="SELECT * FROM products WHERE id ='$prod_id' AND status = 'Active'";
 	  	$resu=$this->db->query($sql);
 	  	$res=$resu->result();
@@ -425,28 +471,252 @@ Class Homemodel extends CI_Model
 	  	$res=$resu->result();
 	  	return $res;
    }
-      function get_colour($product_id,$c_size_id){
-		$sql="SELECT B.id,B.attribute_name,B.attribute_value FROM product_combined A, attribute_masters B WHERE A.mas_color_id = B.id AND A.product_id = '$product_id' AND A.mas_size_id = '$c_size_id' AND B.attribute_type ='2' AND A.status = 'Active'  GROUP BY A.mas_color_id";
+      function get_colour($product_id,$size_id){
+		$sql="SELECT B.id,B.attribute_name,B.attribute_value FROM product_combined A, attribute_masters B WHERE A.mas_color_id = B.id AND A.product_id = '$product_id' AND A.mas_size_id = '$size_id' AND B.attribute_type ='2' AND A.status = 'Active'  GROUP BY A.mas_color_id";
 	  	$resu=$this->db->query($sql);
 	  	$res=$resu->result();
 	  	return $res;
-   }  
+   } 
    
-   	function newproducts(){
+   function get_price($product_id,$size_id,$colour_id){
+		$sql="SELECT * FROM product_combined WHERE product_id = '$product_id' AND mas_color_id = '$colour_id' AND mas_size_id = '$size_id' AND status = 'Active'";
+	  	$resu=$this->db->query($sql);
+	  	$res=$resu->result();
+	  	return $res;
+   } 
+   
+    function get_colour_size($product_combined_id){
+		$sql="SELECT am.attribute_value, am.attribute_name, pc.mas_color_id, pc.mas_size_id, ams.attribute_value AS size, pc.* FROM product_combined AS pc LEFT JOIN attribute_masters AS am ON am.id = pc.mas_color_id LEFT JOIN attribute_masters AS ams ON ams.id = pc.mas_size_id WHERE pc.id = '$product_combined_id' ";
+	  	$resu=$this->db->query($sql);
+	  	$res=$resu->result();
+	  	return $res;
+   } 
+   
+   
+   function cart_insert($product_id,$com_product_id,$browser_sess_id,$cust_id,$quantity,$price,$total_amount){
+	   
+	   $sel_cart = "SELECT * FROM product_cart WHERE product_id = '$product_id' AND product_combined_id ='$com_product_id' AND browser_sess_id ='$browser_sess_id'";
+		$cart_res = $this->db->query($sel_cart);
+			if($cart_res->num_rows()>0){
+				foreach($cart_res->result() as $cart_rows) { 
+					$cart_id = $cart_rows->id;
+				}
+				$cart_update = "UPDATE product_cart SET quantity = quantity+$quantity,total_amount = total_amount+$total_amount,updated_at =now(), updated_by = '$cust_id' WHERE id  ='$cart_id'";
+				$result = $this->db->query($cart_update);
+			} else {
+	   			$cart_insert="INSERT INTO product_cart(product_id,product_combined_id,browser_sess_id,cus_id,quantity,price,total_amount,status,created_at,created_by) VALUES('$product_id','$com_product_id','$browser_sess_id','$cust_id','$quantity','$price','$total_amount','Pending',now(),'$cust_id')";
+				$result=$this->db->query($cart_insert);
+			}
+	   
+	   		if ($result){
+				$datas=array('status'=>'success');
+			}else {
+				$datas=array('status'=>'failure');;
+			}
+			return $datas;
+
+   } 
+    
+	 function add_cart($product_id,$browser_sess_id,$cust_id){
+		$sel_product = "SELECT * FROM products WHERE id = '$product_id'";
+		$product_res=$this->db->query($sel_product);
+			if($product_res->num_rows()>0){
+				foreach($product_res->result() as $pro_rows) { 
+					$prod_actual_price = $pro_rows->prod_actual_price;
+				}
+			}
+			
+		$sel_cart = "SELECT * FROM product_cart WHERE product_id = '$product_id' AND browser_sess_id ='$browser_sess_id' ";
+		$cart_res = $this->db->query($sel_cart);
+			if($cart_res->num_rows()>0){
+				foreach($cart_res->result() as $cart_rows) { 
+					$cart_id = $cart_rows->id;
+				}
+				if ($cust_id!=''){
+					$cart_update = "UPDATE product_cart SET quantity = quantity+1,total_amount = total_amount+$prod_actual_price,cus_id ='$cust_id', updated_at =now(), updated_by = '$cust_id' WHERE id  ='$cart_id'";
+				} else {
+					$cart_update = "UPDATE product_cart SET quantity = quantity+1,total_amount = total_amount+$prod_actual_price,updated_at =now(), updated_by = '$cust_id' WHERE id  ='$cart_id'";
+				}
+				$result = $this->db->query($cart_update);
+			} else {
+	   			$cart_details="INSERT INTO product_cart(product_id,product_combined_id,browser_sess_id,cus_id,quantity,price,total_amount,status,created_at,created_by) VALUES('$product_id','0','$browser_sess_id','$cust_id','1','$prod_actual_price','$prod_actual_price','Pending',now(),'$cust_id')";
+			$result=$this->db->query($cart_details);
+			}
+			
+			if ($result){
+				$datas=array('status'=>'success');
+			}else {
+				$datas=array('status'=>'failure');;
+			}
+			return $datas;
+
+   } 
+			
+	function cart_list(){
+		$browser_sess_id = $this->session->userdata('browser_sess_id');
+		$sql = "SELECT A.*,B.product_name,B.product_cover_img FROM product_cart A,products B WHERE A.product_id = B.id AND A.browser_sess_id = '$browser_sess_id' AND A.order_id = '' AND A.status='Pending' ORDER BY A.id";
+		$resu=$this->db->query($sql);
+		$res=$resu->result();
+		return $res;
+   }
+   
+	function update_cart($cart_id,$quantity,$price){
+		$cust_id = $this->session->userdata('cust_session_id');
+		$cont_cart = count($cart_id);
+
+			for($i=0;$i<$cont_cart;$i++){
+				$sqty = $quantity[$i];
+				$sprice = $price[$i];
+				$stotal = $sqty * $sprice;
+				if ($cust_id!=''){
+					$update="UPDATE product_cart SET quantity='$quantity[$i]',total_amount='$stotal',cus_id ='$cust_id' WHERE id='$cart_id[$i]'";
+				} else {
+					$update="UPDATE product_cart SET quantity='$quantity[$i]',total_amount='$stotal' WHERE id='$cart_id[$i]'";
+				}
+			$res=$this->db->query($update);	
+			}
+			if ($res){
+				$datas=array('status'=>'success');
+			}else {
+				$datas=array('status'=>'failure');;
+			}
+			return $datas;
+   }
+   
+    function cart_delete($cart_id){
+			$del_cart = "DELETE FROM product_cart WHERE id = '$cart_id'";
+			$res=$this->db->query($del_cart);
+
+			if ($res){
+				$datas=array('status'=>'success');
+			}else {
+				$datas=array('status'=>'failure');;
+			}
+			return $datas;
+   }
+   
+    function checkout_address($cust_id,$ncountry_id,$nname,$naddress1,$naddress2,$ntown,$nstate,$nzip,$nemail,$nphone,$nphone1,$nlandmark,$ncheckout_mess,$total_amt){
+		
+			$browser_sess_id  = $this->session->userdata('browser_sess_id');
+			$check_order = "SELECT * FROM purchase_order ORDER BY id DESC LIMIT 1";
+			$res=$this->db->query($check_order);
+
+			if($res->num_rows()>0){
+				foreach($res->result() as $rows) { 
+					$old_order_id = $rows->id;
+				}
+				$order_id = $old_order_id+1;
+			} else {
+				$order_id = 1;
+			}
+			
+		$check_address="SELECT * FROM cus_address WHERE cus_id = '$cust_id'";
+		$res=$this->db->query($check_address);
+		if($res->num_rows()>0){
+			$address_mode = '0';
+		}else{
+			$address_mode = '1';
+		}
+		$create = "INSERT INTO cus_address(cus_id,country_id,state,city,pincode,house_no,street,landmark,full_name,mobile_number,alternative_mobile_number,email_address,address_type_id,address_mode,status,created_at,created_by) VALUES('$cust_id','$ncountry_id','$nstate','$ntown','$nzip','$naddress1','$naddress2','$nlandmark','$nname','$nphone','$nphone1','$nemail','1','$address_mode','Active',now(),'$cust_id')";
+		$res = $this->db->query($create);
+		$address_id = $this->db->insert_id();
+		
+		
+		$sql="SELECT A.*, B.country_name, C.address_type FROM cus_address A, country_master B, address_master C WHERE A.cus_id = '$cust_id' AND A.country_id = B.id AND A.address_type_id  = C.id AND A.id = '$address_id' AND A.status = 'Active'";
+	  	$resu=$this->db->query($sql);
+	  	$address=$resu->result();
+	  	
+		$today = date("Ymd");
+		$rand = strtoupper(substr(uniqid(sha1(time())),0,4));
+		$order_id = 'Lil'.$today . $rand . $order_id;
+		
+
+		$inssql = "INSERT INTO purchase_order(order_id ,browser_sess_id ,cus_id ,purchase_date,cus_address_id,total_amount,status,cus_notes,created_at,created_by) VALUES('$order_id','$browser_sess_id','$cust_id',now(),'$address_id','$total_amt','Pending','$ncheckout_mess',now(),'$cust_id')";
+		$insert = $this->db->query($inssql);
+
+		$updatesql = "UPDATE product_cart SET order_id='$order_id' WHERE browser_sess_id='$browser_sess_id'";
+		$update = $this->db->query($updatesql);
+
+		$res=array('order_id'=>$order_id,'address'=>$address);
+		
+		return $res;
+   }
+
+
+
+   function checkout_addressid($cust_id,$ocountry_id,$oname,$oaddress1,$oaddress2,$otown,$ostate,$ozip,$oemail,$ophone,$ophone1,$olandmark,$scheckout_mess,$address_id,$total_amt){
+		$browser_sess_id  = $this->session->userdata('browser_sess_id');
+		
+			$update="UPDATE cus_address SET country_id ='$ocountry_id',state ='$ostate',city ='$otown',pincode='$ozip',house_no ='$oaddress1',street ='$oaddress2',landmark ='$olandmark',full_name ='$oname',mobile_number ='$ophone',email_address ='$oemail',alternative_mobile_number='$ophone1' WHERE id='$address_id'";
+			$res=$this->db->query($update);	
+		
+		$check_order = "SELECT * FROM purchase_order ORDER BY id DESC LIMIT 1";
+		$res=$this->db->query($check_order);
+
+			if($res->num_rows()>0){
+				foreach($res->result() as $rows) { 
+					$old_order_id = $rows->id;
+				}
+					$order_id = $old_order_id+1;
+			} else {
+				$order_id = 1;
+			}
+		
+		$sql="SELECT A.*, B.country_name, C.address_type FROM cus_address A, country_master B, address_master C WHERE A.cus_id = '$cust_id' AND A.country_id = B.id AND A.address_type_id  = C.id AND A.id = '$address_id' AND A.status = 'Active'";
+	  	$resu=$this->db->query($sql);
+	  	$address=$resu->result();
+	  	
+		$today = date("Ymd");
+		$rand = strtoupper(substr(uniqid(sha1(time())),0,4));
+		$order_id = 'Lil'.$today . $rand . $order_id;
+
+		
+		$inssql = "INSERT INTO purchase_order(order_id ,browser_sess_id ,cus_id ,purchase_date,cus_address_id,total_amount,status,cus_notes,created_at,created_by) VALUES('$order_id','$browser_sess_id','$cust_id',now(),'$address_id','$total_amt','Pending','$scheckout_mess',now(),'$cust_id')";
+		$insert = $this->db->query($inssql);
+		
+		$updatesql = "UPDATE product_cart SET order_id='$order_id' WHERE browser_sess_id='$browser_sess_id'";
+		$update = $this->db->query($updatesql);
+		
+		$res=array('order_id'=>$order_id,'address'=>$address);
+		
+		return $res;
+   }
+   
+      
+   function cart_process(){
+		echo $unique_order_id = $this->generate_orderid();
+   }
+   
+   function list_wishlist(){
+		$guest_session = $this->session->userdata('cust_id');
+		//$sql = "SELECT A.*,B.product_name,B.product_cover_img FROM product_cart A,products B WHERE A.product_id = B.id AND A.browser_sess_id = '$guest_session' ORDER BY A.id";
+		//$resu=$this->db->query($sql);
+		//$res=$resu->result();
+		//return $res;
+   }
+   
+    function newproducts(){
 		$sql = "SELECT * FROM products WHERE status='Active' ORDER BY created_at LIMIT 10";
+		$resu=$this->db->query($sql);
+		$res=$resu->result();
+		return $res;
+   }
+   
+   function popularproducts(){
+		$sql = "SELECT * FROM products A,product_view_count B WHERE A.status='Active' AND A.id = B.product_id ORDER BY view_count DESC LIMIT 10";
+		$resu=$this->db->query($sql);
+		$res=$resu->result();
+		return $res;
+   }
+   
+      function related_products($cat_id,$product_id){
+		$sql = "SELECT * FROM products WHERE cat_id ='$cat_id' AND id!='$product_id' AND status='Active' ORDER BY created_at LIMIT 10";
 		$resu=$this->db->query($sql);
 		$res=$resu->result();
 		return $res;
    }
    
    function homebanner(){
-		$sql = "SELECT * FROM products WHERE status='Active' ORDER BY created_at LIMIT 10";
-		$resu=$this->db->query($sql);
-		$res=$resu->result();
-		return $res;
-   }
-
-    function bestsaleproducts(){
 		$sql = "SELECT * FROM products WHERE status='Active' ORDER BY created_at LIMIT 10";
 		$resu=$this->db->query($sql);
 		$res=$resu->result();
@@ -460,45 +730,6 @@ Class Homemodel extends CI_Model
 		return $res;
    }
    
-    function cart_list(){
-		$guest_session = $this->session->userdata('guest_session');
-		$sql = "SELECT * FROM product_cart WHERE browser_sess_id ='$guest_session'";
-		$resu=$this->db->query($sql);
-		$res=$resu->result();
-		return $res;
-   }
-   
-    function checkout_address($cust_id,$ncountry_id,$nname,$naddress1,$naddress2,$ntown,$nstate,$nzip,$nemail,$nphone,$nphone1,$nlandmark,$ncheckout_mess){
-		
-		$check_address="SELECT * FROM cus_address WHERE cus_id = '$cust_id'";
-		$res=$this->db->query($check_address);
-		if($res->num_rows()>0){
-			$address_mode = '0';
-		}else{
-			$address_mode = '1';
-		}
-		$create = "INSERT INTO cus_address(cus_id,country_id,state,city,pincode,house_no,street,landmark,full_name,mobile_number,alternative_mobile_number,email_address,address_type_id,address_mode,status,created_at,created_by) VALUES('$cust_id','$ncountry_id','$nstate','$ntown','$nzip','$naddress1','$naddress2','$nlandmark','$nname','$nphone','$nphone1','$nemail','1','$address_mode','Active',now(),'$cust_id')";
-		$res = $this->db->query($create);
-		$address_id = $this->db->insert_id();
-		
-		$today = date("Ymd");
-		$rand = strtoupper(substr(uniqid(sha1(time())),0,4));
-		$order_id = $today . $rand;
-		
-		$res =  array("cust_id"=>$cust_id,"order_id"=>$order_id,"address_id"=>$address_id);
-		return $res;
-   }
-   
-   function checkout_addressid($cust_id,$address_id){
-		
-		$today = date("Ymd");
-		$rand = strtoupper(substr(uniqid(sha1(time())),0,4));
-		$order_id = $today . $rand;
-		$res =  array("cust_id"=>$cust_id,"order_id"=>$order_id,"address_id"=>$address_id);
-		return $res;
-   }
-   
-   
    
 	function contact_us($name,$email,$website,$subject,$message){
 		// Set content-type header for sending HTML email
@@ -510,4 +741,6 @@ Class Homemodel extends CI_Model
 		//mail('love@littleamore.in',$subject,$email_message,$headers);
 		echo "send";
    }
+   
+
 }

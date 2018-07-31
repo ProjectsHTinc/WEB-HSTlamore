@@ -1,7 +1,8 @@
 <?php 
-	$guest_data = 'lil'.$_SESSION["__ci_last_regenerate"];
-	$this->session->set_userdata('guest_session', $guest_data);
-	//echo '<pre>' . print_r($_SESSION, TRUE) . '</pre>';
+	$browser_sess_id = 'lil'.$_SESSION["__ci_last_regenerate"];
+	$this->session->set_userdata('browser_sess_id', $browser_sess_id);
+	$cust_session_id = $this->session->userdata('cust_session_id');
+	//echo '<pre>' . print_r($_SESSION, TRUE) . '</pre>';	
 ?>
 <!doctype html>
 <html class="no-js" lang="en-US">
@@ -117,17 +118,7 @@
                                     	echo '</li>';
                                    		}
 									} ?>
-                                    <li><a href="#">pages<i class="pe-7s-angle-down"></i></a>
-                                        <!-- Home Version Dropdown Start -->
-                                        <ul class="ht-dropdown">
-                                        	<li><a href="<?php echo base_url(); ?>aboutus/">about us</a></li>
-                                            <li><a href="<?php echo base_url(); ?>product_details/">Product Details</a></li>
-                                            <li><a href="<?php echo base_url(); ?>cart/">cart</a></li>
-                                            <li><a href="<?php echo base_url(); ?>checkout/">checkout</a></li>
-                                            <li><a href="<?php echo base_url(); ?>wishlist/">wish list</a></li>
-                                        </ul>
-                                        <!-- Home Version Dropdown End -->
-                                    </li>
+                                    <li><a href="<?php echo base_url(); ?>aboutus/">about us</a></li>
                                     <li><a href="<?php echo base_url(); ?>contactus/">contact us</a></li>
                                 </ul>
                             </nav>
@@ -150,53 +141,15 @@
                                     </ul>
                                 </li>
                                 <!-- Search Box End -->
-                                <li><a href="<?php echo base_url(); ?>wishlist"><i class="pe-7s-like"></i><span>2</span></a></li>
-                                
-                                <li><i class="pe-7s-shopbag"></i><span>2</span>
-                                    <ul class="ht-dropdown main-cart-box">
-                                        <li>
-                                            <!-- Cart Box Start -->
-                                            <div class="single-cart-box">
-                                                <div class="cart-img">
-                                                    <a href="#"><img src="<?php echo base_url(); ?>assets/front/img/menu/1.jpg" alt="cart-image"></a>
-                                                </div>
-                                                <div class="cart-content">
-                                                    <h6><a href="#">Alpha Block Black Polo T-Shirt</a></h6>
-                                                    <span>1 × $399.00</span>
-                                                </div>
-                                                <i class="pe-7s-close"></i>
-                                            </div>
-                                            <!-- Cart Box End -->
-                                            <!-- Cart Box Start -->
-                                            <div class="single-cart-box">
-                                                <div class="cart-img">
-                                                    <a href="#"><img src="<?php echo base_url(); ?>assets/front/img/menu/2.jpg" alt="cart-image"></a>
-                                                </div>
-                                                <div class="cart-content">
-                                                    <h6><a href="#">Red Printed Round Neck T-Shirt</a></h6>
-                                                    <span>2 × $299.00</span>
-                                                </div>
-                                                <i class="pe-7s-close"></i>
-                                            </div>
-                                            <!-- Cart Box End -->
-                                            <!-- Cart Footer Inner Start -->
-                                            <div class="cart-footer fix">
-                                                <h5>total :<span class="f-right">$698.00</span></h5>
-                                                <div class="cart-actions">
-                                                    <a class="checkout" href="<?php echo base_url(); ?>checkout/">Checkout</a>
-                                                </div>
-                                            </div>
-                                            <!-- Cart Footer Inner End -->
-                                        </li>
-                                    </ul>
-                                </li>
+                                <?php if ($cust_session_id !=''){ ?><li><a href="<?php echo base_url(); ?>wishlist/"><i class="pe-7s-like"></i><span>2</span></a></li><?php } ?>
+                                <li><a href="<?php echo base_url(); ?>viewcart/"><i class="pe-7s-shopbag"></i><span><?php echo count($count_cart_session); ?></span></a></li>
                                 <!-- Dropdown Currency Selection Start -->
                                 <li><i class="pe-7s-config"></i>
                                     <ul class="ht-dropdown currrency">
                                         <li>
                                             <h3>my account</h3>
                                             <ul>
-                                            <?php if (isset($_SESSION['cust_id'])) { ?>
+                                            <?php if (isset($_SESSION['cust_session_id'])) { ?>
                                             	<li><a href="<?php echo base_url(); ?>myaccount/">My Account</a></li>
                                                 <li><a href="<?php echo base_url(); ?>logout/">logout</a></li>
                                             <?php } else { ?>

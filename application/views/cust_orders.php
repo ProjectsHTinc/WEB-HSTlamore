@@ -42,7 +42,10 @@
                            </div>
                            <div class="col-lg-3 col-md-2 col-sm-6">
                                <div class="d-single-info text-center">
-                                   <a class="view-cart" href="<?php echo base_url(); ?>/cart"><i class="fa fa-cart-plus" aria-hidden="true"></i>view cart</a>
+                                   <?php
+                               if (count($count_cart_session) >0) { ?>
+                                   <a class="view-cart" href="<?php echo base_url(); ?>viewcart/"><i class="fa fa-cart-plus" aria-hidden="true"></i>view cart</a>
+                                   <?php } ?>
                                </div>
                            </div>
                        </div>
