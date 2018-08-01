@@ -465,6 +465,13 @@ Class Homemodel extends CI_Model
 	  	return $res;
    }
    
+    function get_offer_details($prod_id){
+		$sql="SELECT * FROM product_offer WHERE product_id ='$prod_id' AND status = 'Active'";
+	  	$resu=$this->db->query($sql);
+	  	$res=$resu->result();
+	  	return $res;
+   }
+   
    function get_size($prod_id){
 		$sql="SELECT B.id, B.attribute_value FROM product_combined A, attribute_masters B WHERE A.mas_size_id = B.id AND A.product_id = '$prod_id' AND B.attribute_type = '1' AND A.status = 'Active' GROUP BY A.mas_size_id";
 	  	$resu=$this->db->query($sql);
@@ -492,6 +499,12 @@ Class Homemodel extends CI_Model
 	  	return $res;
    } 
    
+   function get_gallery($prod_id){
+		$sql="SELECT * from product_gallery WHERE product_id = '$prod_id'";
+	  	$resu=$this->db->query($sql);
+	  	$res=$resu->result();
+	  	return $res;
+   }
    
    function cart_insert($product_id,$com_product_id,$browser_sess_id,$cust_id,$quantity,$price,$total_amount){
 	   
@@ -522,10 +535,23 @@ Class Homemodel extends CI_Model
 		$product_res=$this->db->query($sel_product);
 			if($product_res->num_rows()>0){
 				foreach($product_res->result() as $pro_rows) { 
-					$prod_actual_price = $pro_rows->prod_actual_price;
+					$prod_price = $pro_rows->prod_actual_price;
+					$offer_status = $pro_rows->offer_status;
 				}
 			}
-			
+		
+				if ($offer_status =='1'){
+					$offer_details = $this->homemodel->get_offer_details($product_id);
+				if (count($offer_details)>0){
+					foreach($offer_details as $offer){ 
+						$offer_percentage = $offer->offer_percentage;
+					}
+				}
+					$soffer_price = ($offer_percentage / 100) * $prod_price;
+					$doffer_price = $prod_price - $soffer_price;
+					$prod_price = number_format((float)$doffer_price, 2, '.', '');
+				}
+		
 		$sel_cart = "SELECT * FROM product_cart WHERE product_id = '$product_id' AND browser_sess_id ='$browser_sess_id' ";
 		$cart_res = $this->db->query($sel_cart);
 			if($cart_res->num_rows()>0){
@@ -533,13 +559,13 @@ Class Homemodel extends CI_Model
 					$cart_id = $cart_rows->id;
 				}
 				if ($cust_id!=''){
-					$cart_update = "UPDATE product_cart SET quantity = quantity+1,total_amount = total_amount+$prod_actual_price,cus_id ='$cust_id', updated_at =now(), updated_by = '$cust_id' WHERE id  ='$cart_id'";
+					$cart_update = "UPDATE product_cart SET quantity = quantity+1,total_amount = total_amount+$prod_price,cus_id ='$cust_id', updated_at =now(), updated_by = '$cust_id' WHERE id  ='$cart_id'";
 				} else {
-					$cart_update = "UPDATE product_cart SET quantity = quantity+1,total_amount = total_amount+$prod_actual_price,updated_at =now(), updated_by = '$cust_id' WHERE id  ='$cart_id'";
+					$cart_update = "UPDATE product_cart SET quantity = quantity+1,total_amount = total_amount+$prod_price,updated_at =now(), updated_by = '$cust_id' WHERE id  ='$cart_id'";
 				}
 				$result = $this->db->query($cart_update);
 			} else {
-	   			$cart_details="INSERT INTO product_cart(product_id,product_combined_id,browser_sess_id,cus_id,quantity,price,total_amount,status,created_at,created_by) VALUES('$product_id','0','$browser_sess_id','$cust_id','1','$prod_actual_price','$prod_actual_price','Pending',now(),'$cust_id')";
+	   			$cart_details="INSERT INTO product_cart(product_id,product_combined_id,browser_sess_id,cus_id,quantity,price,total_amount,status,created_at,created_by) VALUES('$product_id','0','$browser_sess_id','$cust_id','1','$prod_price','$prod_price','Pending',now(),'$cust_id')";
 			$result=$this->db->query($cart_details);
 			}
 			
@@ -717,14 +743,21 @@ Class Homemodel extends CI_Model
    }
    
    function homebanner(){
-		$sql = "SELECT * FROM products WHERE status='Active' ORDER BY created_at LIMIT 10";
+		$sql = "SELECT A.*,B.product_name FROM banner A,products B WHERE A.status='Active' AND A.product_id = B.id ORDER BY A.created_at DESC LIMIT 3";
 		$resu=$this->db->query($sql);
 		$res=$resu->result();
 		return $res;
    }
-     
-   function homepromotions(){
-		$sql = "SELECT * FROM products WHERE status='Active' ORDER BY created_at LIMIT 10";
+   
+      function homeadvertisement(){
+		$sql = "SELECT A.*,B.`category_name` FROM ads_master A,category_masters B WHERE A.status='Active' AND A.sub_cat_id = B.id ORDER BY A.created_at DESC LIMIT 1";
+		$resu=$this->db->query($sql);
+		$res=$resu->result();
+		return $res;
+   }
+   
+   function homeoffer(){
+		$sql = "SELECT A.*,B.product_name FROM product_offer A,products B WHERE A.status='Active' AND A.product_id = B.id ORDER BY created_at LIMIT 2";
 		$resu=$this->db->query($sql);
 		$res=$resu->result();
 		return $res;

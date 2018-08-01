@@ -15,12 +15,15 @@ class Home extends CI_Controller {
 	{
 		$datas['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$datas['count_cart_session'] = $this->homemodel->cart_list();
-		//$datas['categories'] = $this->homemodel->categorylist();
-		//$datas['home_banner'] = $this->homemodel->homebanner();
+		$datas['home_banner'] = $this->homemodel->homebanner();
 		$datas['home_newproducts'] = $this->homemodel->newproducts();
+		$datas['home_advertisement'] = $this->homemodel->homeadvertisement();
+		$datas['home_offers'] = $this->homemodel->homeoffer();
 		$datas['home_popularproducts'] = $this->homemodel->popularproducts();
+		//$datas['categories'] = $this->homemodel->categorylist();
 		//$datas['home_bestsaleproducts'] = $this->homemodel->bestsaleproducts();
 		//$datas['home_promotions'] = $this->homemodel->homepromotions();
+		//print_r($datas['home_banner']);
 		$this->load->view('front_header',$datas);
 		$this->load->view('index',$datas);
 		$this->load->view('front_footer');

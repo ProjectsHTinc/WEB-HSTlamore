@@ -55,7 +55,7 @@
 										$enc_product_name = strtolower(preg_replace("/[^\w]/", "-", $clist->product_name));
 										$enc_product_id = base64_encode($product_id);
 										$stotal = $clist->total_amount;
-										$price = $clist->price;;
+										$price = $clist->price;
 										
 										if ($product_combined_id >0){
 											$cproduct_details = $this->homemodel->get_colour_size($product_combined_id);

@@ -1490,11 +1490,12 @@ ul.pull-left.home-4-search i {
 
 .pro-price-list .tax .mrp,
 .pro-desc-list li {
-    color: #1a1a1a;
+    color: #333;
 }
 .mrp{
 	 -webkit-text-decoration-line: line-through; /* Safari */
      text-decoration-line: line-through; 
+	 color:#F00;
 }
 .pro-desc-list li span {
     margin-left: 5px;
@@ -2186,7 +2187,7 @@ ul.pull-left.home-4-search i {
 
 .home-2 .big-banner,
 .home-3 .big-banner {
-    background: url("img/products-banner/9.jpg") no-repeat center center / cover;
+    /*background: url("img/products-banner/9.jpg") no-repeat center center / cover; */
     padding: 120px 0;
     text-align: center;
 }

@@ -6,9 +6,24 @@ if (count($product_details)>0){
 		$product_name = $prod->product_name;
 		$sku_code = $prod->sku_code;
 		$product_description = $prod->product_description;
+		$product_cover_img = $prod->product_cover_img;
 		$prod_mrp_price = $prod->prod_mrp_price ;
 		$prod_actual_price = $prod->prod_actual_price;
 		$combined_status = $prod->combined_status;
+		$offer_status = $prod->offer_status;
+		
+		if ($offer_status =='1'){
+			$offer_details = $this->homemodel->get_offer_details($product_id);
+			if (count($offer_details)>0){
+				foreach($offer_details as $offer){ 
+					$offer_percentage = $offer->offer_percentage;
+				}
+			}
+			$soffer_price = ($offer_percentage / 100) * $prod_actual_price;
+			$doffer_price = $prod_actual_price - $soffer_price;
+			$offer_price = number_format((float)$doffer_price, 2, '.', '');
+		}
+		
 		
 		if ($combined_status =='1'){
 			$cproduct_details = $this->homemodel->get_cproduct_details($product_id);
@@ -21,9 +36,24 @@ if (count($product_details)>0){
 					$c_mrp_price = $cprod->prod_mrp_price;
 				}
 			}
+			
+			if ($offer_status =='1'){
+				$offer_details = $this->homemodel->get_offer_details($product_id);
+			if (count($offer_details)>0){
+				foreach($offer_details as $offer){ 
+					$offer_percentage = $offer->offer_percentage;
+				}
+			}
+				$soffer_price = ($offer_percentage / 100) * $c_prod_actual_price;
+				$doffer_price = $c_prod_actual_price - $soffer_price;
+				$offer_price = number_format((float)$doffer_price, 2, '.', '');
+			}
+			
+			
 			$c_size_result = $this->homemodel->get_size($product_id);
 			$c_colour_result = $this->homemodel->get_colour($product_id,$c_size_id);
 		}
+		$product_gallery = $this->homemodel->get_gallery($product_id);
 	}
 }
 ?>
@@ -49,30 +79,27 @@ if (count($product_details)>0){
             <div class="container">
                 <div class="row">
                     <div class="col-sm-5">
-                        <img id="big-img" src="<?php echo base_url(); ?>assets/front/img/new-products/1_1.jpg" data-zoom-image="<?php echo base_url(); ?>assets/front/img/new-products/1_1.jpg" alt="product-image" />
+                        <img id="big-img" src="<?php echo base_url(); ?>assets/products/<?php echo $product_cover_img;?>" data-zoom-image="<?php echo base_url(); ?>assets/front/img/new-products/1_1.jpg" alt="product-image" />
 
                         <div id="small-img" class="mt-20">
-
+   
                             <div class="thumb-menu owl-carousel">
-                                <a href="#" data-image="<?php echo base_url(); ?>assets/front/img/new-products/1_2.jpg" data-zoom-image="<?php echo base_url(); ?>assets/front/img/new-products/1_2.jpg">
-                                    <img src="<?php echo base_url(); ?>assets/front/img/new-products/1_2.jpg" alt="product-image" />
+                                <a href="#" data-image="<?php echo base_url(); ?>assets/products/<?php echo $product_cover_img;?>" data-zoom-image="<?php echo base_url(); ?>assets/products/<?php echo $product_cover_img;?>">
+                                    <img src="<?php echo base_url(); ?>assets/products/<?php echo $product_cover_img;?>" alt="product-image" />
                                 </a>
-
-                                <a href="#" data-image="<?php echo base_url(); ?>assets/front/img/new-products/2_1.jpg" data-zoom-image="<?php echo base_url(); ?>assets/front/img/new-products/2_1.jpg">
-                                    <img src="<?php echo base_url(); ?>assets/front/img/new-products/2_1.jpg" alt="product-image" />
+<?php
+if (count($product_gallery)>0){
+	foreach($product_gallery as $gallery){ 
+	$gallery_img = $gallery->gallery_img;
+?>
+                                <a href="#" data-image="<?php echo base_url(); ?>assets/products/images/<?php echo $gallery_img;?>" data-zoom-image="<?php echo base_url(); ?>assets/products/images/<?php echo $gallery_img;?>">
+                                    <img src="<?php echo base_url(); ?>assets/products/images/<?php echo $gallery_img;?>" alt="product-image" />
                                 </a>
-
-                                <a href="#" data-image="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" data-zoom-image="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg">
-                                    <img src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="product-image" />
-                                </a>
-
-                                <a href="#" data-image="<?php echo base_url(); ?>assets/front/img/new-products/3_1.jpg" data-zoom-image="<?php echo base_url(); ?>assets/front/img/new-products/3_1.jpg">
-                                    <img src="<?php echo base_url(); ?>assets/front/img/new-products/3_1.jpg" alt="product-image" />
-                                </a>
-
-                                <a href="#" data-image="<?php echo base_url(); ?>assets/front/img/new-products/2_1.jpg" data-zoom-image="<?php echo base_url(); ?>assets/front/img/new-products/2_1.jpg">
-                                    <img src="<?php echo base_url(); ?>assets/front/img/new-products/2_1.jpg" alt="product-image" />
-                                </a>
+<?php
+	}
+}
+?>
+                                
                             </div>
                         </div>
                     </div>
@@ -109,8 +136,13 @@ if (count($product_details)>0){
                              <!-- Product Price Start -->
                             <div class="pro-price mb-20">
                                <ul class="pro-price-list">
-                                   <li class="price">₹<span id="act_price"><?php echo $c_prod_actual_price;?></span></li>
-                                   <li class="mrp">₹<span id="mrp_price"><?php echo $c_mrp_price;?></span></li>
+                               <?php if ($offer_status =='1'){
+                                   echo '<li id ="offer_price" class="price">₹'.$offer_price.'</li>';
+                                   echo '<li id ="act_price" class="mrp">₹'.$c_prod_actual_price.'</li>';
+                                } else {
+									echo '<li id ="act_price" class="price">₹'.$c_prod_actual_price.'</li>';
+								}
+                                ?>
                                </ul>
                             </div>
                             <!-- Product Price End -->
@@ -159,15 +191,28 @@ if (count($product_details)>0){
                             <!-- Product Box Quantity End -->
                             <input type="hidden" name="product_id" id="product_id" value="<?php echo $product_id; ?>" />
                             <input type="hidden" name="com_product_id" id="com_product_id" value="<?php echo $c_product_id; ?>" />
-                            <input type="hidden" name="price" id="price" value="<?php echo $c_prod_actual_price; ?>" />
+                            <?php if ($offer_status =='1'){ ?>
+                            	<input type="hidden" name="price" id="price" value="<?php echo $offer_price; ?>" />
+                            <?php } else { ?>
+                            	<input type="hidden" name="price" id="price" value="<?php echo $c_prod_actual_price; ?>" />
+                              <?php } ?>
+                            <input type="hidden" name="offer_status" id="offer_status" value="<?php echo $offer_status ?>" />
+                            <?php if ($offer_status =='1'){ ?>
+                            	<input type="hidden" name="offer_percentage" id="offer_percentage" value="<?php echo $offer_percentage ?>" />
+                            <?php } ?>
                             
                             <?php } else { ?>
                             
                              <!-- Product Price Start -->
                             <div class="pro-price mb-20">
                                <ul class="pro-price-list">
-                                   <li class="price">₹<?php echo $prod_actual_price;?></li>
-                                   <li class="tax">₹<?php echo $prod_mrp_price;?></li>
+                               <?php if ($offer_status =='1'){
+                                   echo '<li class="price">₹'.$offer_price.'</li>';
+                                   echo '<li class="mrp">₹'.$prod_actual_price.'</li>';
+                                } else {
+									echo '<li class="price">₹'.$prod_actual_price.'</li>';
+								}
+                                ?>
                                </ul>
                             </div>
                             <!-- Product Price End -->
@@ -184,7 +229,11 @@ if (count($product_details)>0){
                             </div>
                             <!-- Product Box Quantity End -->
                             <input type="hidden" name="product_id" id="product_id" value="<?php echo $product_id; ?>" />
-                            <input type="hidden" name="price" id="price" value="<?php echo $prod_actual_price; ?>" />
+									<?php if ($offer_status =='1'){?>
+                                        <input type="hidden" name="price" id="price" value="<?php echo $offer_price; ?>" />
+                                        <?php } else { ?>
+                                        <input type="hidden" name="price" id="price" value="<?php echo $prod_actual_price; ?>" />
+                                    <?php } ?>
                             <?php } ?>
                             <!-- Product Button Actions Start -->
                             <div class="product-button-actions">
@@ -339,8 +388,20 @@ if (count($product_details)>0){
 								
 								$combined_status = $npro->combined_status;
 								
-								$posteddate = date("d-m-Y",strtotime($npro->created_at));
-								$check_date = date("d-m-Y",strtotime("-15 day"));
+								$offer_status = $npro->offer_status;
+								$prod_actual_price = $npro->prod_actual_price;
+								
+								if ($offer_status =='1'){
+									$offer_details = $this->homemodel->get_offer_details($sproduct_id);
+								if (count($offer_details)>0){
+									foreach($offer_details as $offer){ 
+										$offer_percentage = $offer->offer_percentage;
+									}
+								}
+									$soffer_price = ($offer_percentage / 100) * $prod_actual_price;
+									$doffer_price = $prod_actual_price - $soffer_price;
+									$offer_price = number_format((float)$doffer_price, 2, '.', '');
+								}
                             ?>                    
                                 <!-- Single Product Start -->
                                 <div class="single-product">
@@ -359,7 +420,10 @@ if (count($product_details)>0){
                                     <!-- Product Content Start -->
                                     <div class="pro-content text-center">
                                         <h4><a href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/"><?php echo $npro->product_name; ?></a></h4>
-                                        <p class="price"><span>₹<?php echo $npro->prod_actual_price; ?></span></p>
+                                        <?php if ($offer_status == '1'){ ?>
+                                        <p class="price"><span class="mrp">₹<?php echo $prod_actual_price;?></span> <span>₹<?php echo $offer_price;?></span></p>										<?php } else { ?>
+                                        <p class="price"><span>₹<?php echo $prod_actual_price;?></span></p>
+                                        <?php } ?>
                                         <div class="action-links2">
                                          <?php if ($combined_status == '1'){ ?>
                                             <a data-toggle="tooltip" title="View Products" href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/" style="background:#FAA320;">view products</a>
@@ -394,7 +458,7 @@ $('#product-form').validate({ // initialize the plugin
         },
     },
     messages: {
-		qty: { required:"Enter your Name"},
+		qty: { required:"Select Quantity"},
 		product_size: { required:"Select Product Size"},
 		product_colour: { required:"Select Colour"},
     },
@@ -436,6 +500,10 @@ function disp_colours()
 		var product_id = $('#product_id').val();
 		var product_size = $('#product_size').val();
 		var product_colour = $('#product_colour').val();
+		var offer_status = $('#offer_status').val();
+		var offer_percentage = $('#offer_percentage').val();
+		var offer_price ='';
+		//alert(offer_percentage);
 		var result = '';
 		//make the ajax call
 		$.ajax({
@@ -444,16 +512,29 @@ function disp_colours()
 		data: {product_id : product_id,size_id : product_size,colour_id : product_colour},
 		success: function(data) {
 		var dataArray = JSON.parse(data);
+		//alert(data);
 			if (dataArray.length>0) {
 				for (var i = 0; i < dataArray.length; i++){
 					var id = dataArray[i].id;
 					var mrp_price = dataArray[i].prod_mrp_price;
 					var actual_price = dataArray[i].prod_actual_price;
+					var disp_actual_price = '₹' + actual_price;
 				}
 				$('#com_product_id').val(id);
-				$('#price').val(actual_price);
-				$("#act_price").html(actual_price).show();
-				$("#mrp_price").html(mrp_price).show();
+				
+				if (offer_status==1){
+					var offer_amount = actual_price*(offer_percentage/100);
+					var disp_amount = (actual_price - offer_amount).toFixed(2);
+					var disp_price = '₹' + disp_amount;
+					//alert(disp_amount);
+					$("#offer_price").html(disp_price).show();
+					$("#act_price").html(disp_actual_price).show();
+					$('#price').val(disp_amount);
+				} else {
+					//alert(actual_price);
+					$("#act_price").html(disp_actual_price).show();
+					$('#price').val(actual_price);
+				}
 			} else {
 				result +="No Records found!..";
 			}

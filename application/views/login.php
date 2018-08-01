@@ -80,7 +80,7 @@
         },
     },
     messages: {
-		username: { required:"Enter your Email or Password",remote:"Email or Mobile Error!"},
+		username: { required:"Enter your Email or Mobile",remote:"Email or Mobile Error!"},
 		pass: { required:"Enter Password"},
     },
     submitHandler: function(form) {

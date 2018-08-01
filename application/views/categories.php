@@ -71,15 +71,26 @@ if (count($category_details)>0){
                                             <?php
 											if (count($cat_products)>0){
 												foreach($cat_products as $prod){ 
-												$sproduct_id = $prod->id;
-												$product_id = $prod->id * 663399;
-												$enc_product_name = strtolower(preg_replace("/[^\w]/", "-", $prod->product_name));
-												$enc_product_id = base64_encode($product_id);
-												
-												$combined_status = $prod->combined_status;
-												
-												$posteddate = date("d-m-Y",strtotime($prod->created_at));
-                                               	$check_date = date("d-m-Y",strtotime("-15 day"));
+													$sproduct_id = $prod->id;
+													$product_id = $prod->id * 663399;
+													$enc_product_name = strtolower(preg_replace("/[^\w]/", "-", $prod->product_name));
+													$enc_product_id = base64_encode($product_id);
+													$combined_status = $prod->combined_status;
+													$offer_status = $prod->offer_status;
+													$prod_actual_price = $prod->prod_actual_price;
+													$posteddate = date("d-m-Y",strtotime($prod->created_at));
+													$check_date = date("d-m-Y",strtotime("-15 day"));
+													if ($offer_status =='1'){
+														$offer_details = $this->homemodel->get_offer_details($sproduct_id);
+													if (count($offer_details)>0){
+														foreach($offer_details as $offer){ 
+															$offer_percentage = $offer->offer_percentage;
+														}
+													}
+														$soffer_price = ($offer_percentage / 100) * $prod_actual_price;
+														$doffer_price = $prod_actual_price - $soffer_price;
+														$offer_price = number_format((float)$doffer_price, 2, '.', '');
+													}
                                             ?>
                                                 <div class="col-md-4 col-sm-6">
                                                     <!-- Single Product Start -->
@@ -103,7 +114,10 @@ if (count($category_details)>0){
                                                         <!-- Product Content Start -->
                                                         <div class="pro-content text-center">
                                                             <h4><a href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/"><?php echo $prod->product_name; ?></a></h4>
-                                                            <p class="price"><span>₹<?php echo $prod->prod_actual_price; ?></span></p>
+                                         <?php if ($offer_status == '1'){ ?>
+                                        <p class="price"><span class="mrp">₹<?php echo $prod_actual_price;?></span> <span>₹<?php echo $offer_price;?></span></p>										<?php } else { ?>
+                                        <p class="price"><span>₹<?php echo $prod_actual_price;?></span></p>
+                                        <?php } ?>
                                                             <div class="action-links2">
                                                             <?php if ($combined_status == '1'){ ?>
                                                             	<a data-toggle="tooltip" title="View Products" href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/" style="background:#FAA320;">view products</a>
