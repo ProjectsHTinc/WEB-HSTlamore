@@ -1,4 +1,3 @@
-
         <!-- Slider Area Start -->
         <div class="slider-area pb-100">
             <!-- Main Slider Area Start -->
@@ -35,6 +34,9 @@
             <!-- Main Slider Area End -->
         </div>
         <!-- Slider Area End -->
+        
+       <?php  if (count($home_newproducts)>0){ ?>
+        
         <!-- New Products Selection Start -->
         <div class="new-products-selection pb-80">
             <div class="container">
@@ -52,14 +54,26 @@
                     <div class="col-sm-12">
                         <!-- New Products Activation Start -->
                         <div class="new-products owl-carousel">
+                        
+                        <?php foreach($home_newproducts as $npro){ 
+								$sproduct_id = $npro->id;
+								$product_id = $npro->id * 663399;
+								$enc_product_name = strtolower(preg_replace("/[^\w]/", "-", $npro->product_name));
+								$enc_product_id = base64_encode($product_id);
+								
+								$combined_status = $npro->combined_status;
+								
+								$posteddate = date("d-m-Y",strtotime($npro->created_at));
+								$check_date = date("d-m-Y",strtotime("-15 day"));
+                            ?>                    
                             <!-- Double Product Start -->
                             <div class="double-products">
                                 <!-- Single Product Start -->
                                 <div class="single-product">
                                     <!-- Product Image Start -->
                                     <div class="pro-img">
-                                        <a href="<?php echo base_url(); ?>product_details/">
-                                            <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/1_1.jpg" alt="single-product">
+                                        <a href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/">
+                                            <img class="primary-img" src="<?php echo base_url(); ?>assets/products/<?php echo $npro->product_cover_img; ?>" alt="single-product">
                                             <!--<img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/1_2.jpg" alt="single-product">-->
                                         </a>
                                         <!--<div class="quick-view">
@@ -70,10 +84,14 @@
                                     <!-- Product Image End -->
                                     <!-- Product Content Start -->
                                     <div class="pro-content text-center">
-                                        <h4><a href="<?php echo base_url(); ?>product_details/">Sheepskin Pillow2</a></h4>
-                                        <p class="price"><span>₹241.99</span></p>
+                                        <h4><a href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/"><?php echo $npro->product_name; ?></a></h4>
+                                        <p class="price"><span>₹<?php echo $npro->prod_actual_price; ?></span></p>
                                         <div class="action-links2">
-                                            <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
+                                         <?php if ($combined_status == '1'){ ?>
+                                            <a data-toggle="tooltip" title="View Products" href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/" style="background:#FAA320;">view products</a>
+                                        <?php } else { ?>
+                                            <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>home/addcart/<?php echo $sproduct_id; ?>/">add to cart</a>
+                                         <?php }?>
                                         </div>
                                     </div>
                                     <!-- Product Content End -->
@@ -81,122 +99,8 @@
                                 <!-- Single Product End -->
                             </div>
                             <!-- Double Product End -->
-                            <!-- Double Product Start -->
-                            <div class="double-products">
-                                <!-- Single Product Start -->
-                                <div class="single-product">
-                                    <!-- Product Image Start -->
-                                    <div class="pro-img">
-                                        <a href="<?php echo base_url(); ?>product_details/">
-                                            <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_1.jpg" alt="single-product">
-                                            <!--<img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="single-product">-->
-                                        </a>
-                                        <!--<div class="quick-view">
-                                            <a href="#" data-toggle="modal" data-target="#myModal"><i class="pe-7s-look"></i>quick view</a>
-                                        </div>-->
-                                        <span class="sticker-new">new</span>
-                                    </div>
-                                    <!-- Product Image End -->
-                                    <!-- Product Content Start -->
-                                    <div class="pro-content text-center">
-                                        <h4><a href="<?php echo base_url(); ?>product_details/">Carte Postal Clock</a></h4>
-                                        <p class="price"><span>₹2000</span></p>
-                                        <div class="action-links2">
-                                            <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
-                                        </div>
-                                    </div>
-                                    <!-- Product Content End -->
-                                </div>
-                                <!-- Single Product End -->
-                            </div>
-                            <!-- Double Product End -->
-                            <!-- Double Product Start -->
-                            <div class="double-products">
-                                <!-- Single Product Start -->
-                                <div class="single-product">
-                                    <!-- Product Image Start -->
-                                    <div class="pro-img">
-                                        <a href="<?php echo base_url(); ?>product_details/">
-                                            <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/3_1.jpg" alt="single-product">
-                                            <!--<img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="single-product">-->
-                                        </a>
-                                        <!--<div class="quick-view">
-                                            <a href="#" data-toggle="modal" data-target="#myModal"><i class="pe-7s-look"></i>quick view</a>
-                                        </div>-->
-                                        <span class="sticker-new">new</span>
-                                    </div>
-                                    <!-- Product Image End -->
-                                    <!-- Product Content Start -->
-                                    <div class="pro-content text-center">
-                                        <h4><a href="<?php echo base_url(); ?>product_details/">Carte Postal Clock</a></h4>
-                                        <p class="price"><span>₹2000</span></p>
-                                        <div class="action-links2">
-                                            <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
-                                        </div>
-                                    </div>
-                                    <!-- Product Content End -->
-                                </div>
-                                <!-- Single Product End -->
-                            </div>
-                            <!-- Double Product End -->
-                            <!-- Double Product Start -->
-                            <div class="double-products">
-                                <!-- Single Product Start -->
-                                <div class="single-product">
-                                    <!-- Product Image Start -->
-                                    <div class="pro-img">
-                                        <a href="<?php echo base_url(); ?>product_details/">
-                                            <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/4_1.jpg" alt="single-product">
-                                            <!--<img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="single-product">-->
-                                        </a>
-                                        <!--<div class="quick-view">
-                                            <a href="#" data-toggle="modal" data-target="#myModal"><i class="pe-7s-look"></i>quick view</a>
-                                        </div>-->
-                                        <span class="sticker-new">new</span>
-                                    </div>
-                                    <!-- Product Image End -->
-                                    <!-- Product Content Start -->
-                                    <div class="pro-content text-center">
-                                        <h4><a href="<?php echo base_url(); ?>product_details/">Carte Postal Clock</a></h4>
-                                        <p class="price"><span>₹2000</span></p>
-                                        <div class="action-links2">
-                                            <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
-                                        </div>
-                                    </div>
-                                    <!-- Product Content End -->
-                                </div>
-                                <!-- Single Product End -->
-                            </div>
-                            <!-- Double Product End -->
-                            <!-- Double Product Start -->
-                            <div class="double-products">
-                                <!-- Single Product Start -->
-                                <div class="single-product">
-                                    <!-- Product Image Start -->
-                                    <div class="pro-img">
-                                        <a href="<?php echo base_url(); ?>product_details/">
-                                            <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_1.jpg" alt="single-product">
-                                            <!--<img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="single-product">-->
-                                        </a>
-                                        <!--<div class="quick-view">
-                                            <a href="#" data-toggle="modal" data-target="#myModal"><i class="pe-7s-look"></i>quick view</a>
-                                        </div>-->
-                                        <span class="sticker-new">new</span>
-                                    </div>
-                                    <!-- Product Image End -->
-                                    <!-- Product Content Start -->
-                                    <div class="pro-content text-center">
-                                        <h4><a href="<?php echo base_url(); ?>product_details/">Carte Postal Clock</a></h4>
-                                        <p class="price"><span>₹2000</span></p>
-                                        <div class="action-links2">
-                                            <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
-                                        </div>
-                                    </div>
-                                    <!-- Product Content End -->
-                                </div>
-                                <!-- Single Product End -->
-                            </div>
-                            <!-- Double Product End -->
+                            <?php } ?>
+                                                       
                         </div>
                         <!-- New Products Activation End -->
                     </div>
@@ -206,6 +110,11 @@
             <!-- Container End -->
         </div>
         <!-- New Products Selection End -->
+        
+        <?php } ?>
+        
+        
+        
         <!-- New Products Banner Start -->
         <div class="new-products-banner pb-100">
             <div class="container">
@@ -275,6 +184,8 @@
             <!-- Container End -->
         </div>
         <!-- home-2 Big Banner End -->
+        
+  	<?php  if (count($home_popularproducts)>0){ ?>       
         <!-- Best Seller Products Start -->
         <div class="best-seller-products pb-100">
             <div class="container">
@@ -293,157 +204,54 @@
                     <div class="col-sm-12">
                         <!-- Best Seller Product Activation Start -->
                         <div class="best-seller new-products owl-carousel">
-                            <!-- Single Product Start -->
-                            <div class="single-product">
-                                <!-- Product Image Start -->
-                                <div class="pro-img">
-                                    <a href="<?php echo base_url(); ?>product_details/">
-                                        <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/1_2.jpg" alt="single-product">
-                                        <!--<img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/5_1.jpg" alt="single-product">-->
-                                    </a>
-                                    <!--<div class="quick-view">
-                                        <a href="#" data-toggle="modal" data-target="#myModal"><i class="pe-7s-look"></i>quick view</a>
-                                    </div>
-                                    <span class="sticker-new">new</span>-->
-                                </div>
-                                <!-- Product Image End -->
-                                <!-- Product Content Start -->
-                                <div class="pro-content text-center">
-                                    <h4><a href="<?php echo base_url(); ?>product_details/">Decorative Vase</a></h4>
-                                    <p class="price"><span>₹241.99</span></p>
-                                    <div class="action-links2">
-                                        <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
-                                    </div>
-                                </div>
-                                <!-- Product Content End -->
-                            </div>
-                            <!-- Single Product End -->
-                            <!-- Single Product Start -->
-                            <div class="single-product">
-                                <!-- Product Image Start -->
-                                <div class="pro-img">
-                                    <a href="<?php echo base_url(); ?>product_details/">
-                                        <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/3_1.jpg" alt="single-product">
-                                        <!--<img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/6_2.jpg" alt="single-product">-->
-                                    </a>
-                                    <!--<div class="quick-view">
-                                        <a href="#" data-toggle="modal" data-target="#myModal"><i class="pe-7s-look"></i>quick view</a>
-                                    </div>-->
-                                </div>
-                                <!-- Product Image End -->
-                                <!-- Product Content Start -->
-                                <div class="pro-content text-center">
-                                    <h4><a href="<?php echo base_url(); ?>product_details/">Sheepskin Pillow2</a></h4>
-                                    <p class="price"><span>₹500.00</span></p>
-                                    <div class="action-links2">
-                                        <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
-                                    </div>
-                                </div>
-                                <!-- Product Content End -->
-                            </div>
-                            <!-- Single Product End -->
-                            <!-- Single Product Start -->
-                            <div class="single-product">
-                                <!-- Product Image Start -->
-                                <div class="pro-img">
-                                    <a href="<?php echo base_url(); ?>product_details/">
-                                        <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/1_1.jpg" alt="single-product">
-                                        <!--<img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="single-product">-->
-                                    </a>
-                                    <!--<div class="quick-view">
-                                        <a href="#" data-toggle="modal" data-target="#myModal"><i class="pe-7s-look"></i>quick view</a>
-                                    </div>-->
-                                    <span class="sticker-new">new</span>
-                                </div>
-                                <!-- Product Image End -->
-                                <!-- Product Content Start -->
-                                <div class="pro-content text-center">
-                                    <h4><a href="<?php echo base_url(); ?>product_details/">Carte Postal Clock</a></h4>
-                                    <p class="price"><span>₹180.29</span></p>
-                                    <div class="action-links2">
-                                        <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
-                                    </div>
-                                </div>
-                                <!-- Product Content End -->
-                            </div>
-                            <!-- Single Product End -->
-                            <!-- Single Product Start -->
-                            <div class="single-product">
-                                <!-- Product Image Start -->
-                                <div class="pro-img">
-                                    <a href="<?php echo base_url(); ?>product_details/">
-                                        <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/6_1.jpg" alt="single-product">
-                                        <!--<img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/6_2.jpg" alt="single-product">-->
-                                    </a>
-                                    <!--<div class="quick-view">
-                                        <a href="#" data-toggle="modal" data-target="#myModal"><i class="pe-7s-look"></i>quick view</a>
-                                    </div>-->
-                                    <span class="sticker-new">new</span>
-                                </div>
-                                <!-- Product Image End -->
-                                <!-- Product Content Start -->
-                                <div class="pro-content text-center">
-                                    <h4><a href="<?php echo base_url(); ?>product_details/">dictum idrisus</a></h4>
-                                    <p class="price"><span>₹199.99</span></p>
-                                    <div class="action-links2">
-                                        <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
-                                    </div>
-                                </div>
-                                <!-- Product Content End -->
-                            </div>
-                            <!-- Single Product End -->
-                            <!-- Single Product Start -->
-                            <div class="single-product">
-                                <!-- Product Image Start -->
-                                <div class="pro-img">
-                                    <a href="<?php echo base_url(); ?>product_details/">
-                                        <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_1.jpg" alt="single-product">
-                                        <!--<img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="single-product">-->
-                                    </a>
-                                    <!--<div class="quick-view">
-                                        <a href="#" data-toggle="modal" data-target="#myModal"><i class="pe-7s-look"></i>quick view</a>
-                                    </div>-->
-                                    <span class="sticker-new">new</span>
-                                </div>
-                                <!-- Product Image End -->
-                                <!-- Product Content Start -->
-                                <div class="pro-content text-center">
-                                    <h4><a href="<?php echo base_url(); ?>product_details/">Decorative Vase</a></h4>
-                                    <p class="price"><span>₹241.99</span></p>
-                                    <div class="action-links2">
-                                        <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
-                                    </div>
-                                </div>
-                                <!-- Product Content End -->
-                            </div>
-                            <!-- Single Product End -->
-                            <!-- Single Product Start -->
-                            <div class="single-product">
-                                <!-- Product Image Start -->
-                                <div class="pro-img">
-                                    <a href="<?php echo base_url(); ?>product_details/">
-                                        <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/8_1.jpg" alt="single-product">
-                                        <!--<img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/3_2.jpg" alt="single-product">-->
-                                    </a>
-                                    <!--<div class="quick-view">
-                                        <a href="#" data-toggle="modal" data-target="#myModal"><i class="pe-7s-look"></i>quick view</a>
-                                    </div>-->
-                                    <span class="sticker-new">new</span>
-                                </div>
-                                <!-- Product Image End -->
-                                <!-- Product Content Start -->
-                                <div class="pro-content text-center">
-                                    <h4><a href="<?php echo base_url(); ?>product_details/">dictum idrisus</a></h4>
-                                    <p class="price"><span>₹271.99</span></p>
-                                    <div class="action-links2">
-                                        <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
-                                    </div>
-                                </div>
-                                <!-- Product Content End -->
-                            </div>
-                            <!-- Single Product End -->
-                        </div>
                         
+                            <?php foreach($home_popularproducts as $npro){ 
+								$sproduct_id = $npro->id;
+								$product_id = $npro->id * 663399;
+								$enc_product_name = strtolower(preg_replace("/[^\w]/", "-", $npro->product_name));
+								$enc_product_id = base64_encode($product_id);
+								
+								$combined_status = $npro->combined_status;
+								
+								$posteddate = date("d-m-Y",strtotime($npro->created_at));
+								$check_date = date("d-m-Y",strtotime("-15 day"));
+                            ?>                    
+                            <!-- Double Product Start -->
+                            <div class="double-products">
+                                <!-- Single Product Start -->
+                                <div class="single-product">
+                                    <!-- Product Image Start -->
+                                    <div class="pro-img">
+                                        <a href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/">
+                                            <img class="primary-img" src="<?php echo base_url(); ?>assets/products/<?php echo $npro->product_cover_img; ?>" alt="single-product">
+                                            <!--<img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/1_2.jpg" alt="single-product">-->
+                                        </a>
+                                        <!--<div class="quick-view">
+                                            <a href="#" data-toggle="modal" data-target="#myModal"><i class="pe-7s-look"></i>quick view</a>
+                                        </div>
+                                        <span class="sticker-new">new</span>-->
+                                    </div>
+                                    <!-- Product Image End -->
+                                    <!-- Product Content Start -->
+                                    <div class="pro-content text-center">
+                                        <h4><a href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/"><?php echo $npro->product_name; ?></a></h4>
+                                        <p class="price"><span>₹<?php echo $npro->prod_actual_price; ?></span></p>
+                                        <div class="action-links2">
+                                         <?php if ($combined_status == '1'){ ?>
+                                            <a data-toggle="tooltip" title="View Products" href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/" style="background:#FAA320;">view products</a>
+                                        <?php } else { ?>
+                                            <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>home/addcart/<?php echo $sproduct_id; ?>/">add to cart</a>
+                                         <?php }?>
+                                        </div>
+                                    </div>
+                                    <!-- Product Content End -->
+                                </div>
+                                <!-- Single Product End -->
+                            </div>
+                            <!-- Double Product End -->
+                            <?php } ?>
+                                               
+
                     </div>
                 </div>
                 <!-- Row End -->
@@ -451,5 +259,4 @@
             <!-- Container End -->
         </div>
         <!-- Best Seller Products End -->      
-        
-        
+        <?php } ?>

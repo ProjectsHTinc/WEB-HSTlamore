@@ -2,6 +2,7 @@
 if (count($product_details)>0){
 	foreach($product_details as $prod){ 
 		$product_id = $prod->id;
+		$cat_id = $prod->cat_id;
 		$product_name = $prod->product_name;
 		$sku_code = $prod->sku_code;
 		$product_description = $prod->product_description;
@@ -77,7 +78,7 @@ if (count($product_details)>0){
                     </div>
                     <!-- Thumbnail Description Start -->
                     <div class="col-sm-7">
-                     <form id="product-form" name="product-form" class="contact-form" action="" method="post">
+                     <form id="product-form" name="product-form" class="contact-form" action="<?php echo base_url(); ?>home/insertcart/" method="post">
                         <div class="thubnail-desc fix">
                             <h2 class="product-header mb-20"><?php echo $product_name; ?></h2>
                             <!-- Product Rating Start -->
@@ -109,7 +110,7 @@ if (count($product_details)>0){
                             <div class="pro-price mb-20">
                                <ul class="pro-price-list">
                                    <li class="price">₹<span id="act_price"><?php echo $c_prod_actual_price;?></span></li>
-                                   <li class="tax">₹<span id="mrp_price"><?php echo $c_mrp_price;?></span></li>
+                                   <li class="mrp">₹<span id="mrp_price"><?php echo $c_mrp_price;?></span></li>
                                </ul>
                             </div>
                             <!-- Product Price End -->
@@ -144,18 +145,22 @@ if (count($product_details)>0){
                             <div class="box-quantity mtb-10">
                                 <div class="quantity-item">
                                     <label>Colour: </label>
-                                       <select name="product_colour" id="product_colour">
+                                       <div id="pro_colours">
+                                       <select name="product_colour" id="product_colour" onchange="disp_price()">
                                        <option value=''>Select Colour</option>
                                           <?php if ($c_colour_result >0) {
 											foreach($c_colour_result as $color){ 
 												echo '<option value="'.$color->id.'">'.$color->attribute_name.'</option>';
 											} 
 										} ?>
-                                       </select><script> $('#product_colour').val('<?php echo $c_color_id; ?>');</script>
+                                       </select><script> $('#product_colour').val('<?php echo $c_color_id; ?>');</script></div>
                                 </div>
                             </div>
                             <!-- Product Box Quantity End -->
                             <input type="hidden" name="product_id" id="product_id" value="<?php echo $product_id; ?>" />
+                            <input type="hidden" name="com_product_id" id="com_product_id" value="<?php echo $c_product_id; ?>" />
+                            <input type="hidden" name="price" id="price" value="<?php echo $c_prod_actual_price; ?>" />
+                            
                             <?php } else { ?>
                             
                              <!-- Product Price Start -->
@@ -179,11 +184,14 @@ if (count($product_details)>0){
                             </div>
                             <!-- Product Box Quantity End -->
                             <input type="hidden" name="product_id" id="product_id" value="<?php echo $product_id; ?>" />
+                            <input type="hidden" name="price" id="price" value="<?php echo $prod_actual_price; ?>" />
                             <?php } ?>
                             <!-- Product Button Actions Start -->
                             <div class="product-button-actions">
                                <button type="submit" class="add-to-cart">add to cart</button>
-                               <a href="wish-list.html" data-toggle="tooltip" title="Add to Wishlist" class="same-btn mr-15"><i class="pe-7s-like"></i></a>
+                              <?php 
+							  $cust_session_id = $this->session->userdata('cust_session_id');
+							 	if (isset($cust_session_id)){ ?> <a href="wish-list.html" data-toggle="tooltip" title="Add to Wishlist" class="same-btn mr-15"><i class="pe-7s-like"></i></a> <?php } ?>
                             </div>
                             <!-- Product Button Actions End -->
                             <!-- Product Social Link Share Start -->
@@ -301,6 +309,11 @@ if (count($product_details)>0){
             <!-- Container End -->
         </div>
         <!-- Product Thumbnail Description End -->
+        
+        <?php
+			$related_products = $this->homemodel->related_products($cat_id,$product_id);
+			if (count($related_products)>0){
+		?>
         <!-- Best Seller Products Start -->
         <div class="best-seller-products pb-100">
             <div class="container">
@@ -317,163 +330,76 @@ if (count($product_details)>0){
                 <div class="row">
                     <!-- Best Seller Product Activation Start -->
                     <div class="best-seller new-products owl-carousel">
-                        <!-- Single Product Start -->
-                        <div class="single-product">
-                            <!-- Product Image Start -->
-                            <div class="pro-img">
-                                <a href="#">
-                                    <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/1_2.jpg" alt="single-product">
-                                    <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/5_1.jpg" alt="single-product">
-                                </a>
-                                <div class="quick-view">
-                                    <a href="#" data-toggle="modal" data-target="#myModal"><i class="pe-7s-look"></i>quick view</a>
+                        
+                        <?php foreach($related_products as $npro){ 
+								$sproduct_id = $npro->id;
+								$product_id = $npro->id * 663399;
+								$enc_product_name = strtolower(preg_replace("/[^\w]/", "-", $npro->product_name));
+								$enc_product_id = base64_encode($product_id);
+								
+								$combined_status = $npro->combined_status;
+								
+								$posteddate = date("d-m-Y",strtotime($npro->created_at));
+								$check_date = date("d-m-Y",strtotime("-15 day"));
+                            ?>                    
+                                <!-- Single Product Start -->
+                                <div class="single-product">
+                                    <!-- Product Image Start -->
+                                    <div class="pro-img">
+                                        <a href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/">
+                                            <img class="primary-img" src="<?php echo base_url(); ?>assets/products/<?php echo $npro->product_cover_img; ?>" alt="single-product">
+                                            <!--<img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/1_2.jpg" alt="single-product">-->
+                                        </a>
+                                        <!--<div class="quick-view">
+                                            <a href="#" data-toggle="modal" data-target="#myModal"><i class="pe-7s-look"></i>quick view</a>
+                                        </div>
+                                        <span class="sticker-new">new</span>-->
+                                    </div>
+                                    <!-- Product Image End -->
+                                    <!-- Product Content Start -->
+                                    <div class="pro-content text-center">
+                                        <h4><a href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/"><?php echo $npro->product_name; ?></a></h4>
+                                        <p class="price"><span>₹<?php echo $npro->prod_actual_price; ?></span></p>
+                                        <div class="action-links2">
+                                         <?php if ($combined_status == '1'){ ?>
+                                            <a data-toggle="tooltip" title="View Products" href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/" style="background:#FAA320;">view products</a>
+                                        <?php } else { ?>
+                                            <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>home/addcart/<?php echo $sproduct_id; ?>/">add to cart</a>
+                                         <?php }?>
+                                        </div>
+                                    </div>
+                                    <!-- Product Content End -->
                                 </div>
-                                <span class="sticker-new">new</span>
-                            </div>
-                            <!-- Product Image End -->
-                            <!-- Product Content Start -->
-                            <div class="pro-content text-center">
-                                <h4><a href="product-page.html">Decorative Vase</a></h4>
-                                <p class="price"><span>₹241.99</span></p>
-                                <div class="action-links2">
-                                    <a data-toggle="tooltip" title="Add to Cart" href="cart.html">add to cart</a>
-                                </div>
-                            </div>
-                            <!-- Product Content End -->
-                        </div>
-                        <!-- Single Product End -->
-                        <!-- Single Product Start -->
-                        <div class="single-product">
-                            <!-- Product Image Start -->
-                            <div class="pro-img">
-                                <a href="#">
-                                    <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/3_1.jpg" alt="single-product">
-                                    <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/6_2.jpg" alt="single-product">
-                                </a>
-                                <div class="quick-view">
-                                    <a href="#" data-toggle="modal" data-target="#myModal"><i class="pe-7s-look"></i>quick view</a>
-                                </div>
-                            </div>
-                            <!-- Product Image End -->
-                            <!-- Product Content Start -->
-                            <div class="pro-content text-center">
-                                <h4><a href="product-page.html">Decorative Vase</a></h4>
-                                <p class="price"><span>₹241.99</span></p>
-                                <div class="action-links2">
-                                    <a data-toggle="tooltip" title="Add to Cart" href="cart.html">add to cart</a>
-                                </div>
-                            </div>
-                            <!-- Product Content End -->
-                        </div>
-                        <!-- Single Product End -->
-                        <!-- Single Product Start -->
-                        <div class="single-product">
-                            <!-- Product Image Start -->
-                            <div class="pro-img">
-                                <a href="#">
-                                    <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/1_1.jpg" alt="single-product">
-                                    <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="single-product">
-                                </a>
-                                <div class="quick-view">
-                                    <a href="#" data-toggle="modal" data-target="#myModal"><i class="pe-7s-look"></i>quick view</a>
-                                </div>
-                                <span class="sticker-new">new</span>
-                            </div>
-                            <!-- Product Image End -->
-                            <!-- Product Content Start -->
-                            <div class="pro-content text-center">
-                                <h4><a href="product-page.html">Decorative Vase</a></h4>
-                                <p class="price"><span>₹241.99</span></p>
-                                <div class="action-links2">
-                                    <a data-toggle="tooltip" title="Add to Cart" href="cart.html">add to cart</a>
-                                </div>
-                            </div>
-                            <!-- Product Content End -->
-                        </div>
-                        <!-- Single Product End -->
-                        <!-- Single Product Start -->
-                        <div class="single-product">
-                            <!-- Product Image Start -->
-                            <div class="pro-img">
-                                <a href="#">
-                                    <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/6_1.jpg" alt="single-product">
-                                    <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/6_2.jpg" alt="single-product">
-                                </a>
-                                <div class="quick-view">
-                                    <a href="#" data-toggle="modal" data-target="#myModal"><i class="pe-7s-look"></i>quick view</a>
-                                </div>
-                                <span class="sticker-new">new</span>
-                            </div>
-                            <!-- Product Image End -->
-                            <!-- Product Content Start -->
-                            <div class="pro-content text-center">
-                                <h4><a href="product-page.html">Decorative Vase</a></h4>
-                                <p class="price"><span>₹241.99</span></p>
-                                <div class="action-links2">
-                                    <a data-toggle="tooltip" title="Add to Cart" href="cart.html">add to cart</a>
-                                </div>
-                            </div>
-                            <!-- Product Content End -->
-                        </div>
-                        <!-- Single Product End -->
-                        <!-- Single Product Start -->
-                        <div class="single-product">
-                            <!-- Product Image Start -->
-                            <div class="pro-img">
-                                <a href="#">
-                                    <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_1.jpg" alt="single-product">
-                                    <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/2_2.jpg" alt="single-product">
-                                </a>
-                                <div class="quick-view">
-                                    <a href="#" data-toggle="modal" data-target="#myModal"><i class="pe-7s-look"></i>quick view</a>
-                                </div>
-                                <span class="sticker-new">new</span>
-                            </div>
-                            <!-- Product Image End -->
-                            <!-- Product Content Start -->
-                            <div class="pro-content text-center">
-                                <h4><a href="product-page.html">Decorative Vase</a></h4>
-                                <p class="price"><span>₹241.99</span></p>
-                                <div class="action-links2">
-                                    <a data-toggle="tooltip" title="Add to Cart" href="cart.html">add to cart</a>
-                                </div>
-                            </div>
-                            <!-- Product Content End -->
-                        </div>
-                        <!-- Single Product End -->
-                        <!-- Single Product Start -->
-                        <div class="single-product">
-                            <!-- Product Image Start -->
-                            <div class="pro-img">
-                                <a href="#">
-                                    <img class="primary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/8_1.jpg" alt="single-product">
-                                    <img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/3_2.jpg" alt="single-product">
-                                </a>
-                                <div class="quick-view">
-                                    <a href="#" data-toggle="modal" data-target="#myModal"><i class="pe-7s-look"></i>quick view</a>
-                                </div>
-                                <span class="sticker-new">new</span>
-                            </div>
-                            <!-- Product Image End -->
-                            <!-- Product Content Start -->
-                            <div class="pro-content text-center">
-                                <h4><a href="product-page.html">Decorative Vase</a></h4>
-                                <p class="price"><span>₹241.99</span></p>
-                                <div class="action-links2">
-                                    <a data-toggle="tooltip" title="Add to Cart" href="cart.html">add to cart</a>
-                                </div>
-                            </div>
-                            <!-- Product Content End -->
-                        </div>
-                        <!-- Single Product End -->
-                    </div>
+                                <!-- Single Product End -->
+
+                            <?php } ?>
                 </div>
                 <!-- Row End -->
             </div>
             <!-- Container End -->
         </div>
         <!-- Best Seller Products End -->
+        <?php } ?>
 <script>
+$('#product-form').validate({ // initialize the plugin
+    rules: {
+		 qty: {
+            required: true,
+        },
+        product_size: {
+            required: true
+        },
+        product_colour: {
+            required: true,
+        },
+    },
+    messages: {
+		qty: { required:"Enter your Name"},
+		product_size: { required:"Select Product Size"},
+		product_colour: { required:"Select Colour"},
+    },
+});
+
 function disp_colours()
 	{
 		var product_id = $('#product_id').val();
@@ -482,29 +408,55 @@ function disp_colours()
 		
 		//make the ajax call
 		$.ajax({
-		url: '<?php echo base_url(); ?>home/disp_colour_price/',
+		url: '<?php echo base_url(); ?>home/disp_colour/',
 		type: 'POST',
-		data: {event_id : <?php echo $event_id; ?>,size_id : product_size},
+		data: {product_id : product_id,size_id : product_size},
 		success: function(data) {
 		var dataArray = JSON.parse(data);
 		if (dataArray.length>0) {
-			result +="<fieldset><p class='event-desc-head'>Select Time</p><div class='form-group'><div class='col-md-4'><select class='form-control input-lg select_booking' id='show_time' onchange='disp_plan()'><option value=''>Select Time</option>";
-
+			result +="<select name='product_colour' id='product_colour' onchange='disp_price()'><option value=''>Select Colour</option>";
 			for (var i = 0; i < dataArray.length; i++){
 				var id = dataArray[i].id;
-				var show_time = dataArray[i].show_time;
+				var attribute_name = dataArray[i].attribute_name;
 				
-				result +="<option value='"+show_time+"'>"+show_time+"</option>";
+				result +="<option value='"+id+"'>"+attribute_name+"</option>";
 			};
-				result +="</select></div></div></fieldset>";
+				result +="</</select>>";
 
-			$("#plan_time").html(result).show();
+			$("#pro_colours").html(result).show();
 		} else {
 			result +="No Records found!..";
-			$("#plan_time").html(result).show();
-			$('#plan_details').hide();
-			$('#plan_seats').hide();
 		}
+		}
+		});
+	}
+	
+	function disp_price()
+	{
+		var product_id = $('#product_id').val();
+		var product_size = $('#product_size').val();
+		var product_colour = $('#product_colour').val();
+		var result = '';
+		//make the ajax call
+		$.ajax({
+		url: '<?php echo base_url(); ?>home/disp_price/',
+		type: 'POST',
+		data: {product_id : product_id,size_id : product_size,colour_id : product_colour},
+		success: function(data) {
+		var dataArray = JSON.parse(data);
+			if (dataArray.length>0) {
+				for (var i = 0; i < dataArray.length; i++){
+					var id = dataArray[i].id;
+					var mrp_price = dataArray[i].prod_mrp_price;
+					var actual_price = dataArray[i].prod_actual_price;
+				}
+				$('#com_product_id').val(id);
+				$('#price').val(actual_price);
+				$("#act_price").html(actual_price).show();
+				$("#mrp_price").html(mrp_price).show();
+			} else {
+				result +="No Records found!..";
+			}
 		}
 		});
 	}

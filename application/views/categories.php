@@ -108,7 +108,7 @@ if (count($category_details)>0){
                                                             <?php if ($combined_status == '1'){ ?>
                                                             	<a data-toggle="tooltip" title="View Products" href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/" style="background:#FAA320;">view products</a>
                                                             <?php } else { ?>
-                                                                <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>cart/">add to cart</a>
+                                                                <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>home/addcart/<?php echo $sproduct_id; ?>/">add to cart</a>
                                                              <?php }?>
                                                             </div>
                                                         </div>

@@ -1488,11 +1488,11 @@ ul.pull-left.home-4-search i {
     font-size: 24px;
 }
 
-.pro-price-list .tax,
+.pro-price-list .tax .mrp,
 .pro-desc-list li {
     color: #1a1a1a;
 }
-.tax{
+.mrp{
 	 -webkit-text-decoration-line: line-through; /* Safari */
      text-decoration-line: line-through; 
 }
