@@ -19,15 +19,23 @@ Class Adsmodel extends CI_Model
         $res=$this->db->query($update);
 
       }
-      $insert_query="INSERT INTO ads_master (ad_title,sub_cat_id,ad_img,status,created_at,created_by) VALUES('$ad_title','$sub_cat_id','$ad_img','$ad_status',NOW(),'$user_id')";
-      $res=$this->db->query($insert_query);
-      if($res){
-               $data = array("status" => "success");
-               return $data;
-           }else{
-               $data = array("status" => "failed");
-               return $data;
-           }
+      $select="SELECT * FROM ads_master WHERE sub_cat_id='$sub_cat_id'";
+      $res=$this->db->query($select);
+     if($res->num_rows()>0){
+       $data = array("status" => "already");
+       return $data;
+     }else{
+       $insert_query="INSERT INTO ads_master (ad_title,sub_cat_id,ad_img,status,created_at,created_by) VALUES('$ad_title','$sub_cat_id','$ad_img','$ad_status',NOW(),'$user_id')";
+       $res=$this->db->query($insert_query);
+       if($res){
+                $data = array("status" => "success");
+                return $data;
+            }else{
+                $data = array("status" => "failed");
+                return $data;
+            }
+     }
+
     }
    }
    function check_ads($sub_cat_id,$user_id){

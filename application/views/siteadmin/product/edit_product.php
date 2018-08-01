@@ -159,8 +159,11 @@
 															<div class="row">
 																<div class="col-md-6">
 																	<div class="form-group">
-																		<label class="control-label mb-10">Offer Percentage</label>
-																			<input type="text" id="prod_offer_percentage" name="prod_offer_percentage" class="form-control"   value="<?php echo $rows_prod->offer_percentage; ?>">
+																		<!-- <label class="control-label mb-10">Offer Percentage</label>
+																			<input type="text" id="prod_offer_percentage" name="prod_offer_percentage" class="form-control"   value="<?php echo $rows_prod->offer_percentage; ?>"> -->
+																			<label class="control-label mb-10">Product total Stocks</label>
+																			<input type="text" id="prod_total_stocks" name="prod_total_stocks" class="form-control" placeholder=""  value="<?php echo $rows_prod->total_stocks; ?>">
+
 																	</div>
 																</div>
 																<!--/span-->
@@ -176,9 +179,13 @@
 															<div class="row">
 																<div class="col-md-6">
 																	<div class="form-group">
-																		<label class="control-label mb-10">Product total Stocks</label>
-																		<input type="text" id="prod_total_stocks" name="prod_total_stocks" class="form-control" placeholder=""  value="<?php echo $rows_prod->total_stocks; ?>">
-																	</div>
+																		<label class="control-label mb-10">Product display </label>
+																	<select class="form-control" data-placeholder="Choose a Sub Category" tabindex="1" name="prod_status" id="prod_status">
+																		<option value="Active">Active</option>
+																		<option value="Inactive">Inactive</option>
+																	</select>
+																			<script> $('#prod_status').val('<?php echo $rows_prod->status; ?>');</script>
+																		</div>
 																</div>
 																<!--/span-->
 																<div class="col-md-6">
@@ -198,12 +205,7 @@
 															<div class="row">
 																<div class="col-md-6">
 																	<div class="form-group">
-																		<label class="control-label mb-10">Product display </label>
-																	<select class="form-control" data-placeholder="Choose a Sub Category" tabindex="1" name="prod_status" id="prod_status">
-																		<option value="Active">Active</option>
-																		<option value="Inactive">Inactive</option>
-																	</select>
-																			<script> $('#prod_status').val('<?php echo $rows_prod->status; ?>');</script>
+
 																	</div>
 																</div>
 																<!--/span-->
@@ -754,7 +756,8 @@ function deletecomb(a_id){
 										hideAfter: 3500,
 										 stack: 6
 									 });
-									  window.setTimeout(function(){location.reload()},2000)
+									 	 $("#datable_1").load(location.href+" #datable_1>*","");
+									  //window.setTimeout(function(){location.reload()},2000)
 								 } else{
 										 sweetAlert("Oops...", response, "error");
 								 }
@@ -854,6 +857,7 @@ function deletecomb(a_id){
 								 hideAfter: 3500,
 									stack: 6
 								});
+									 $("#prod_info").load(location.href+" #prod_info>*","");
 							} else{
 									sweetAlert("Oops...", response, "error");
 							}

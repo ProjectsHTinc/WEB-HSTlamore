@@ -15,15 +15,23 @@ Class Bannermodel extends CI_Model
     if(empty($prod_id)){
 
     }else{
-      $insert_query="INSERT INTO banner (banner_title,banner_desc,banner_image,product_id,status,created_at,created_by) VALUES('$banner_title','$banner_desc','$banner_img','$prod_id','$banner_status',NOW(),'$user_id')";
-      $res=$this->db->query($insert_query);
-      if($res){
-               $data = array("status" => "success");
-               return $data;
-           }else{
-               $data = array("status" => "failed");
-               return $data;
-           }
+      $select="SELECT * FROM banner WHERE product_id='$prod_id'";
+      $res=$this->db->query($select);
+     if($res->num_rows()>0){
+       $data = array("status" => "already");
+       return $data;
+     }else{
+       $insert_query="INSERT INTO banner (banner_title,banner_desc,banner_image,product_id,status,created_at,created_by) VALUES('$banner_title','$banner_desc','$banner_img','$prod_id','$banner_status',NOW(),'$user_id')";
+       $res=$this->db->query($insert_query);
+       if($res){
+                $data = array("status" => "success");
+                return $data;
+            }else{
+                $data = array("status" => "failed");
+                return $data;
+            }
+     }
+
     }
    }
    function check_banner($prod_id,$user_id){

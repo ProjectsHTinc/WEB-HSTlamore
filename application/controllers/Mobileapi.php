@@ -1,14 +1,14 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Mobileapi extends CI_Controller {
-	 
+
 	public function index()
 	{
 		$this->load->view('welcome_message');
 	}
 
 	function __construct()
-    { 
+    {
         parent::__construct();
 		$this->load->model("mobileapimodel");
 		$this->load->helper("url");
@@ -34,7 +34,8 @@ class Mobileapi extends CI_Controller {
 
 	public function login()
 	{
-	   //$_POST = json_decode(file_get_contents("php://input"), TRUE);
+
+	  $_POST = json_decode(file_get_contents("php://input"), TRUE);
 
 		if(!$this->checkMethod())
 		{
@@ -57,14 +58,18 @@ class Mobileapi extends CI_Controller {
 		$gcmkey ='';
 		$mobiletype ='';
 		$login_type ='';
-		
-		$username = $this->input->post("username");
-		$password = $this->input->post("password");
+
+	 	  $username = $this->input->post("username");
+
+		  $password = $this->input->post("password");
+
+
+
 		$mob_key = $this->input->post("mob_key");
 		$mobile_type = $this->input->post("mobile_type");
-		
+
 		$data['result']=$this->mobileapimodel->Login($username,$password,$mob_key,$mobile_type);
-		
+
 		$response = $data['result'];
 		echo json_encode($response);
 	}
@@ -75,7 +80,7 @@ class Mobileapi extends CI_Controller {
 
 	public function registration()
 	{
-	   //$_POST = json_decode(file_get_contents("php://input"), TRUE);
+	   $_POST = json_decode(file_get_contents("php://input"), TRUE);
 
 		if(!$this->checkMethod())
 		{
@@ -100,8 +105,10 @@ class Mobileapi extends CI_Controller {
 		$newsletter ='';
 		$mob_key ='';
 		$mobile_type = '';
-		
-		$name = $this->input->post("name");
+
+	     $name = $this->input->post("name");
+
+
 		$phone = $this->input->post("phone");
 		$email = $this->input->post("email");
 		$password = $this->input->post("password");

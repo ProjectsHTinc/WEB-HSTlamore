@@ -8,7 +8,8 @@ class Banner extends CI_Controller {
 		parent::__construct();
 		$this->load->helper('url');
 		$this->load->library('session');
-			$this->load->model('bannermodel');
+		$this->load->model('bannermodel');
+		$this->load->model('productmodel');
 	}
 	public function index()
 	{
@@ -16,7 +17,7 @@ class Banner extends CI_Controller {
 		$user_id=$this->session->userdata('id');
 		$user_role=$this->session->userdata('role_type_id');
 			if($user_role=='1' || $user_role=='2'){
-				$data['res_prod']=$this->bannermodel->get_all_active_product();
+				$data['res_prod']=$this->productmodel->get_all_active_product();
 				$data['res_banner']=$this->bannermodel->get_all_banner();
 				$this->load->view('siteadmin/header',$data);
 				$this->load->view('siteadmin/banner/create_banner',$data);

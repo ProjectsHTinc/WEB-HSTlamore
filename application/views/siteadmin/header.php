@@ -176,20 +176,28 @@
                         <li>
                             <a href="<?php echo base_url(); ?>admin/ads">Ads Banner</a>
                         </li>
-
-                    </ul>
-                </li>
-                <li>
-                    <a href="javascript:void(0);" data-toggle="collapse" data-target="#form_dr"><i class=" icon-flag mr-10"></i>Customer<span class="pull-right"><i class="fa fa-fw fa-angle-down"></i></span></a>
-                    <ul id="form_dr" class="collapse collapse-level-1">
                         <li>
-                            <a href="<?php echo base_url(); ?>admin/customers">View Customers</a>
+                            <a href="<?php echo base_url(); ?>admin/offers">Offer Products</a>
                         </li>
 
                     </ul>
                 </li>
+                <?php 	$user_role=$this->session->userdata('role_type_id');
+                if($user_role=='1'){?>
+                  <li>
+                      <a href="javascript:void(0);" data-toggle="collapse" data-target="#form_dr"><i class=" icon-flag mr-10"></i>Customer<span class="pull-right"><i class="fa fa-fw fa-angle-down"></i></span></a>
+                      <ul id="form_dr" class="collapse collapse-level-1">
+                          <li>
+                              <a href="<?php echo base_url(); ?>admin/customers">View Customers</a>
+                          </li>
 
-        
+                      </ul>
+                  </li>
+
+                <?php } ?>
+
+
+
 
             </ul>
         </div>

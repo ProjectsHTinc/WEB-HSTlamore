@@ -484,5 +484,17 @@ Class Productmodel extends CI_Model
       }
 
 
+      function get_all_active_product(){
+        $select="SELECT * FROM products WHERE status='Active'";
+        $res=$this->db->query($select);
+         return $res->result();
+      }
+
+      function get_product_price($prod_id){
+         $select="SELECT prod_actual_price FROM products WHERE id='$prod_id'";
+        $res=$this->db->query($select);
+        return $res->result();
+      }
+
 
 }
