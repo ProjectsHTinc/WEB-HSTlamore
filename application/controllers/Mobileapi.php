@@ -141,11 +141,6 @@ class Mobileapi extends CI_Controller {
 			return;
 		}
 
-		$username = '';
-		$password = '';
-		$gcmkey ='';
-		$mobiletype ='';
-		$login_type ='';
 
 	 	$cat_id = $this->input->post("cat_id");
 		$sub_cat_id = $this->input->post("sub_cat_id");
