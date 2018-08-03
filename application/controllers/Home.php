@@ -321,6 +321,7 @@ class Home extends CI_Controller {
 		$datas['count_wishlist'] = $this->homemodel->list_wishlist();
 		$datas['review_details'] = $this->homemodel->get_reviewdetails($prod_id);
 		$datas['product_details'] = $this->homemodel->get_productdetails($prod_id);
+		$datas['product_spec'] = $this->homemodel->get_productspec($prod_id);
 		//print_r($datas);
 		$this->load->view('front_header',$datas);
 		$this->load->view('product_details',$datas);

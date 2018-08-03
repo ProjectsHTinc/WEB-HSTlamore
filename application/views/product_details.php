@@ -6,6 +6,7 @@ if (count($product_details)>0){
 		$cat_id = $prod->cat_id;
 		$product_name = $prod->product_name;
 		$sku_code = $prod->sku_code;
+		$size_chart = $prod->prod_size_chart;
 		$product_description = $prod->product_description;
 		$product_cover_img = $prod->product_cover_img;
 		$prod_mrp_price = $prod->prod_mrp_price ;
@@ -81,7 +82,7 @@ if (count($product_details)>0){
             <div class="container">
                 <div class="row">
                     <div class="col-sm-5">
-                        <img id="big-img" src="<?php echo base_url(); ?>assets/products/<?php echo $product_cover_img;?>" data-zoom-image="<?php echo base_url(); ?>assets/front/img/new-products/1_1.jpg" alt="product-image" />
+                        <img id="big-img" src="<?php echo base_url(); ?>assets/products/<?php echo $product_cover_img;?>" data-zoom-image="<?php echo base_url(); ?>assets/products/<?php echo $product_cover_img;?>" alt="product-image" />
 
                         <div id="small-img" class="mt-20">
    
@@ -145,11 +146,14 @@ if (count($product_gallery)>0){
                                 </div>
                             </div>
                             <!-- Product Rating End -->
+							
                              <!-- Product Price Description Start -->
                             <div class="product-price-desc mb-20">
                                 <ul class="pro-desc-list">
                                     <li>Product Code: <span><?php echo $sku_code; ?></span></li>
-                                    <!--<li>Availability: <span>in Stock</span></li>-->
+									<?php if ($size_chart!="") {
+										echo "<li class='mt-10'><a href='".base_url()."assets/products/charts/".$size_chart."' target='_blank' style='color:#FAA320;'>Size Chart</a></li>";
+									} ?>
                                 </ul>
                             </div>
                             <!-- Product Price Description End -->
@@ -351,7 +355,24 @@ if (count($product_gallery)>0){
                             </div>
 							
                             <div id="specification" class="tab-pane fade pb-40">
-                                <p class="mb-10"><?php echo $product_description; ?></p>
+							
+							<?php if (count($product_spec)>0){ ?>
+							<!-- Table Content Start -->
+                            <div class="table-content table-responsive mb-50">
+                                <table>
+									<?php
+									foreach($product_spec as $spec){
+									$spec_name = $spec->spec_name;
+									$spec_value = $spec->spec_value;
+										?>
+                                        <tr>
+                                            <td><?php echo $spec_name; ?></td>
+                                            <td><?php echo $spec_value; ?></td>
+                                        </tr>
+									<?php } ?>
+								</table>
+								</div>
+							<?php } ?>
                             </div>
                            
                         </div>

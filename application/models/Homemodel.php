@@ -524,6 +524,13 @@ Class Homemodel extends CI_Model
 	  	return $res;
    }
    
+   function get_productspec($prod_id){
+		$sql="SELECT A.*,B.spec_name FROM product_specification A, specification_masters B WHERE A.product_id ='$prod_id' AND A.spec_id = B.id AND A.status = 'Active'";
+	  	$resu=$this->db->query($sql);
+	  	$res=$resu->result();
+	  	return $res;
+   }
+   
    function cart_insert($product_id,$com_product_id,$browser_sess_id,$cust_id,$quantity,$price,$total_amount){
 	   
 	   $sel_cart = "SELECT * FROM product_cart WHERE product_id = '$product_id' AND product_combined_id ='$com_product_id' AND browser_sess_id ='$browser_sess_id'";
