@@ -78,6 +78,7 @@ if (count($category_details)>0){
 													$combined_status = $prod->combined_status;
 													$offer_status = $prod->offer_status;
 													$prod_actual_price = $prod->prod_actual_price;
+													$stocks_left = $prod->stocks_left;
 													$posteddate = date("d-m-Y",strtotime($prod->created_at));
 													$check_date = date("d-m-Y",strtotime("-15 day"));
 													if ($offer_status =='1'){
@@ -118,13 +119,19 @@ if (count($category_details)>0){
                                         <p class="price"><span class="mrp">₹<?php echo $prod_actual_price;?></span> <span>₹<?php echo $offer_price;?></span></p>										<?php } else { ?>
                                         <p class="price"><span>₹<?php echo $prod_actual_price;?></span></p>
                                         <?php } ?>
-                                                            <div class="action-links2">
-                                                            <?php if ($combined_status == '1'){ ?>
-                                                            	<a data-toggle="tooltip" title="View Products" href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/" style="background:#FAA320;">view products</a>
-                                                            <?php } else { ?>
-                                                                <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>home/addcart/<?php echo $sproduct_id; ?>/">add to cart</a>
-                                                             <?php }?>
-                                                            </div>
+											<div class="action-links2">
+                                                      <?php 
+										 if ($stocks_left>0){
+											 if ($combined_status == '1'){ ?>
+												<a data-toggle="tooltip" title="View Products" href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/" style="background:#FAA320;">view products</a>
+											<?php } else { ?>
+												<a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>home/addcart/<?php echo $sproduct_id; ?>/">add to cart</a>
+											 <?php }
+										 } else {
+										?>
+											 <a data-toggle="tooltip" title="Out of Stock" style="background:#e11313;">Out of Stock</a>
+										 <?php } ?>
+                                             </div>
                                                         </div>
                                                         <!-- Product Content End -->
                                                     </div>

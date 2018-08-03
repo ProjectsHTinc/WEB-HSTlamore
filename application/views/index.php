@@ -23,8 +23,8 @@
 						//$sproduct_id = $prod->product_id;
 						$product_id = $imglist->id * 663399;
 						$enc_product_name = strtolower(preg_replace("/[^\w]/", "-", $imglist->product_name));
-						$enc_product_id = base64_encode($product_id);
 												
+						$enc_product_id = base64_encode($product_id);
 				?>
                     <!-- Slider htmlcaption Start-->
                 <div id="htmlcaption<?php echo $img_id;?>" class="nivo-html-caption slider-caption">
@@ -73,8 +73,10 @@
 								$combined_status = $npro->combined_status;
 								$offer_status = $npro->offer_status;
 								$prod_actual_price = $npro->prod_actual_price;
+								$stocks_left = $npro->stocks_left;
 								$posteddate = date("d-m-Y",strtotime($npro->created_at));
 								$check_date = date("d-m-Y",strtotime("-15 day"));
+								
 								
 								if ($offer_status =='1'){
 									$offer_details = $this->homemodel->get_offer_details($sproduct_id);
@@ -112,11 +114,17 @@
                                         <p class="price"><span>₹<?php echo $prod_actual_price;?></span></p>
                                         <?php } ?>
                                         <div class="action-links2">
-                                         <?php if ($combined_status == '1'){ ?>
-                                            <a data-toggle="tooltip" title="View Products" href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/" style="background:#FAA320;">view products</a>
-                                        <?php } else { ?>
-                                            <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>home/addcart/<?php echo $sproduct_id; ?>/">add to cart</a>
-                                         <?php }?>
+                                         <?php 
+										 if ($stocks_left>0){
+											 if ($combined_status == '1'){ ?>
+												<a data-toggle="tooltip" title="View Products" href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/" style="background:#FAA320;">view products</a>
+											<?php } else { ?>
+												<a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>home/addcart/<?php echo $sproduct_id; ?>/">add to cart</a>
+											 <?php }
+										 } else {
+										?>
+											 <a data-toggle="tooltip" title="Out of Stock" style="background:#e11313;">Out of Stock</a>
+										 <?php } ?>
                                         </div>
                                     </div>
                                     <!-- Product Content End -->
@@ -159,7 +167,7 @@
                     
                     <div class="col-sm-6">
                         <div class="single-banner">
-                            <a href="#"><img src="<?php echo base_url(); ?>assets/front/img/products-banner/10.jpg" alt="product-banner"></a>
+                            <a href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/"><img src="<?php echo base_url(); ?>assets/products/<?php echo $noffer->product_cover_img; ?>" alt="product-banner"></a>
                         </div>
                     </div>
                     <!-- Single Banner End -->
@@ -180,7 +188,7 @@
                     
                     <div class="col-sm-6">
                         <div class="single-banner">
-                            <a href="#"><img src="<?php echo base_url(); ?>assets/front/img/products-banner/10.jpg" alt="product-banner"></a>
+                            <a href="#"><img src="<?php echo base_url(); ?>assets/products/<?php echo $noffer->product_cover_img; ?>" alt="product-banner"></a>
                         </div>
                     </div>
                     <!-- Single Banner End -->
@@ -261,9 +269,9 @@
 								$enc_product_name = strtolower(preg_replace("/[^\w]/", "-", $npro->product_name));
 								$enc_product_id = base64_encode($product_id);
 								$combined_status = $npro->combined_status;
-								
 								$offer_status = $npro->offer_status;
 								$prod_actual_price = $npro->prod_actual_price;
+								$stocks_left = $npro->stocks_left;
 								
 								if ($offer_status =='1'){
 									$offer_details = $this->homemodel->get_offer_details($sproduct_id);
@@ -301,11 +309,17 @@
                                         <p class="price"><span>₹<?php echo $prod_actual_price;?></span></p>
                                         <?php } ?>
                                         <div class="action-links2">
-                                         <?php if ($combined_status == '1'){ ?>
-                                            <a data-toggle="tooltip" title="View Products" href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/" style="background:#FAA320;">view products</a>
-                                        <?php } else { ?>
-                                            <a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>home/addcart/<?php echo $sproduct_id; ?>/">add to cart</a>
-                                         <?php }?>
+                                        <?php 
+										 if ($stocks_left>0){
+											 if ($combined_status == '1'){ ?>
+												<a data-toggle="tooltip" title="View Products" href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/" style="background:#FAA320;">view products</a>
+											<?php } else { ?>
+												<a data-toggle="tooltip" title="Add to Cart" href="<?php echo base_url(); ?>home/addcart/<?php echo $sproduct_id; ?>/">add to cart</a>
+											 <?php }
+										 } else {
+										?>
+											 <a data-toggle="tooltip" title="Out of Stock" style="background:#e11313;">Out of Stock</a>
+										 <?php } ?>
                                         </div>
                                     </div>
                                     <!-- Product Content End -->

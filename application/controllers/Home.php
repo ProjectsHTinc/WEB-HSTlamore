@@ -15,6 +15,7 @@ class Home extends CI_Controller {
 	{
 		$datas['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$datas['count_cart_session'] = $this->homemodel->cart_list();
+		$datas['count_wishlist'] = $this->homemodel->list_wishlist();
 		$datas['home_banner'] = $this->homemodel->homebanner();
 		$datas['home_newproducts'] = $this->homemodel->newproducts();
 		$datas['home_advertisement'] = $this->homemodel->homeadvertisement();
@@ -32,6 +33,13 @@ class Home extends CI_Controller {
 	public function existemail(){
 		$email=$this->input->post('email');
 		$datas=$this->homemodel->exist_email($email);
+	}
+
+	public function checkqty(){
+		$qty=$this->input->post('qty');
+		$product_id=$this->input->post('product_id');
+		$com_product_id=$this->input->post('com_product_id');
+		$datas=$this->homemodel->check_quantity($product_id,$com_product_id,$qty);
 	}
 
 	public function zipcode_check(){
@@ -68,6 +76,7 @@ class Home extends CI_Controller {
 	{
 		$datas['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$datas['count_cart_session'] = $this->homemodel->cart_list();
+		$datas['count_wishlist'] = $this->homemodel->list_wishlist();
 		$this->load->view('front_header',$datas);
 		$this->load->view('register');
 		$this->load->view('front_footer');
@@ -86,6 +95,7 @@ class Home extends CI_Controller {
 	{
 		$datas['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$datas['count_cart_session'] = $this->homemodel->cart_list();
+		$datas['count_wishlist'] = $this->homemodel->list_wishlist();
 		$this->load->view('front_header',$datas);
 		$this->load->view('login');
 		$this->load->view('front_footer');
@@ -142,6 +152,7 @@ class Home extends CI_Controller {
 	{
 		$datas['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$datas['count_cart_session'] = $this->homemodel->cart_list();
+		$datas['count_wishlist'] = $this->homemodel->list_wishlist();
 		$this->load->view('front_header',$datas);
 		$this->load->view('forgot-password');
 		$this->load->view('front_footer');
@@ -157,6 +168,7 @@ class Home extends CI_Controller {
 	{
 		$datas['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$datas['count_cart_session'] = $this->homemodel->cart_list();
+		$datas['count_wishlist'] = $this->homemodel->list_wishlist();
 		$cust_session_id = $this->session->userdata('cust_session_id');
 		
 		if ($cust_session_id !='') {
@@ -172,6 +184,7 @@ class Home extends CI_Controller {
 	{
 		$datas['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$datas['count_cart_session'] = $this->homemodel->cart_list();
+		$datas['count_wishlist'] = $this->homemodel->list_wishlist();
 		$cust_session_id = $this->session->userdata('cust_session_id');
 		
 		if ($cust_session_id !='') {
@@ -187,6 +200,7 @@ class Home extends CI_Controller {
 	{
 		$datas['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$datas['count_cart_session'] = $this->homemodel->cart_list();
+		$datas['count_wishlist'] = $this->homemodel->list_wishlist();
 		$cust_session_id = $this->session->userdata('cust_session_id');
 		$datas['cust_address'] = $this->homemodel->get_cust_address($cust_session_id);
 		//print_r ($datas);
@@ -228,6 +242,7 @@ class Home extends CI_Controller {
 	{
 		$datas['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$datas['count_cart_session'] = $this->homemodel->cart_list();
+		$datas['count_wishlist'] = $this->homemodel->list_wishlist();
 		$cust_session_id = $this->session->userdata('cust_session_id');
 		
 		if ($cust_session_id !='') {
@@ -245,6 +260,7 @@ class Home extends CI_Controller {
 	{
 		$datas['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$datas['count_cart_session'] = $this->homemodel->cart_list();
+		$datas['count_wishlist'] = $this->homemodel->list_wishlist();
 		$cust_session_id = $this->session->userdata('cust_session_id');
 		
 		if ($cust_session_id !='') {
@@ -275,6 +291,7 @@ class Home extends CI_Controller {
 		//echo $this->uri->segment(2);exit;
 		$datas['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$datas['count_cart_session'] = $this->homemodel->cart_list();
+		$datas['count_wishlist'] = $this->homemodel->list_wishlist();
 		$datas['maincat_count'] = $this->homemodel->get_maincat_count();
 		$datas['category_details'] = $this->homemodel->get_categorydetails($cat_id);
 		$datas['cat_products'] = $this->homemodel->get_cat_products($cat_id);
@@ -287,6 +304,7 @@ class Home extends CI_Controller {
 	{
 		$datas['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$datas['count_cart_session'] = $this->homemodel->cart_list();
+		$datas['count_wishlist'] = $this->homemodel->list_wishlist();
 		$datas['maincat_count'] = $this->homemodel->get_maincat_count();
 		$datas['category_details'] = $this->homemodel->get_categorydetails($cat_id);
 		$datas['cat_products'] = $this->homemodel->get_subcat_products($cat_id);
@@ -300,7 +318,10 @@ class Home extends CI_Controller {
 	{
 		$datas['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$datas['count_cart_session'] = $this->homemodel->cart_list();
+		$datas['count_wishlist'] = $this->homemodel->list_wishlist();
+		$datas['review_details'] = $this->homemodel->get_reviewdetails($prod_id);
 		$datas['product_details'] = $this->homemodel->get_productdetails($prod_id);
+		$datas['product_spec'] = $this->homemodel->get_productspec($prod_id);
 		//print_r($datas);
 		$this->load->view('front_header',$datas);
 		$this->load->view('product_details',$datas);
@@ -364,6 +385,7 @@ class Home extends CI_Controller {
 	{
 		$datas['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$datas['count_cart_session'] = $this->homemodel->cart_list();
+		$datas['count_wishlist'] = $this->homemodel->list_wishlist();
 		$browser_sess_id = $this->session->userdata('browser_sess_id');
 		$cust_session_id = $this->session->userdata('cust_session_id');
 
@@ -404,6 +426,7 @@ class Home extends CI_Controller {
 		$cust_session_id = $this->session->userdata('cust_session_id');
 		$datas['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$datas['count_cart_session'] = $this->homemodel->cart_list();
+		$datas['count_wishlist'] = $this->homemodel->list_wishlist();
 		$datas['cart_list'] = $this->homemodel->cart_list();
 		$datas['countrylist'] = $this->homemodel->countrylist();
 		$datas['default_address'] = $this->homemodel->get_cust_address_default($cust_session_id);
@@ -421,6 +444,7 @@ class Home extends CI_Controller {
 		$datas['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		
 		$datas['cart_list'] = $this->homemodel->cart_list();
+		$datas['count_wishlist'] = $this->homemodel->list_wishlist();
 		//$datas['cart_process'] = $this->homemodel->cart_process();
 		$cust_session_id = $this->session->userdata('cust_session_id');
 		
@@ -480,31 +504,65 @@ class Home extends CI_Controller {
 		}
 	}
 	
+	public function addwishlist($product_id)
+	{
+		$datas['res']=$this->homemodel->add_wishlist($product_id);
+		if($datas['res']['status']=='success'){
+			redirect(base_url()."wishlist/");
+		}else{
+			redirect(base_url()."error/");
+		}
+	}
+	
+	public function deletewishlist($wishlist_id)
+	{
+		$datas['res']=$this->homemodel->delete_wishlist($wishlist_id);
+		if($datas['res']['status']=='success'){
+			redirect(base_url()."wishlist/");
+		}else{
+			redirect(base_url()."error/");
+		}
+	}
+		
 	public function wishlist()
 	{
 		$datas['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$datas['count_cart_session'] = $this->homemodel->cart_list();
-		$datas['list_wishlist'] = $this->homemodel->list_wishlist();
+		$datas['count_wishlist'] = $this->homemodel->list_wishlist();
+		$datas['count_wishlist'] = $this->homemodel->list_wishlist();
 		$this->load->view('front_header',$datas);
-		$this->load->view('wish-list',$datas);
+		$this->load->view('wish-list');
 		$this->load->view('front_footer');
 	}
+	
+	public function addreview()
+	{
+		$comments = $this->input->post('comments');
+		$rating = $this->input->post('rating');
+		$rproduct_id = $this->input->post('rproduct_id');
+		$ruser_id = $this->input->post('ruser_id');
+		
+		$datas['res']=$this->homemodel->add_review($ruser_id,$rproduct_id,$comments,$rating);
+	}
+	
+	
 	
 	public function aboutus()
 	{
 		$datas['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$datas['count_cart_session'] = $this->homemodel->cart_list();
+		$datas['count_wishlist'] = $this->homemodel->list_wishlist();
 		$this->load->view('front_header',$datas);
 		$this->load->view('about-us');
 		$this->load->view('front_footer');
 	}
 	
-
 	
 	public function contactus()
 	{
 		$datas['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$datas['count_cart_session'] = $this->homemodel->cart_list();
+		$datas['count_wishlist'] = $this->homemodel->list_wishlist();
 		$this->load->view('front_header',$datas);
 		$this->load->view('contact-us');
 		$this->load->view('front_footer');
@@ -514,6 +572,7 @@ class Home extends CI_Controller {
 	{
 		$datas['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$datas['count_cart_session'] = $this->homemodel->cart_list();
+		$datas['count_wishlist'] = $this->homemodel->list_wishlist();
 		$this->load->view('front_header',$datas);
 		$this->load->view('privacy');
 		$this->load->view('front_footer');
