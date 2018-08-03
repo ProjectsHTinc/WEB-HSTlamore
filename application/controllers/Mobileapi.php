@@ -59,17 +59,11 @@ class Mobileapi extends CI_Controller {
 		$mobiletype ='';
 		$login_type ='';
 
-	 	  $username = $this->input->post("username");
-
-		  $password = $this->input->post("password");
-
-
-
+	 	$username = $this->input->post("username");
+		$password = $this->input->post("password");
 		$mob_key = $this->input->post("mob_key");
 		$mobile_type = $this->input->post("mobile_type");
-
 		$data['result']=$this->mobileapimodel->Login($username,$password,$mob_key,$mobile_type);
-
 		$response = $data['result'];
 		echo json_encode($response);
 	}
@@ -123,6 +117,44 @@ class Mobileapi extends CI_Controller {
 
 //-----------------------------------------------//
 
+
+//-----------------------------------------------//
+
+	public function product_list()
+	{
+
+	  $_POST = json_decode(file_get_contents("php://input"), TRUE);
+
+		if(!$this->checkMethod())
+		{
+			return FALSE;
+		}
+
+		if($_POST == FALSE)
+		{
+			$res = array();
+			$res["opn"] = "Login";
+			$res["scode"] = 204;
+			$res["message"] = "Input error";
+
+			echo json_encode($res);
+			return;
+		}
+
+		$username = '';
+		$password = '';
+		$gcmkey ='';
+		$mobiletype ='';
+		$login_type ='';
+
+	 	$cat_id = $this->input->post("cat_id");
+		$sub_cat_id = $this->input->post("sub_cat_id");
+		$data['result']=$this->mobileapimodel->product_list($cat_id,$sub_cat_id);
+		$response = $data['result'];
+		echo json_encode($response);
+	}
+
+//-----------------------------------------------//
 
 
 

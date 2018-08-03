@@ -496,5 +496,11 @@ Class Productmodel extends CI_Model
         return $res->result();
       }
 
+      function get_count_of_active_product(){
+        $select="SELECT COUNT(*) AS count_product FROM products WHERE STATUS='Active'";
+       $res=$this->db->query($select);
+       return $res->result();
+      }
+
 
 }

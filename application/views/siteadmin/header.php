@@ -206,6 +206,15 @@
 
                       </ul>
                   </li>
+                  <li>
+                      <a href="javascript:void(0);" data-toggle="collapse" data-target="#sales_menu"><i class=" icon-flag mr-10"></i>Sales<span class="pull-right"><i class="fa fa-fw fa-angle-down"></i></span></a>
+                      <ul id="sales_menu" class="collapse collapse-level-1">
+                          <li>
+                              <a href="<?php echo base_url(); ?>admin/sales">Sales Report</a>
+                          </li>
+
+                      </ul>
+                  </li>
 
                 <?php } ?>
 

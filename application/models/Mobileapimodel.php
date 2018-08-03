@@ -297,5 +297,14 @@ class Mobileapimodel extends CI_Model {
 
 //#################### User Registration End ####################//
 
+
+  function product_list($cat_id,$sub_cat_id){
+    $select="SELECT * FROM products WHERE cat_id='$cat_id' AND sub_cat_id='$sub_cat_id'";
+    $res=$this->db->query($select);
+     return $res->result();
+  }
+
+
+
 }
 ?>

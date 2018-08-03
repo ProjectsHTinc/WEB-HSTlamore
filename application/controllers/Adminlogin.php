@@ -8,7 +8,10 @@ class Adminlogin extends CI_Controller {
 		parent::__construct();
 		$this->load->helper('url');
 		$this->load->library('session');
-			$this->load->model('loginmodel');
+		$this->load->model('loginmodel');
+		$this->load->model('productmodel');
+		$this->load->model('customerprofilemodel');
+		$this->load->model('trackingmodel');
 	}
 	public function index()
 	{
@@ -29,6 +32,10 @@ class Adminlogin extends CI_Controller {
 		$user_id=$this->session->userdata('id');
 		$user_role=$this->session->userdata('role_type_id');
 		if($user_role=='1' || $user_role=='2'){
+				$data['res_count_product']=$this->productmodel->get_count_of_active_product();
+				$data['res_count_cust']=$this->customerprofilemodel->get_count_of_active_customer();
+				$data['res_recent_orders']=$this->trackingmodel->get_all_success_orders();
+				$data['res_prod_stocks']=$this->productmodel->get_all_products();
 				$this->load->view('siteadmin/header',$data);
 				$this->load->view('siteadmin/index',$data);
 				$this->load->view('siteadmin/footer');

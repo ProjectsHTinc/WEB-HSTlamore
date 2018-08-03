@@ -34,7 +34,7 @@
 											<table class="table display responsive product-overview mb-30" id="myTable">
 												<thead>
 													<tr>
-														<th style="width:100px;">Name</th>
+														<th style="width:300px;">Name</th>
 														<th>Sku code</th>
 														<th>Category</th>
 														<th>Cover img</th>

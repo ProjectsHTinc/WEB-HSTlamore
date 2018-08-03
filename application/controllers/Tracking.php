@@ -18,7 +18,7 @@ class Tracking extends CI_Controller {
 		$user_id=$this->session->userdata('id');
 		$user_role=$this->session->userdata('role_type_id');
 			if($user_role=='1' || $user_role=='2'){
-				$data['res_orders']=$this->trackingmodel->get_all_success_orders();
+				$data['res_orders']=$this->trackingmodel->get_all_recent_orders();
 				$this->load->view('siteadmin/header',$data);
 				$this->load->view('siteadmin/tracking/view_orders',$data);
 				$this->load->view('siteadmin/footer');
