@@ -124,6 +124,24 @@ Class Homemodel extends CI_Model
 			echo "false";
 		}
    }
+   
+   function check_quantity($product_id,$com_product_id,$qty){
+
+	   if ($com_product_id == ''){
+			 $check_quantity="SELECT * FROM products WHERE id='$product_id' AND stocks_left>='$qty'";
+	   } else { 
+	  		 $check_quantity="SELECT * FROM product_combined WHERE id='$com_product_id' AND stocks_left>='$qty'";
+	   }
+		$res=$this->db->query($check_quantity);
+
+		if($res->num_rows()>0){
+			echo "true";
+		}else {
+			echo "false";
+		}
+   }
+   
+   
    function exist_mobile($mobile){
 		$check_email="SELECT * FROM customers WHERE phone_number='$mobile'";
 		$res=$this->db->query($check_email);
@@ -456,7 +474,7 @@ Class Homemodel extends CI_Model
 	  	$resu=$this->db->query($sql);
 	  	$res=$resu->result();
 	  	return $res;
-   }
+   }  
    
    function get_cproduct_details($prod_id){
 		$sql="SELECT * FROM product_combined WHERE product_id ='$prod_id' AND prod_default = '1' AND status = 'Active' ";
@@ -493,7 +511,7 @@ Class Homemodel extends CI_Model
    } 
    
     function get_colour_size($product_combined_id){
-		$sql="SELECT am.attribute_value, am.attribute_name, pc.mas_color_id, pc.mas_size_id, ams.attribute_value AS size, pc.* FROM product_combined AS pc LEFT JOIN attribute_masters AS am ON am.id = pc.mas_color_id LEFT JOIN attribute_masters AS ams ON ams.id = pc.mas_size_id WHERE pc.id = '$product_combined_id' ";
+		$sql="SELECT am.attribute_value, am.attribute_name, pc.mas_color_id, pc.mas_size_id, pc.stocks_left, ams.attribute_value AS size, pc.* FROM product_combined AS pc LEFT JOIN attribute_masters AS am ON am.id = pc.mas_color_id LEFT JOIN attribute_masters AS ams ON ams.id = pc.mas_size_id WHERE pc.id = '$product_combined_id' ";
 	  	$resu=$this->db->query($sql);
 	  	$res=$resu->result();
 	  	return $res;
@@ -580,7 +598,7 @@ Class Homemodel extends CI_Model
 			
 	function cart_list(){
 		$browser_sess_id = $this->session->userdata('browser_sess_id');
-		$sql = "SELECT A.*,B.product_name,B.product_cover_img FROM product_cart A,products B WHERE A.product_id = B.id AND A.browser_sess_id = '$browser_sess_id' AND A.order_id = '' AND A.status='Pending' ORDER BY A.id";
+		$sql = "SELECT A.*,B.product_name,B.product_cover_img,B.stocks_left FROM product_cart A,products B WHERE A.product_id = B.id AND A.browser_sess_id = '$browser_sess_id' AND A.order_id = '' AND A.status='Pending' ORDER BY A.id";
 		$resu=$this->db->query($sql);
 		$res=$resu->result();
 		return $res;
@@ -660,9 +678,9 @@ Class Homemodel extends CI_Model
 		$inssql = "INSERT INTO purchase_order(order_id ,browser_sess_id ,cus_id ,purchase_date,cus_address_id,total_amount,status,cus_notes,created_at,created_by) VALUES('$order_id','$browser_sess_id','$cust_id',now(),'$address_id','$total_amt','Pending','$ncheckout_mess',now(),'$cust_id')";
 		$insert = $this->db->query($inssql);
 
-		$updatesql = "UPDATE product_cart SET order_id='$order_id' WHERE browser_sess_id='$browser_sess_id'";
+		$updatesql = "UPDATE product_cart SET order_id='$order_id',cus_id='$cust_id' WHERE browser_sess_id='$browser_sess_id'";
 		$update = $this->db->query($updatesql);
-
+				
 		$res=array('order_id'=>$order_id,'address'=>$address);
 		
 		return $res;
@@ -700,7 +718,7 @@ Class Homemodel extends CI_Model
 		$inssql = "INSERT INTO purchase_order(order_id ,browser_sess_id ,cus_id ,purchase_date,cus_address_id,total_amount,status,cus_notes,created_at,created_by) VALUES('$order_id','$browser_sess_id','$cust_id',now(),'$address_id','$total_amt','Pending','$scheckout_mess',now(),'$cust_id')";
 		$insert = $this->db->query($inssql);
 		
-		$updatesql = "UPDATE product_cart SET order_id='$order_id' WHERE browser_sess_id='$browser_sess_id'";
+		$updatesql = "UPDATE product_cart SET order_id='$order_id',cus_id='$cust_id' WHERE browser_sess_id='$browser_sess_id'";
 		$update = $this->db->query($updatesql);
 		
 		$res=array('order_id'=>$order_id,'address'=>$address);
@@ -713,12 +731,60 @@ Class Homemodel extends CI_Model
 		echo $unique_order_id = $this->generate_orderid();
    }
    
+   
+   function add_wishlist($product_id){
+			$cust_id = $this->session->userdata('cust_session_id');
+			
+			$check_wishlist = "SELECT * FROM cus_wishlist WHERE product_id = '$product_id' AND customer_id = '$cust_id'";
+			$res = $this->db->query($check_wishlist);
+
+			if($res->num_rows()==0){
+				$insert = "INSERT INTO cus_wishlist(`customer_id`, `product_id`, `created_at`, `updated_at`) VALUES ('$cust_id', '$product_id', now(), '$guest_session');";
+				$res = $this->db->query($insert);
+			}
+			if ($res){
+				$datas=array('status'=>'success');
+			}else {
+				$datas=array('status'=>'failure');;
+			}
+			return $datas;
+   }
+
+	function delete_wishlist($wishlist_id){
+			$del_wishlist = "DELETE FROM cus_wishlist WHERE id = '$wishlist_id'";
+			$res=$this->db->query($del_wishlist);
+
+			if ($res){
+				$datas=array('status'=>'success');
+			}else {
+				$datas=array('status'=>'failure');;
+			}
+			return $datas;
+   }
+   
    function list_wishlist(){
-		$guest_session = $this->session->userdata('cust_id');
-		//$sql = "SELECT A.*,B.product_name,B.product_cover_img FROM product_cart A,products B WHERE A.product_id = B.id AND A.browser_sess_id = '$guest_session' ORDER BY A.id";
-		//$resu=$this->db->query($sql);
-		//$res=$resu->result();
-		//return $res;
+		$cust_id = $this->session->userdata('cust_session_id');
+		$sql = "SELECT A.*,B.product_name,B.product_cover_img,B.prod_actual_price,B.combined_status,B.offer_status,B.stocks_left FROM cus_wishlist A,products B WHERE A.product_id = B.id AND A.customer_id = '$cust_id' ORDER BY A.id";
+		$resu=$this->db->query($sql);
+		$res=$resu->result();
+		return $res;
+   }
+   
+  function get_reviewdetails($prod_id){
+		$sql="SELECT A.*,B.name FROM product_review A,customers B WHERE A.product_id = '$prod_id' AND A.cus_id = B.id AND A.status = 'Active' ORDER BY A.rating";
+	  	$resu=$this->db->query($sql);
+	  	$res=$resu->result();
+	  	return $res;
+   }
+   
+   function add_review($ruser_id,$rproduct_id,$comments,$rating){
+			$insert = "INSERT INTO product_review(`cus_id`,`product_id`,`rating`,`comment`,`status`,`created_at`,`created_by`) VALUES ('$ruser_id', '$rproduct_id','$rating', '$comments','Active',now(),'$ruser_id');";
+			$res = $this->db->query($insert);
+			if ($res){
+				echo "success";
+			}else {
+				echo "error";
+			}
    }
    
     function newproducts(){
@@ -743,21 +809,21 @@ Class Homemodel extends CI_Model
    }
    
    function homebanner(){
-		$sql = "SELECT A.*,B.product_name FROM banner A,products B WHERE A.status='Active' AND A.product_id = B.id ORDER BY A.created_at DESC LIMIT 3";
+		$sql = "SELECT A.*,B.product_name FROM banner A,products B WHERE A.status='Active' AND B.status='Active' AND A.product_id = B.id ORDER BY A.created_at DESC LIMIT 3";
 		$resu=$this->db->query($sql);
 		$res=$resu->result();
 		return $res;
    }
    
       function homeadvertisement(){
-		$sql = "SELECT A.*,B.`category_name` FROM ads_master A,category_masters B WHERE A.status='Active' AND A.sub_cat_id = B.id ORDER BY A.created_at DESC LIMIT 1";
+		$sql = "SELECT A.*,B.`category_name` FROM ads_master A,category_masters B WHERE A.status='Active' AND B.status='Active' AND A.sub_cat_id = B.id ORDER BY A.created_at DESC LIMIT 1";
 		$resu=$this->db->query($sql);
 		$res=$resu->result();
 		return $res;
    }
    
    function homeoffer(){
-		$sql = "SELECT A.*,B.product_name FROM product_offer A,products B WHERE A.status='Active' AND A.product_id = B.id ORDER BY created_at LIMIT 2";
+		$sql = "SELECT A.*,B.product_name,B.product_cover_img FROM product_offer A,products B WHERE A.status='Active' AND B.status='Active' AND A.product_id = B.id ORDER BY created_at LIMIT 2";
 		$resu=$this->db->query($sql);
 		$res=$resu->result();
 		return $res;

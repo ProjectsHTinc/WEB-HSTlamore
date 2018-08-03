@@ -1,4 +1,5 @@
 <?php
+$cust_session_id = $this->session->userdata('cust_session_id');
 if (count($product_details)>0){
 	foreach($product_details as $prod){ 
 		$product_id = $prod->id;
@@ -11,6 +12,7 @@ if (count($product_details)>0){
 		$prod_actual_price = $prod->prod_actual_price;
 		$combined_status = $prod->combined_status;
 		$offer_status = $prod->offer_status;
+		$stocks_left = $prod->stocks_left;
 		
 		if ($offer_status =='1'){
 			$offer_details = $this->homemodel->get_offer_details($product_id);
@@ -108,19 +110,40 @@ if (count($product_gallery)>0){
                      <form id="product-form" name="product-form" class="contact-form" action="<?php echo base_url(); ?>home/insertcart/" method="post">
                         <div class="thubnail-desc fix">
                             <h2 class="product-header mb-20"><?php echo $product_name; ?></h2>
+							
+							<?php  
+							$disprating =0;
+							$countreviews=0;
+							if (count($review_details)>0){ 
+									$countreviews = count($review_details);
+									$srating = 0;
+										foreach($review_details as $rev){ 
+											$rating = $rev->rating;
+											$srating = round($srating + $rating);
+										}
+										$disprating =  round($srating/$countreviews) ;
+								}
+							?>
                             <!-- Product Rating Start -->
-                            <!--<div class="rating-summary fix mtb-20">
+                            <div class="rating-summary fix mtb-20">
                                 <div class="rating f-left mr-10">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
+                                 <?php
+                     				for ($i=1; $i <6; $i++)
+            							{
+										if ($i <= $disprating){
+											echo "<i class='fa fa-star'></i>";
+										} else {
+											echo "<i class='fa fa-star-o'></i>";
+										}
+									}
+					?>
+
                                 </div>
                                 <div class="rating-feedback f-left">
-                                    <a href="#">0 reviews</a> /
-                                    <a href="#">Write a review</a>
+                                    <a href="#creview"><?php echo $countreviews;?> reviews</a>
+                                   <?php if (isset($cust_session_id)){ ?>  <a href="#" data-toggle="modal" data-target="#myModal"> / Write a review</a> <?php } ?>
                                 </div>
-                            </div>-->
+                            </div>
                             <!-- Product Rating End -->
                              <!-- Product Price Description Start -->
                             <div class="product-price-desc mb-20">
@@ -131,7 +154,7 @@ if (count($product_gallery)>0){
                             </div>
                             <!-- Product Price Description End -->
                            
-                             <?php if ($combined_status =='1') { ?>
+<?php if ($combined_status =='1') { ?>
                              
                              <!-- Product Price Start -->
                             <div class="pro-price mb-20">
@@ -151,7 +174,7 @@ if (count($product_gallery)>0){
                             <div class="box-quantity mtb-10">
                                 <div class="quantity-item">
                                     <label>Qty: </label>
-                                    <input type="number" value="1" min="1" max="10" style="height: 45px;"  name="qty" id="qty" /><!--
+                                    <input type="number" value="1" min="1" max="10" style="height: 45px;"  name="qty" id="qty" onchange="getStock()" /><!--
                                     <div class="cart-plus-minus">
                                         <input class="cart-plus-minus-box" type="text" name="qtybutton" value="0">
                                     </div>-->
@@ -173,6 +196,7 @@ if (count($product_gallery)>0){
                                 </div>
                             </div>
                             <!-- Product Box Quantity End -->
+                            
                             <!-- Product Box Quantity Start -->
                             <div class="box-quantity mtb-10">
                                 <div class="quantity-item">
@@ -201,7 +225,7 @@ if (count($product_gallery)>0){
                             	<input type="hidden" name="offer_percentage" id="offer_percentage" value="<?php echo $offer_percentage ?>" />
                             <?php } ?>
                             
-                            <?php } else { ?>
+<?php } else { ?>
                             
                              <!-- Product Price Start -->
                             <div class="pro-price mb-20">
@@ -221,7 +245,7 @@ if (count($product_gallery)>0){
                             <div class="box-quantity mtb-10">
                                 <div class="quantity-item">
                                     <label>Qty: </label>
-                                    <input type="number" value="1" min="1" max="10" style="height: 45px;"  name="qty" id="qty" /><!--
+                                    <input type="number" value="1" min="1" max="10" style="height: 45px;"  name="qty" id="qty" onchange="getStock()" /><!--
                                     <div class="cart-plus-minus">
                                         <input class="cart-plus-minus-box" type="text" name="qtybutton" value="0">
                                     </div>-->
@@ -229,18 +253,29 @@ if (count($product_gallery)>0){
                             </div>
                             <!-- Product Box Quantity End -->
                             <input type="hidden" name="product_id" id="product_id" value="<?php echo $product_id; ?>" />
-									<?php if ($offer_status =='1'){?>
-                                        <input type="hidden" name="price" id="price" value="<?php echo $offer_price; ?>" />
-                                        <?php } else { ?>
-                                        <input type="hidden" name="price" id="price" value="<?php echo $prod_actual_price; ?>" />
-                                    <?php } ?>
+                            <?php if ($offer_status =='1'){?>
+                            	<input type="hidden" name="price" id="price" value="<?php echo $offer_price; ?>" />
+                            <?php } else { ?>
+                            	<input type="hidden" name="price" id="price" value="<?php echo $prod_actual_price; ?>" />
                             <?php } ?>
+<?php } ?>
+                            
+                            
                             <!-- Product Button Actions Start -->
                             <div class="product-button-actions">
-                               <button type="submit" class="add-to-cart">add to cart</button>
-                              <?php 
-							  $cust_session_id = $this->session->userdata('cust_session_id');
-							 	if (isset($cust_session_id)){ ?> <a href="wish-list.html" data-toggle="tooltip" title="Add to Wishlist" class="same-btn mr-15"><i class="pe-7s-like"></i></a> <?php } ?>
+                            <?php 
+								if ($stocks_left>0){ ?>
+                               	<button id='addcart' type="submit" class="add-to-cart">add to cart</button>
+                                <button id='emptycart' type="button" class="add-to-cart" style="background:#e20202;display:none;">Out of Stock</button>
+                             <?php } else { ?>
+                             	<button id='emptycart' type="button" class="add-to-cart" style="background:#e20202;">Out of Stock</button>
+                             <?php } ?>
+                              
+							  <?php 
+							 	if (isset($cust_session_id)){ ?> 
+                                <a href="<?php echo base_url(); ?>home/addwishlist/<?php echo $product_id; ?>/" data-toggle="tooltip" title="Add to Wishlist" class="same-btn mr-15"><i class="pe-7s-like"></i></a>
+							<?php } ?>
+                             <!--<a href="wish-list.html" data-toggle="tooltip" title="Add to Wishlist" class="same-btn1 mr-15"><i class="pe-7s-like"></i></a>-->	
                             </div>
                             <!-- Product Button Actions End -->
                             <!-- Product Social Link Share Start -->
@@ -295,60 +330,30 @@ if (count($product_gallery)>0){
             <!-- Container End -->
         </div>
         <!-- Product Thumbnail End -->
-         <!-- Product Thumbnail Description Start -->
+        
+		
+		
+		
+		<!-- Product Thumbnail Description Start -->
         <div class="thumnail-desc pb-50">
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
                         <ul class="main-thumb-desc text-center list-inline">
                             <li class="active"><a data-toggle="tab" href="#detail">Details</a></li>
-                            <li><a data-toggle="tab" href="#review">Reviews (0)</a></li>
+                            <li><a data-toggle="tab" href="#specification">Specification</a></li>
                         </ul>
                         <!-- Product Thumbnail Tab Content Start -->
                         <div class="tab-content thumb-content">
-                            <div id="detail" class="tab-pane fade in active pb-40">
+                            
+							<div id="detail" class="tab-pane fade in active pb-40">
                                 <p class="mb-10"><?php echo $product_description; ?></p>
                             </div>
-                            <div id="review" class="tab-pane fade">
-                                <!-- Reviews Start -->
-                                <div class="review">
-                                    <p class="mb-10">There are no reviews for this product.</p>
-                                    <h2>WRITE A REVIEW</h2>
-                                </div>
-                                <!-- Reviews End -->
-                                <!-- Reviews Field Start -->
-                                <div class="riview-field mt-30">
-                                    <form autocomplete="off" action="#">
-                                        <div class="form-group">
-                                            <label class="req" for="sure-name">name</label>
-                                            <input type="text" class="form-control" id="sure-name" required="required">
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="req" for="comments">your Review</label>
-                                            <textarea class="form-control" rows="5" id="comments" required="required"></textarea>
-                                            <div class="help-block">
-                                                <span class="text-danger">Note:</span> HTML is not translated!
-                                            </div>
-                                        </div>
-                                        <div class="form-group required radio-label">
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <label class="control-label req">Rating</label> &nbsp;&nbsp;&nbsp; Bad&nbsp;
-                                                    <input type="radio" name="rating" value="1"> &nbsp;
-                                                    <input type="radio" name="rating" value="2"> &nbsp;
-                                                    <input type="radio" name="rating" value="3"> &nbsp;
-                                                    <input type="radio" name="rating" value="4"> &nbsp;
-                                                    <input type="radio" name="rating" value="5"> &nbsp;Good
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="pull-right">
-                                            <button type="submit" id="button-review">Continue</button>
-                                        </div>
-                                    </form>
-                                </div>
-                                <!-- Reviews Field Start -->
+							
+                            <div id="specification" class="tab-pane fade pb-40">
+                                <p class="mb-10"><?php echo $product_description; ?></p>
                             </div>
+                           
                         </div>
                         <!-- Product Thumbnail Tab Content End -->
                     </div>
@@ -358,7 +363,65 @@ if (count($product_gallery)>0){
             <!-- Container End -->
         </div>
         <!-- Product Thumbnail Description End -->
-        
+   
+
+
+
+		
+        <!-- Reviews Start -->
+        <div class="best-seller-products pb-100" id='creview'>
+            <div class="container">
+                <div class="row">
+                    <!-- Section Title Start -->
+                    <div class="col-xs-12">
+                        <div class="section-title text-center mb-40">
+                            <h3 class="section-info">Customer Reviews</h3>
+                        </div>
+                    </div>
+                    <!-- Section Title End -->
+                </div>
+                <!-- Row End -->
+                <div class="row">
+				<?php
+			if (count($review_details)>0){
+                   foreach($review_details as $review){
+						$rating = $review->rating;
+						$cust_name = $review->name;
+						$comment = $review->comment;
+				?>
+					<p class="mtb-10"><strong><?php echo $cust_name; ?></strong></p>
+					<p class="mtb-10"><?php echo $comment; ?></p>
+					<div class="rating f-left mr-10 ">
+					<?php
+					for ($i=1; $i <6; $i++)
+						{
+						if ($i <= $rating){
+							echo "<i class='fa fa-star'></i>";
+						} else {
+							echo "<i class='fa fa-star-o'></i>";
+						}
+					}
+					?>
+					</div>
+					<hr>
+				<?php } 
+				
+			} else { ?>
+				<p class="mb-10">There are no reviews for this product.</p>
+		<?php } ?>
+                </div>
+                <!-- Row End -->
+            </div>
+            <!-- Container End -->
+        </div>
+        <!-- Reviews End -->
+
+
+
+
+
+
+   
         <?php
 			$related_products = $this->homemodel->related_products($cat_id,$product_id);
 			if (count($related_products)>0){
@@ -382,9 +445,9 @@ if (count($product_gallery)>0){
                         
                         <?php foreach($related_products as $npro){ 
 								$sproduct_id = $npro->id;
-								$product_id = $npro->id * 663399;
+								$tproduct_id = $npro->id * 663399;
 								$enc_product_name = strtolower(preg_replace("/[^\w]/", "-", $npro->product_name));
-								$enc_product_id = base64_encode($product_id);
+								$enc_product_id = base64_encode($tproduct_id);
 								
 								$combined_status = $npro->combined_status;
 								
@@ -443,7 +506,66 @@ if (count($product_gallery)>0){
             <!-- Container End -->
         </div>
         <!-- Best Seller Products End -->
+        </div>
         <?php } ?>
+        
+<!-- Quick View Content Start -->
+        <div class="modal modal-box fade" id="myModal" role="dialog">
+            <!-- Modal Dialog Box Start -->
+            <div class="modal-dialog max-width">
+                <!-- Modal content Start -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <!-- Modal Body Start -->
+                    <div class="modal-body">
+                    <div class="container">
+                                    <div class="row">
+                    <!-- Reviews Field Start -->
+                        <div class="riview-field mt-30">
+                            <form name="reviewform" id="reviewform" method="post" action="" autocomplete="off">
+                                <div class="form-group">
+                                    <label class="req" for="comments">your Review</label>
+                                    <textarea class="form-control" rows="5" id="comments" name="comments" required="required"></textarea>
+                                    <div class="help-block">
+                                        <span class="text-danger">Note:</span> HTML is not translated!
+                                    </div>
+                                </div>
+                                <div class="form-group required radio-label">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label class="control-label req">Rating</label> &nbsp;&nbsp;&nbsp; Bad&nbsp;
+                                            <input type="radio" name="rating" value="1"> &nbsp;
+                                            <input type="radio" name="rating" value="2"> &nbsp;
+                                            <input type="radio" name="rating" value="3"> &nbsp;
+                                            <input type="radio" name="rating" value="4"> &nbsp;
+                                            <input type="radio" name="rating" value="5"> &nbsp;Good
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pull-right">
+                                	 <input type="hidden" name="rproduct_id" id="rproduct_id" value="<?php echo $product_id; ?>" />
+                                     <input type="hidden" name="ruser_id" id="ruser_id" value="<?php echo $cust_session_id; ?>" />
+                                    <button type="submit" id="button-review">Continue</button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- Reviews Field Start -->
+                    
+                    </div>
+                    </div>
+                    </div>
+                    <!-- Modal Body End -->
+                </div>
+                <!-- Modal Content End -->
+            </div>
+            <!-- Modal Dialog Box End -->
+        </div>
+        <!-- Quick View Content End -->
+        
+        
+        
 <script>
 $('#product-form').validate({ // initialize the plugin
     rules: {
@@ -462,8 +584,33 @@ $('#product-form').validate({ // initialize the plugin
 		product_size: { required:"Select Product Size"},
 		product_colour: { required:"Select Colour"},
     },
+	
 });
 
+function getStock()
+	{
+	var product_id = $('#product_id').val();
+	var com_product_id = $('#com_product_id').val();
+	var qty = $('#qty').val();
+	var result = '';
+	//alert(com_product_id);
+	//make the ajax call
+		$.ajax({
+		url: '<?php echo base_url(); ?>home/checkqty/',
+		type: 'POST',
+		data: {product_id : product_id,com_product_id : com_product_id,qty : qty},
+		success: function(response) {
+
+			 if (response == "false") {
+				 $("#addcart").hide();
+				 $("#emptycart").show();
+			 } else {
+				 $("#addcart").show();
+				 $("#emptycart").hide();
+			 }
+		}
+		});
+	}
 function disp_colours()
 	{
 		var product_id = $('#product_id').val();
@@ -495,7 +642,7 @@ function disp_colours()
 		});
 	}
 	
-	function disp_price()
+function disp_price()
 	{
 		var product_id = $('#product_id').val();
 		var product_size = $('#product_size').val();
@@ -519,9 +666,9 @@ function disp_colours()
 					var mrp_price = dataArray[i].prod_mrp_price;
 					var actual_price = dataArray[i].prod_actual_price;
 					var disp_actual_price = '₹' + actual_price;
+					var default_qty = '1';
 				}
 				$('#com_product_id').val(id);
-				
 				if (offer_status==1){
 					var offer_amount = actual_price*(offer_percentage/100);
 					var disp_amount = (actual_price - offer_amount).toFixed(2);
@@ -530,10 +677,13 @@ function disp_colours()
 					$("#offer_price").html(disp_price).show();
 					$("#act_price").html(disp_actual_price).show();
 					$('#price').val(disp_amount);
+					$('#qty').val(default_qty);
+					
 				} else {
 					//alert(actual_price);
 					$("#act_price").html(disp_actual_price).show();
 					$('#price').val(actual_price);
+					$('#qty').val(default_qty);
 				}
 			} else {
 				result +="No Records found!..";
@@ -541,4 +691,30 @@ function disp_colours()
 		}
 		});
 	}
+	
+$('#reviewform').validate({ // initialize the plugin
+    rules: {
+		comments: {
+            required: true,
+        },
+    },
+    messages: {
+		comments: { required:"Enter your Comments"},
+    },
+    submitHandler: function(form) {
+		$.ajax({
+            url: "<?php echo base_url(); ?>home/addreview",
+            type: 'POST',
+            data: $('#reviewform').serialize(),
+            success: function(response) {
+				if(response=="success"){
+					$('#reviewform')[0].reset();
+					location.reload();
+				} else {
+					alert("Error");
+				}
+            }
+        });
+    }
+});
 </script>

@@ -141,7 +141,7 @@
                                     </ul>
                                 </li>
                                 <!-- Search Box End -->
-                                <?php if ($cust_session_id !=''){ ?><li><a href="<?php echo base_url(); ?>wishlist/"><i class="pe-7s-like"></i><span>2</span></a></li><?php } ?>
+                                <?php if ($cust_session_id !=''){ ?><li><a href="<?php echo base_url(); ?>wishlist/"><i class="pe-7s-like"></i><span><?php echo count($count_wishlist); ?></span></a></li><?php } ?>
                                 <li><a href="<?php echo base_url(); ?>viewcart/"><i class="pe-7s-shopbag"></i><span><?php echo count($count_cart_session); ?></span></a></li>
                                 <!-- Dropdown Currency Selection Start -->
                                 <li><i class="pe-7s-config"></i>
