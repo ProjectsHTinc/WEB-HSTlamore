@@ -451,6 +451,13 @@ Class Homemodel extends CI_Model
 	  	return $res;
    }
    
+    function search_result($search_tags){
+		$sql="SELECT * FROM tag_masters A,product_tags B,products C WHERE A.tag_name ='$search_tags' AND A.id = B.tag_id AND B.product_id = C.id AND C.status = 'Active'";
+		$resu=$this->db->query($sql);
+	  	$res=$resu->result();
+	  	return $res;
+   }
+      
    function get_cat_products($cat_id){
 		$sql="SELECT * FROM products WHERE cat_id ='$cat_id' AND status = 'Active'";
 	  	$resu=$this->db->query($sql);
@@ -733,12 +740,14 @@ Class Homemodel extends CI_Model
 		return $res;
    }
    
-      
-   function cart_process(){
-		echo $unique_order_id = $this->generate_orderid();
+     function orders($cust_session_id){
+		$sql="SELECT * from purchase_order WHERE cus_id = '$cust_session_id'";
+	  	$resu=$this->db->query($sql);
+	  	$res=$resu->result();
+	  	return $res;
    }
    
-   
+      
    function add_wishlist($product_id){
 			$cust_id = $this->session->userdata('cust_session_id');
 			
@@ -772,6 +781,13 @@ Class Homemodel extends CI_Model
    function list_wishlist(){
 		$cust_id = $this->session->userdata('cust_session_id');
 		$sql = "SELECT A.*,B.product_name,B.product_cover_img,B.prod_actual_price,B.combined_status,B.offer_status,B.stocks_left FROM cus_wishlist A,products B WHERE A.product_id = B.id AND A.customer_id = '$cust_id' ORDER BY A.id";
+		$resu=$this->db->query($sql);
+		$res=$resu->result();
+		return $res;
+   }
+   
+    function list_tags(){
+		$sql = "SELECT * FROM `tag_masters` WHERE status ='Active' ORDER BY `tag_name` ASC ";
 		$resu=$this->db->query($sql);
 		$res=$resu->result();
 		return $res;

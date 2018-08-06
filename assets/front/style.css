@@ -462,6 +462,8 @@ input#newsletter-permission {
     -moz-box-shadow: 5px 5px 7px 0px rgba(41, 41, 41, 0.05);
     -ms-box-shadow: 5px 5px 7px 0px rgba(41, 41, 41, 0.05);
     box-shadow: 5px 5px 7px 0px rgba(41, 41, 41, 0.05);
+	/*overflow: scroll;
+    overflow-x: hidden;*/
 }
 
 .primary-menu-list > li:hover > ul.ht-dropdown,

@@ -380,7 +380,6 @@
         </div>
         <!-- checkout-area end -->
  <script language="javascript">
-
 	$('#checkout').validate({ // initialize the plugin
 	ignore: ":hidden",
     rules: {

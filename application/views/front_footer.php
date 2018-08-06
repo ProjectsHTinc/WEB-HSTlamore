@@ -129,15 +129,44 @@
     <script src="<?php echo base_url(); ?>assets/front/js/main.js"></script>
 	 <!-- shop function js -->
     <script src="<?php echo base_url(); ?>assets/front/js/shop_functions.js"></script>
-	<script type="text/javascript">
-	$(window).load(function() {
-	 // start to load the first set of data
-       // var guest_session = '<?php  //echo $_SESSION['guest_session']; ?>';
-		//alert(guest_session);
-        //ajxCartdetails(guest_session_id);
+<script>
+	$( function() {
+    var availableTags = [<?php
+	 $tot_count = count($tag_result);
+	 $i = 1;
+		foreach($tag_result as $res){
+		echo "'";
+		echo $str = addslashes($res->tag_name);
+		echo "'";
+		if ($i < $tot_count) echo ",";
+		 $i = $i+1;} ?>];
+		 
+    $("#search_tags").autocomplete({
+		source: availableTags,
+		select: function(lamore, ui) {
+			$("#search_tags").val(ui.item.value);
+   		}
 	});
 
-	</script>
+	$("#search_tags1").autocomplete({
+		source: availableTags,
+		select: function(lamore, ui) {
+			$("#search_tags1").val(ui.item.value);
+   		}
+	});
+	
+  });
+    
+  function reset_cookies(){
+		var search_values = "<?php echo get_cookie('search_values')?>";
+		//alert(search_values);
+		//document.cookie = search_values + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+		//document.cookie = "search_values= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
+	   	//document.cookie = search_values + '=; expires=Thu, 01-Jan-70 00:00:01 GMT;';
+      	//window.location.reload();
+		//location.reload();
+	}
+ </script>
     
      </body>
 </html>

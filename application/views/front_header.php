@@ -1,8 +1,11 @@
 <?php 
+	header("Cache-Control: no cache");
+	session_cache_limiter("private_no_expire");
 	$browser_sess_id = 'lil'.$_SESSION["__ci_last_regenerate"];
 	$this->session->set_userdata('browser_sess_id', $browser_sess_id);
 	$cust_session_id = $this->session->userdata('cust_session_id');
-	//echo '<pre>' . print_r($_SESSION, TRUE) . '</pre>';	
+	//echo '<pre>' . print_r($_SESSION, TRUE) . '</pre>';
+	//echo get_cookie('search_values');
 ?>
 <!doctype html>
 <html class="no-js" lang="en-US">
@@ -10,8 +13,8 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Little A More - Online Shopping Cart</title>
-    <meta name="description" content="Default Description">
-    <meta name="keywords" content="E-commerce" />
+    <meta name="description" content="">
+    <meta name="keywords" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- place favicon.ico in the root directory -->
     <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>assets/front/img/icon/favicon.png">
@@ -82,8 +85,8 @@
                     <div class="col-xs-12 visible-xs visible-control">
                         <ul class="search-form mobile-form">
                             <li>
-                                <form action="#">
-                                    <input type="text" class="search" name="search" placeholder="Search for products...">
+                                <form method="post" action="<?php echo base_url(); ?>home/search/" name="search_form">
+                                    <input type="text" class="search" name="search_tags1" id="search_tags1" placeholder="Search for products...">
                                 </form>
                                 <i class="pe-7s-search"></i>
                             </li>
@@ -133,10 +136,10 @@
                                 <li class="hidden-control"><i class="pe-7s-search"></i>
                                     <ul class="search-form ht-dropdown">
                                         <li>
-                                            <form action="#">
-                                                <input type="text" class="search" name="search" placeholder="Search for products...">
-                                            </form>
-                                            <i class="pe-7s-search"></i>
+										<form method="post" action="<?php echo base_url(); ?>home/search/" name="search_form">
+											<input type="text" class="search" name="search_tags" id="search_tags" placeholder="Search for products...">
+											<i class="pe-7s-search"></i>
+										</form>
                                         </li>
                                     </ul>
                                 </li>
@@ -193,17 +196,7 @@
                                     	echo '</li>';
                                    		}
 									} ?>
-                                    <li><a href="#">pages</a>
-                                        <!-- Home Version Dropdown Start -->
-                                        <ul class="ht-dropdown">
-                                        	<li><a href="<?php echo base_url(); ?>aboutus/">about us</a></li>
-                                            <li><a href="<?php echo base_url(); ?>product_details/">Product Details</a></li>
-                                            <li><a href="<?php echo base_url(); ?>cart/">cart</a></li>
-                                            <li><a href="<?php echo base_url(); ?>checkout/">checkout</a></li>
-                                            <li><a href="<?php echo base_url(); ?>wishlist/">wish list</a></li>
-                                        </ul>
-                                        <!-- Home Version Dropdown End -->
-                                    </li>
+                                    <li><a href="<?php echo base_url(); ?>aboutus/">about us</a></li>
                                     <li><a href="<?php echo base_url(); ?>contactus/">contact us</a></li>
                                 </ul>
                             </nav>
