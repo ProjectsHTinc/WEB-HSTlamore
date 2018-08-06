@@ -578,4 +578,34 @@ class Productmaster extends CI_Controller {
 					}
 			}
 
+
+			public function view_review(){
+				$data=$this->session->userdata();
+				$user_id=$this->session->userdata('id');
+				$user_role=$this->session->userdata('role_type_id');
+					if($user_role=='1' || $user_role=='2'){
+						$prod_id=$this->uri->segment(4);
+						$data['res']=$this->productmodel->get_review_product($prod_id);
+						$this->load->view('siteadmin/header',$data);
+						$this->load->view('siteadmin/product/view_review',$data);
+						$this->load->view('siteadmin/footer');
+					}else{
+							$this->load->view('siteadmin/login');
+					}
+
+			}
+
+			public function change_status(){
+				$data=$this->session->userdata();
+				$user_id=$this->session->userdata('id');
+				$user_role=$this->session->userdata('role_type_id');
+					if($user_role=='1' || $user_role=='2'){
+						$prod_id=$this->db->escape_str($this->input->post('rw_id'));
+						$status=$this->db->escape_str($this->input->post('stat_id'));
+						$data['res']=$this->productmodel->change_status($prod_id,$status);
+					}else{
+							$this->load->view('siteadmin/login');
+					}
+
+			}
 }

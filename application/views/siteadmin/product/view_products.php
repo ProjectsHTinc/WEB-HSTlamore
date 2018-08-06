@@ -69,8 +69,9 @@
 
 														</td>
 														<td>
-									<a href="<?php echo base_url(); ?>admin/products/<?php echo base64_encode($row_prod->id*9876); ?>" class="text-inverse p-r-10" data-toggle="tooltip" title="Edit" ><i class="fa fa-check"></i></a>
-									<!-- <a href="javascript:void(0)" class="text-inverse" title="View product" data-toggle="tooltip"><i class="fa fa-navicon"></i></a> -->
+									<a href="<?php echo base_url(); ?>admin/products/<?php echo base64_encode($row_prod->id*9876); ?>" class="text-inverse p-r-10" data-toggle="tooltip" title="Edit" ><i class="fa fa-pencil-square-o"></i>
+									</a>
+									<a href="<?php echo base_url(); ?>admin/product/review/<?php echo base64_encode($row_prod->id*9876); ?>" class="text-inverse" title="View Review" data-toggle="tooltip">	<i class="fa fa-navicon"></i></a>
 								</td>
 													</tr>
 												<?php } ?>

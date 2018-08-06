@@ -117,6 +117,98 @@ class Mobileapi extends CI_Controller {
 
 //-----------------------------------------------//
 
+//--------------------Home page list---------------------------//
+
+	public function home_page()
+	{
+
+	  $_POST = json_decode(file_get_contents("php://input"), TRUE);
+
+		if(!$this->checkMethod())
+		{
+			return FALSE;
+		}
+
+		if($_POST == FALSE)
+		{
+			$res = array();
+			$res["opn"] = "Login";
+			$res["scode"] = 204;
+			$res["message"] = "Input error";
+
+			echo json_encode($res);
+			return;
+		}
+
+		$data['result']=$this->mobileapimodel->home_page();
+		$response = $data['result'];
+		//print_r($response);
+		echo json_encode($response);
+	}
+
+//-----------------------------------------------//
+
+//--------------------Category list---------------------------//
+
+	public function category_list()
+	{
+
+	  $_POST = json_decode(file_get_contents("php://input"), TRUE);
+
+		if(!$this->checkMethod())
+		{
+			return FALSE;
+		}
+
+		if($_POST == FALSE)
+		{
+			$res = array();
+			$res["opn"] = "Login";
+			$res["scode"] = 204;
+			$res["message"] = "Input error";
+
+			echo json_encode($res);
+			return;
+		}
+
+		$data['result']=$this->mobileapimodel->category_list();
+		$response = $data['result'];
+		//print_r($response);
+		echo json_encode($response);
+	}
+
+//-----------------------------------------------//
+
+//--------------------Category list---------------------------//
+
+	public function sub_cat_list()
+	{
+
+	  $_POST = json_decode(file_get_contents("php://input"), TRUE);
+
+		if(!$this->checkMethod())
+		{
+			return FALSE;
+		}
+
+		if($_POST == FALSE)
+		{
+			$res = array();
+			$res["opn"] = "Login";
+			$res["scode"] = 204;
+			$res["message"] = "Input error";
+
+			echo json_encode($res);
+			return;
+		}
+		$cat_id = $this->input->post("id");
+		$data['result']=$this->mobileapimodel->sub_cat_list($cat_id);
+		$response = $data['result'];
+		//print_r($response);
+		echo json_encode($response);
+	}
+
+//-----------------------------------------------//
 
 //-----------------------------------------------//
 
@@ -146,11 +238,41 @@ class Mobileapi extends CI_Controller {
 		$sub_cat_id = $this->input->post("sub_cat_id");
 		$data['result']=$this->mobileapimodel->product_list($cat_id,$sub_cat_id);
 		$response = $data['result'];
+		//print_r($response);
 		echo json_encode($response);
 	}
 
 //-----------------------------------------------//
 
+//--------------------Product details page---------------------------//
 
+	public function product_details()
+	{
+
+	  $_POST = json_decode(file_get_contents("php://input"), TRUE);
+
+		if(!$this->checkMethod())
+		{
+			return FALSE;
+		}
+
+		if($_POST == FALSE)
+		{
+			$res = array();
+			$res["opn"] = "Login";
+			$res["scode"] = 204;
+			$res["message"] = "Input error";
+
+			echo json_encode($res);
+			return;
+		}
+		$product_id = $this->input->post("id");
+		$data['result']=$this->mobileapimodel->product_details($product_id);
+		$response = $data['result'];
+		//print_r($response);
+		echo json_encode($response);
+	}
+
+//-----------------------------------------------//
 
 }

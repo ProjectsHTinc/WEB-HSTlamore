@@ -295,14 +295,303 @@ class Mobileapimodel extends CI_Model {
 	}
 
 
-//#################### User Registration End ####################//
+//#################### Home page  list ####################//
+
+    function home_page(){
+
+      //----- Home  Banner----//
+      $select="SELECT * FROM banner WHERE  status='Active'";
+      $res=$this->db->query($select);
+         if($res->num_rows()>0){
+           $result=$res->result();
+           foreach($result  as $rows){
+             $banner_list=array(
+               "id"=>$rows->id,
+               "banner_title"=>$rows->banner_title,
+               "banner_desc"=>$rows->banner_desc,
+               "banner_image"=>base_url().'assets/banner/'.$rows->banner_image,
+               "product_id"=>$rows->product_id,
+             );
+           }
+           $banner_list = array("status" => "success","banner_list"=>$banner_list);
+         }else{
+         $banner_list = array("status" => "error");
+         }
+
+
+         //----- ads  Banner----//
+         $select="SELECT * FROM ads_master WHERE  status='Active'";
+         $res=$this->db->query($select);
+            if($res->num_rows()>0){
+              $result=$res->result();
+              foreach($result  as $rows){
+                $ads_list=array(
+                  "id"=>$rows->id,
+                  "ad_title"=>$rows->ad_title,
+                  "sub_cat_id"=>$rows->sub_cat_id,
+                  "ad_img"=>base_url().'assets/ads/'.$rows->ad_img,
+                );
+              }
+              $ads_list = array("status" => "success","ads_list"=>$ads_list);
+            }else{
+            $ads_list = array("status" => "error");
+            }
+
+            //--------New Product  list----//
+            $select="SELECT * FROM products WHERE status='Active' ORDER BY id DESC LIMIT 5";
+            $res=$this->db->query($select);
+             if($res->num_rows()>0){
+                $result=$res->result();
+                foreach($result  as $rows){
+                    $product_list[]=array(
+                      "id"=>$rows->id,
+                      "product_name"=>$rows->product_name,
+                      "sku_code"=>$rows->sku_code,
+                      "product_cover_img"=>base_url().'assets/products/'.$rows->product_cover_img,
+                      "prod_size_chart"=>base_url().'assets/products/'.$rows->prod_size_chart,
+                      "product_description"=>$rows->product_description,
+                      "offer_status"=>$rows->offer_status,
+                      "specification_status"=>$rows->specification_status,
+                      "combined_status"=>$rows->combined_status,
+                      "prod_actual_price"=>$rows->prod_actual_price,
+                      "prod_mrp_price"=>$rows->prod_mrp_price,
+                      "offer_percentage"=>$rows->offer_percentage,
+                      "delivery_fee_status"=>$rows->delivery_fee_status,
+                      "prod_return_policy"=>$rows->prod_return_policy,
+                      "prod_cod"=>$rows->prod_cod,
+                      "product_meta_title"=>$rows->product_meta_title,
+                      "product_meta_desc"=>$rows->product_meta_desc,
+                      "product_meta_keywords"=>$rows->product_meta_keywords,
+                      "stocks_left"=>$rows->stocks_left,
+                    );
+                }
+              $data = array("status" => "success","product_list"=>$product_list);
+             }else{
+                $data = array("status" => "error");
+             }
+
+
+
+             //--------Popular  Product  list----//
+             $select="SELECT pvc.*,p.* FROM product_view_count AS pvc LEFT JOIN products AS p ON p.id=pvc.product_id WHERE p.status='Active' ORDER BY pvc.view_count DESC";
+             $res=$this->db->query($select);
+              if($res->num_rows()>0){
+                 $result=$res->result();
+                 foreach($result  as $rows){
+                     $popular_product_list[]=array(
+                       "id"=>$rows->id,
+                       "product_name"=>$rows->product_name,
+                       "sku_code"=>$rows->sku_code,
+                       "product_cover_img"=>base_url().'assets/products/'.$rows->product_cover_img,
+                       "prod_size_chart"=>base_url().'assets/products/'.$rows->prod_size_chart,
+                       "product_description"=>$rows->product_description,
+                       "offer_status"=>$rows->offer_status,
+                       "specification_status"=>$rows->specification_status,
+                       "combined_status"=>$rows->combined_status,
+                       "prod_actual_price"=>$rows->prod_actual_price,
+                       "prod_mrp_price"=>$rows->prod_mrp_price,
+                       "offer_percentage"=>$rows->offer_percentage,
+                       "delivery_fee_status"=>$rows->delivery_fee_status,
+                       "prod_return_policy"=>$rows->prod_return_policy,
+                       "prod_cod"=>$rows->prod_cod,
+                       "product_meta_title"=>$rows->product_meta_title,
+                       "product_meta_desc"=>$rows->product_meta_desc,
+                       "product_meta_keywords"=>$rows->product_meta_keywords,
+                       "stocks_left"=>$rows->stocks_left,
+                     );
+                 }
+               $data = array("status" => "success","popular_product_list"=>$popular_product_list);
+              }else{
+                 $data = array("status" => "error");
+              }
+
+
+
+
+        $data=array("status"=>"success","banner_list"=>$banner_list,"ads_list"=>$ads_list,"new_product"=>$product_list,"popular_product_list"=>$popular_product_list);
+        return $data;
+    }
+
+
+
+//#################### Category list ####################//
+
+    function category_list(){
+      $select="SELECT * FROM category_masters WHERE parent_id='1'  AND status='Active'";
+      $res=$this->db->query($select);
+         if($res->num_rows()>0){
+           $result=$res->result();
+           foreach($result  as $rows){
+             $category_list[]=array(
+               "id"=>$rows->id,
+               "parent_id"=>$rows->parent_id,
+               "category_name"=>$rows->category_name,
+               "category_image"=>base_url().'assets/category/'.$rows->category_image,
+               "category_desc"=>$rows->category_desc,
+             );
+           }
+           $data = array("status" => "success","category_list"=>$category_list);
+         }else{
+         $data = array("status" => "error");
+         }
+        return $data;
+    }
+
+//#################### Sub Category list ####################//
+
+        function sub_cat_list($cat_id){
+          $select="SELECT * FROM category_masters WHERE parent_id='$cat_id'  AND status='Active'";
+          $res=$this->db->query($select);
+             if($res->num_rows()>0){
+               $result=$res->result();
+               foreach($result  as $rows){
+                 $sub_cat_list[]=array(
+                   "id"=>$rows->id,
+                   "parent_id"=>$rows->parent_id,
+                   "category_name"=>$rows->category_name,
+                   "category_image"=>base_url().'assets/category/'.$rows->category_image,
+                   "category_desc"=>$rows->category_desc,
+                 );
+               }
+               $data = array("status" => "success","sub_category_list"=>$sub_cat_list);
+             }else{
+             $data = array("status" => "error");
+             }
+            return $data;
+        }
+
+
+//#################### Category and sub category based product list ####################//
 
 
   function product_list($cat_id,$sub_cat_id){
-    $select="SELECT * FROM products WHERE cat_id='$cat_id' AND sub_cat_id='$sub_cat_id'";
+    $select="SELECT * FROM products WHERE cat_id='$cat_id' AND sub_cat_id='$sub_cat_id' AND status='Active'";
     $res=$this->db->query($select);
-     return $res->result();
+     if($res->num_rows()>0){
+        $result=$res->result();
+        foreach($result  as $rows){
+            $product_list[]=array(
+              "id"=>$rows->id,
+              "product_name"=>$rows->product_name,
+              "sku_code"=>$rows->sku_code,
+              "product_cover_img"=>base_url().'assets/products/'.$rows->product_cover_img,
+              "prod_size_chart"=>base_url().'assets/products/'.$rows->prod_size_chart,
+              "product_description"=>$rows->product_description,
+              "offer_status"=>$rows->offer_status,
+              "specification_status"=>$rows->specification_status,
+              "combined_status"=>$rows->combined_status,
+              "prod_actual_price"=>$rows->prod_actual_price,
+              "prod_mrp_price"=>$rows->prod_mrp_price,
+              "offer_percentage"=>$rows->offer_percentage,
+              "delivery_fee_status"=>$rows->delivery_fee_status,
+              "prod_return_policy"=>$rows->prod_return_policy,
+              "prod_cod"=>$rows->prod_cod,
+              "product_meta_title"=>$rows->product_meta_title,
+              "product_meta_desc"=>$rows->product_meta_desc,
+              "product_meta_keywords"=>$rows->product_meta_keywords,
+              "stocks_left"=>$rows->stocks_left,
+            );
+        }
+      $data = array("status" => "success","product_list"=>$product_list);
+     }else{
+        $data = array("status" => "error");
+     }
+      return $data;
+
   }
+
+
+    //-------Product details -------///
+
+    function product_details($product_id){
+
+
+      //---product detail---//
+      $select="SELECT * FROM products WHERE id='$product_id'  AND status='Active'";
+      $res=$this->db->query($select);
+       if($res->num_rows()>0){
+          $result=$res->result();
+          foreach($result  as $rows){
+              $prd_details[]=array(
+                "id"=>$rows->id,
+                "product_name"=>$rows->product_name,
+                "sku_code"=>$rows->sku_code,
+                "product_cover_img"=>base_url().'assets/products/'.$rows->product_cover_img,
+                "prod_size_chart"=>base_url().'assets/products/'.$rows->prod_size_chart,
+                "product_description"=>$rows->product_description,
+                "offer_status"=>$rows->offer_status,
+                "specification_status"=>$rows->specification_status,
+                "combined_status"=>$rows->combined_status,
+                "prod_actual_price"=>$rows->prod_actual_price,
+                "prod_mrp_price"=>$rows->prod_mrp_price,
+                "offer_percentage"=>$rows->offer_percentage,
+                "delivery_fee_status"=>$rows->delivery_fee_status,
+                "prod_return_policy"=>$rows->prod_return_policy,
+                "prod_cod"=>$rows->prod_cod,
+                "product_meta_title"=>$rows->product_meta_title,
+                "product_meta_desc"=>$rows->product_meta_desc,
+                "product_meta_keywords"=>$rows->product_meta_keywords,
+                "stocks_left"=>$rows->stocks_left,
+              );
+          }
+        $product_details = array("status" => "success","product_details"=>$prd_details);
+       }else{
+          $product_details = array("status" => "error");
+       }
+
+
+       //---product combination ---//
+       $select="SELECT am.attribute_value,am.attribute_name,pc.mas_color_id,pc.mas_size_id,ams.attribute_value AS size,pc.* FROM product_combined AS pc LEFT JOIN attribute_masters AS am ON am.id=pc.mas_color_id LEFT JOIN attribute_masters AS ams ON ams.id=pc.mas_size_id WHERE product_id='$product_id' AND ams.status='Active'";
+       $res=$this->db->query($select);
+        if($res->num_rows()>0){
+           $result=$res->result();
+           foreach($result  as $rows){
+               $comb_product_list[]=array(
+                 "id"=>$rows->id,
+                 "product_id"=>$rows->product_id,
+                 "mas_size_id"=>$rows->mas_size_id,
+                 "size"=>$rows->size,
+                 "mas_color_id"=>$rows->mas_color_id,
+                 "color_name"=>$rows->attribute_name,
+                 "color_code"=>$rows->attribute_value,
+                 "prod_actual_price"=>$rows->prod_actual_price,
+                 "prod_mrp_price"=>$rows->prod_mrp_price,
+                 "prod_default"=>$rows->prod_default,
+                 "stocks_left"=>$rows->stocks_left,
+               );
+           }
+         $comb_prod = array("status" => "success","comb_product_list"=>$comb_product_list);
+        }else{
+           $comb_prod = array("status" => "error");
+        }
+
+
+
+         //---product combination ---//
+         $select="SELECT sm.spec_name,ps.* FROM product_specification AS ps LEFT JOIN specification_masters AS sm ON sm.id=ps.spec_id WHERE product_id='$product_id' AND ps.status='Active'";
+         $res=$this->db->query($select);
+          if($res->num_rows()>0){
+             $result=$res->result();
+             foreach($result  as $rows){
+                 $spec_prods[]=array(
+                   "id"=>$rows->id,
+                   "spec_name"=>$rows->spec_name,
+                   "product_id"=>$rows->product_id,
+                   "spec_value"=>$rows->spec_value,
+                 );
+             }
+           $prod_specs = array("status" => "success","spec_prod"=>$spec_prods);
+          }else{
+             $prod_specs = array("status" => "error");
+          }
+
+
+
+        $data=array("status"=>"success","product_details"=>$product_details,"comb_product"=>$comb_prod,"product_specification"=>$prod_specs);
+        return $data;
+
+    }
+
 
 
 

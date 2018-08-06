@@ -31,13 +31,15 @@ Class Customerprofilemodel extends CI_Model
    }
 
    function change_status($rw_id,$stat_id,$user_id){
-   $id=base64_decode($rw_id)/9876;
+
+    $id=base64_decode($rw_id)/9876;
      if($stat_id=='Active'){
        $status='Inactive';
      }else{
         $status='Active';
      }
-   $update="UPDATE customers SET status='$status',updated_at=NOW(),updated_by='$user_id' WHERE id='$id'";
+
+  $update="UPDATE customers SET status='$status',updated_at=NOW(),updated_by='$user_id' WHERE id='$id'";
    $res=$this->db->query($update);
    if($res){
       echo "success";

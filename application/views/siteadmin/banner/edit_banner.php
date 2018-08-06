@@ -43,13 +43,14 @@
 																	<div class="form-group">
 																		<label class="control-label mb-10">Product name</label>
 																		<select class="form-control" data-placeholder="Choose a Status" tabindex="1" name="prod_id" id="prod_id">
-																			<option value="">--Select Product--</option>
+
 																		<?php foreach($res_prod as $row_prod){ ?>
 																				<option value="<?php echo $row_prod->id ?>"><?php echo $row_prod->product_name ?></option>
 																	<?php 	} ?>
 
 
 																		</select>
+
 																			<script> $('#prod_id').val('<?php echo $rows_ban->product_id; ?>');</script>
 																	</div>
 																</div>
@@ -115,12 +116,11 @@
 																<div class="col-md-6">
 																	<div class="form-group">
 																		<label class="control-label mb-10">Status</label>
-																		<select class="form-control" data-placeholder="Choose a Status" tabindex="1" name="banner_status" id="banner_status">
+																		<select class="form-control"  tabindex="1" name="banner_status" id="banner_status">
 																			<option value="Active">Active</option>
 																			<option value="Inactive">Inactive</option>
-
 																		</select>
-																		<script> $('#prod_id').val('<?php echo $rows_ban->banner_status; ?>');</script>
+																		<script> $('#banner_status').val('<?php echo $rows_ban->status; ?>');</script>
 																	</div>
 																</div>
 																<!--/span-->

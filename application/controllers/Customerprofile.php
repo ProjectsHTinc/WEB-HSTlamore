@@ -33,7 +33,8 @@ class Customerprofile extends CI_Controller {
 		$user_id=$this->session->userdata('id');
 		$user_role=$this->session->userdata('role_type_id');
 		if($user_role=='1' || $user_role=='2'){
-			$rw_id= $this->db->escape_str($this->input->post('rw_id'));
+			 $rw_id= $this->db->escape_str($this->input->post('rw_id'));
+
 			$stat_id=$this->db->escape_str($this->input->post('stat_id'));
 			$data=$this->customerprofilemodel->change_status($rw_id,$stat_id,$user_id);
 		}else{

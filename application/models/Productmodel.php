@@ -502,5 +502,22 @@ Class Productmodel extends CI_Model
        return $res->result();
       }
 
+      function get_review_product($prod_id){
+        $id=base64_decode($prod_id)/9876;
+        $select="SELECT pr.*,c.name,c.email FROM  product_review AS pr LEFT JOIN customers AS c ON c.id=pr.cus_id where pr.product_id='$id' order by pr.id desc";
+       $res=$this->db->query($select);
+       return $res->result();
+      }
+
+      function change_status($prod_id,$status){
+         $id=base64_decode($prod_id)/9876;
+         $update="UPDATE product_review SET status='$status' WHERE id='$id'";
+        $result_stocks=$this->db->query($update);
+        if($result_stocks){
+          echo "success";
+        }else{
+          echo "failure";
+        }
+      }
 
 }
