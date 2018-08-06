@@ -19,6 +19,7 @@
 						$banner_title  = $imglist->banner_title ;
 						$disp_banner_title = wordwrap($banner_title, 22, "<br />");
 						$banner_desc  = $imglist->banner_desc ;
+						$disp_banner_desc  = wordwrap($banner_desc, 25, "<br />");
 						$sproduct_id  = $imglist->product_id;
 						//$sproduct_id = $prod->product_id;
 						$product_id = $imglist->id * 663399;
@@ -31,7 +32,7 @@
                     <!-- Slider Text Start -->
                     <div class="slider-text">
                         <h2 class="wow fadeInLeft" data-wow-delay="1s"><?php echo $disp_banner_title; ?></h2>
-                        <p class="wow fadeInRight" data-wow-delay="1s"><?php echo $banner_desc; ?></p>
+                        <p class="wow fadeInRight" data-wow-delay="1s"><?php echo $disp_banner_desc; ?></p>
                         <a class="wow bounceInDown" data-wow-delay="0.8s" href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/">shop now</a>
                     </div>
                     <!-- Slider Text End -->
