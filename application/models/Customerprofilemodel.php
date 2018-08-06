@@ -46,6 +46,12 @@ Class Customerprofilemodel extends CI_Model
     }
   }
 
+  function get_count_of_active_customer(){
+    $select="SELECT COUNT(*) AS count_cust FROM customers WHERE STATUS='Active'";
+   $res=$this->db->query($select);
+   return $res->result();
+  }
+
 
 
 

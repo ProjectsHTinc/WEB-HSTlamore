@@ -28,7 +28,7 @@
                         <div class="panel panel-default card-view">
                             <div class="panel-heading">
                                 <div class="pull-left">
-                                    <h6 class="panel-title txt-dark">Conversion Rate</h6>
+                                    <h6 class="panel-title txt-dark">Total Products</h6>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
@@ -41,7 +41,7 @@
                                             </div>
                                             <div class="col-xs-6">
                                                 <div class="counter-wrap text-right">
-                                                    <span class="counter-cap"><i class="fa  fa-level-up txt-success"></i></span><span class="counter">23</span><span>%</span>
+                                                    <span class="counter-cap"></span><span class="counter"><?php foreach($res_count_product as $rows_pro_count){}  echo $rows_pro_count->count_product; ?></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -52,7 +52,7 @@
                         <div class="panel panel-default card-view">
                             <div class="panel-heading">
                                 <div class="pull-left">
-                                    <h6 class="panel-title txt-dark">Total Visits</h6>
+                                    <h6 class="panel-title txt-dark">Total Customers</h6>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
@@ -65,7 +65,7 @@
                                             </div>
                                             <div class="col-xs-6">
                                                 <div class="counter-wrap text-right">
-                                                    <span class="counter-cap"><i class="fa  fa-level-up txt-success"></i></span><span class="counter">12</span><span>m</span>
+                                                    <span class="counter-cap"></span><span class="counter"><?php foreach($res_count_cust as $rows_cus_count){}  echo $rows_cus_count->count_cust; ?></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -100,243 +100,115 @@
 
                     </div>
                     <div class="col-lg-9 col-md-8 col-sm-7 col-xs-12">
-                        <div class="panel panel-default card-view">
-                            <div class="panel-heading">
-                                <div class="pull-left">
-                                    <h6 class="panel-title txt-dark"><i class="icon-share mr-10"></i>Visits Conversion</h6>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="panel-wrapper collapse in">
-                                <div class="panel-body">
-                                    <canvas id="chart_1" height="417"></canvas>
-                                </div>
-                            </div>
-                        </div>
+                      <div class="panel panel-default card-view">
+                          <div class="panel-heading">
+                              <div class="pull-left">
+                                  <h6 class="panel-title txt-dark">Recent orders</h6>
+                              </div>
+                              <div class="pull-right">
+                                  <h6 class="panel-title"><a href="">View all orders</a></h6>
+                              </div>
+                              <div class="clearfix"></div>
+                          </div>
+                          <div class="panel-wrapper collapse in">
+                              <div class="panel-body">
+                                  <div class="table-wrap">
+                                      <div class="table-responsive">
+                                          <table class="table display product-overview" id="statement">
+                                              <thead>
+                                                  <tr>
+                                                      <th>date</th>
+                                                      <th>Order ID</th>
+                                                      <th>Payment</th>
+                                                      <th>Cus name</th>
+                                                      <th>price</th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody>
+                                                <?php foreach($res_recent_orders as $res_prod){ ?>
+                                                  <tr>
+                                                      <td><?php echo $newDate = date("d-m-Y H:i:s", strtotime($res_prod->purchase_date));  ?></td>
+                                                      <td><?php echo $res_prod->order_id; ?></td>
+                                                      <td>
+                                                          <span class="label label-primary font-weight-100"><?php echo $res_prod->status; ?></span>
+                                                      </td>
+                                                      <td>
+                                                        <?php echo $res_prod->name; ?>
+                                                      </td>
+                                                      <td><?php echo $res_prod->total_amount; ?></td>
+                                                  </tr>
+
+                                            <?php } ?>
+
+                                              </tbody>
+                                          </table>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+
+
                     </div>
                 </div>
-                <!-- /Row -->
 
-                <div class="row">
-                    <div class="col-lg-3 col-md-6">
-                        <div class="panel panel-primary card-view">
-                            <div class="panel-heading mb-20">
-                                <div class="pull-left">
-                                    <h6 class="panel-title txt-light">top countries</h6>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="panel-wrapper collapse in">
-                                <div class="panel-body">
-                                    <div class="table-wrap">
-                                        <div class="table-responsive">
-                                            <table class="table  top-countries">
-                                                <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <img src="<?php echo base_url(); ?>/assets/dist/img/country/gb.svg" alt="user_img">
-                                                        </td>
-                                                        <td>
-                                                            United Kingdom
-                                                        </td>
-                                                        <td>
-                                                            $50
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <img src="<?php echo base_url(); ?>/assets/dist/img/country/my.svg" alt="user_img">
-                                                        </td>
-                                                        <td>
-                                                            Malaysia
-                                                        </td>
-                                                        <td>
-                                                            $20
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <img src="<?php echo base_url(); ?>/assets/dist/img/country/au.svg" alt="user_img">
-                                                        </td>
-                                                        <td>
-                                                            Australia
-                                                        </td>
-                                                        <td>
-                                                            $5
-                                                        </td>
-                                                    </tr>
 
-                                                    <tr>
-                                                        <td>
-                                                            <img src="<?php echo base_url(); ?>/assets/dist/img/country/us.svg" alt="user_img">
-                                                        </td>
-                                                        <td>
-                                                            United States
-                                                        </td>
-                                                        <td>
-                                                            $5
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="panel panel-default card-view">
-                            <div class="panel-heading">
-                                <div class="pull-left">
-                                    <h6 class="panel-title txt-dark"><i class="icon-pie-chart mr-10"></i>Impressions</h6>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="panel-wrapper collapse in">
-                                <div class="panel-body">
-                                    <canvas id="chart_6" height="280"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-12">
-                        <div class="panel panel-default card-view">
-                            <div class="panel-heading">
-                                <div class="pull-left">
-                                    <h6 class="panel-title txt-dark"><i class="icon-clock mr-10"></i>Average Position</h6>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="panel-wrapper collapse in">
-                                <div class="panel-body">
-                                    <div id="morris_extra_line_chart" class="morris-chart" style="height:280px;"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <div class="row">
+					<!-- Table Hover -->
+					<div class="col-sm-12">
+						<div class="panel panel-default card-view">
+							<div class="panel-heading">
+								<div class="pull-left">
+									<h6 class="panel-title txt-dark">sales</h6>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="panel-wrapper collapse in">
+								<div class="panel-body">
+									<div class="table-wrap">
+										<div class="table-responsive">
+										  <table class="table table-hover mb-0" id="datable_1">
+											<thead>
+											  <tr>
+												<th>#</th>
+												<th style="width:400px;">Products</th>
+                        <th>Offer / Combined</th>
+												<th>Total</th>
+												<th>Stocks Left</th>
+											  </tr>
+											</thead>
+											<tbody>
+                        <?php $i=1; foreach($res_prod_stocks as $rows_prod_stocks){  ?>
+                          <tr>
+  												<td><?php echo $i; ?></td>
+  												<td><?php echo $rows_prod_stocks->product_name; ?></td>
+                          	<td><?php if($rows_prod_stocks->offer_status=='1'){ ?>
+                            <span class="badge  badge-danger">offer</span>
+                          <?php  }
+                          if($rows_prod_stocks->combined_status=='1'){ ?>
+                          <span class="badge badge-info">Combined</span>
+                        <?php  } ?></td>
+  												<td><?php echo $rows_prod_stocks->total_stocks; ?></td>
+  												<td><span class="text-danger text-semibold"> <?php echo $rows_prod_stocks->stocks_left; ?></span> </td>
+  											  </tr>
+                      <?php  $i++;  } ?>
 
-                </div>
 
-                <!-- Row -->
-                <div class="row">
-                    <div class="col-lg-3 col-md-4 col-sm-5 col-xs-12">
-                        <div class="panel panel-default card-view pa-0">
-                            <div class="panel-wrapper collapse in">
-                                <div class="panel-body pa-0">
-                                    <div class="sm-data-box bg-green">
-                                        <div class="row ma-0">
-                                            <div class="col-xs-5 text-center pa-0 icon-wrap-left">
-                                                <i class="icon-diamond txt-light"></i>
-                                            </div>
-                                            <div class="col-xs-7 text-center data-wrap-right">
-                                                <h6 class="txt-light">monthly sales</h6>
-                                                <span class="txt-light counter counter-anim">45678</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="weather_3" class="panel panel-default card-view pa-0 weather-info">
-                            <div class="panel-wrapper collapse in">
-                                <div class="panel-body pa-0">
-                                    <div class="row ma-0">
-                                        <div class="col-xs-6 pa-0">
-                                            <div class="left-block-wrap pa-30">
-                                                <p class="block nowday"></p>
-                                                <span class="block nowdate"></span>
-                                                <div class="left-block  mt-15"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-6 pa-0">
-                                            <div class="right-block-wrap pa-30">
-                                                <div class="right-block"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="col-lg-9 col-md-8 col-sm-7 col-xs-12">
-                        <div class="panel panel-default card-view">
-                            <div class="panel-heading">
-                                <div class="pull-left">
-                                    <h6 class="panel-title txt-dark">statement table</h6>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="panel-wrapper collapse in">
-                                <div class="panel-body">
-                                    <div class="table-wrap">
-                                        <div class="table-responsive">
-                                            <table class="table display product-overview" id="statement">
-                                                <thead>
-                                                    <tr>
-                                                        <th>date</th>
-                                                        <th>Order ID</th>
-                                                        <th>type</th>
-                                                        <th>Details</th>
-                                                        <th>price</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>10-7-2016</td>
-                                                        <td>#85457898</td>
-                                                        <td>
-                                                            <span class="label label-primary font-weight-100">fee</span>
-                                                        </td>
-                                                        <td>
-                                                            Author Fee for included support sale IVIP13444036
-                                                        </td>
-                                                        <td>$20</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>10-7-2016</td>
-                                                        <td>#85457897</td>
-                                                        <td>
-                                                            <span class="label label-danger font-weight-100">refund</span>
-                                                        </td>
-                                                        <td>
-                                                            Author Fee for included support sale IVIP13444036
-                                                        </td>
-                                                        <td>$20</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>10-7-2016</td>
-                                                        <td>#85457896</td>
-                                                        <td>
-                                                            <span class="label label-primary font-weight-100">fee</span>
-                                                        </td>
-                                                        <td>
-                                                            Author Fee for included support sale IVIP13444036
-                                                        </td>
-                                                        <td>$20</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>10-7-2016</td>
-                                                        <td>#85457895</td>
-                                                        <td>
-                                                            <span class="label label-info font-weight-100">support</span>
-                                                        </td>
-                                                        <td>
-                                                            Author Fee for included support sale IVIP13444036
-                                                        </td>
-                                                        <td>$20</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Row -->
+
+											</tbody>
+										  </table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- /Table Hover -->
+
+				</div>
+
+
             </div>
             <!-- Footer -->
 <script>
