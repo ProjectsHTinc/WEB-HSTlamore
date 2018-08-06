@@ -354,6 +354,7 @@ class Home extends CI_Controller {
 		$datas['count_cart_session'] = $this->homemodel->cart_list();
 		$datas['count_wishlist'] = $this->homemodel->list_wishlist();
 		$datas['tag_result'] = $this->homemodel->list_tags();
+		$datas['check_review'] = $this->homemodel->check_review($prod_id);
 		$datas['review_details'] = $this->homemodel->get_reviewdetails($prod_id);
 		$datas['product_details'] = $this->homemodel->get_productdetails($prod_id);
 		$datas['product_spec'] = $this->homemodel->get_productspec($prod_id);
@@ -575,7 +576,8 @@ class Home extends CI_Controller {
 	
 	public function addreview()
 	{
-		$comments = $this->input->post('comments');
+		$comments        = $this->db->escape_str($this->input->post('comments'));
+		//$comments = $this->input->post('comments');
 		$rating = $this->input->post('rating');
 		$rproduct_id = $this->input->post('rproduct_id');
 		$ruser_id = $this->input->post('ruser_id');
@@ -583,7 +585,17 @@ class Home extends CI_Controller {
 		$datas['res']=$this->homemodel->add_review($ruser_id,$rproduct_id,$comments,$rating);
 	}
 	
-	
+	public function reviewupdate()
+	{
+		$reviewid = $this->input->post('review_id');
+		//$comments = $this->input->post('comments');
+		$comments        = $this->db->escape_str($this->input->post('comments'));
+		$rating = $this->input->post('rating');
+		$rproduct_id = $this->input->post('rproduct_id');
+		$ruser_id = $this->input->post('ruser_id');
+		
+		$datas['res']=$this->homemodel->update_review($reviewid,$ruser_id,$rproduct_id,$comments,$rating);
+	}
 	
 	public function aboutus()
 	{

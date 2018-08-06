@@ -793,6 +793,15 @@ Class Homemodel extends CI_Model
 		return $res;
    }
    
+   
+   function check_review($prod_id){
+	   $cust_id = $this->session->userdata('cust_session_id');
+		$sql="SELECT A.*,B.name FROM product_review A,customers B WHERE A.product_id = '$prod_id' AND  A.cus_id = '$cust_id' AND A.cus_id = B.id AND A.status = 'Active' ORDER BY A.rating";
+	  	$resu=$this->db->query($sql);
+	  	$res=$resu->result();
+	  	return $res;
+   }
+   
   function get_reviewdetails($prod_id){
 		$sql="SELECT A.*,B.name FROM product_review A,customers B WHERE A.product_id = '$prod_id' AND A.cus_id = B.id AND A.status = 'Active' ORDER BY A.rating";
 	  	$resu=$this->db->query($sql);
@@ -803,6 +812,16 @@ Class Homemodel extends CI_Model
    function add_review($ruser_id,$rproduct_id,$comments,$rating){
 			$insert = "INSERT INTO product_review(`cus_id`,`product_id`,`rating`,`comment`,`status`,`created_at`,`created_by`) VALUES ('$ruser_id', '$rproduct_id','$rating', '$comments','Active',now(),'$ruser_id');";
 			$res = $this->db->query($insert);
+			if ($res){
+				echo "success";
+			}else {
+				echo "error";
+			}
+   }
+   
+   function update_review($reviewid,$ruser_id,$rproduct_id,$comments,$rating){
+			$update="UPDATE product_review SET comment='$comments',rating='$rating',updated_at =now(),updated_by='$ruser_id' WHERE id='$reviewid'";
+			$res = $this->db->query($update);
 			if ($res){
 				echo "success";
 			}else {

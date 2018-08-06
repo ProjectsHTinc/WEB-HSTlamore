@@ -542,9 +542,43 @@ if (count($product_gallery)>0){
                     <!-- Modal Body Start -->
                     <div class="modal-body">
                     <div class="container">
-                                    <div class="row">
+                      <div class="row">
                     <!-- Reviews Field Start -->
                         <div class="riview-field mt-30">
+                        
+                        <?php if (count($check_review)>0){ 
+								foreach($check_review as $review){ 
+									$comment = $review->comment;
+									$rating = $review->rating;
+									$review_id = $review->id;
+								}
+						?>
+                            <form name="reviewformup" id="reviewformup" method="post" action="" autocomplete="off">
+                                <div class="form-group">
+                                    <label class="req" for="comments">your Review</label>
+                                    <textarea class="form-control" rows="5" id="comments" name="comments" required="required"><?php echo $comment;?></textarea>
+                                    <div class="help-block">
+                                        <span class="text-danger">Note:</span> HTML is not translated!
+                                    </div>
+                                </div>
+                                <div class="form-group required radio-label">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label class="control-label req">Rating</label> &nbsp;&nbsp;&nbsp; Bad&nbsp;
+                                            <?php for ($i=1; $i <6; $i++) { ?>
+                                                   <input type="radio" name="rating" value="1" <?php if ($i==$rating) { echo "checked"; } ?>> &nbsp;
+                                             <?php } ?>Good
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pull-right">
+                                	 <input type="hidden" name="rproduct_id" id="rproduct_id" value="<?php echo $product_id; ?>" />
+                                     <input type="hidden" name="ruser_id" id="ruser_id" value="<?php echo $cust_session_id; ?>" />
+                                     <input type="hidden" name="review_id" id="review_id" value="<?php echo $review_id; ?>" />
+                                    <button type="submit" id="button-review">Continue</button>
+                                </div>
+                            </form>
+                            <?php } else { ?>
                             <form name="reviewform" id="reviewform" method="post" action="" autocomplete="off">
                                 <div class="form-group">
                                     <label class="req" for="comments">your Review</label>
@@ -571,6 +605,7 @@ if (count($product_gallery)>0){
                                     <button type="submit" id="button-review">Continue</button>
                                 </div>
                             </form>
+                            <?php } ?>
                         </div>
                         <!-- Reviews Field Start -->
                     
@@ -730,6 +765,33 @@ $('#reviewform').validate({ // initialize the plugin
             success: function(response) {
 				if(response=="success"){
 					$('#reviewform')[0].reset();
+					location.reload();
+				} else {
+					alert("Error");
+				}
+            }
+        });
+    }
+});
+
+$('#reviewformup').validate({ // initialize the plugin
+
+    rules: {
+		comments: {
+            required: true,
+        },
+    },
+    messages: {
+		comments: { required:"Enter your Comments"},
+    },
+    submitHandler: function(form) {
+		$.ajax({
+            url: "<?php echo base_url(); ?>home/reviewupdate",
+            type: 'POST',
+            data: $('#reviewformup').serialize(),
+            success: function(response) {
+				if(response=="success"){
+					//$('#reviewform')[0].reset();
 					location.reload();
 				} else {
 					alert("Error");
