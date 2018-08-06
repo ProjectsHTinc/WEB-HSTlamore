@@ -69,6 +69,9 @@
                                 <div id="orders" class="tab-pane fade in active">
                                     <h3>Orders</h3>
                                     <div class="table-responsive">
+                        <?php
+                        if (count($orders)>0){
+						?>
                                         <table class="table">
                                             <thead>
                                                 <tr>
@@ -80,22 +83,24 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                            <?php foreach($orders as $order){ 
+											$order_id = $order->order_id;
+											$purchase_date = $order->purchase_date;
+											$dispDate = date("d M Y", strtotime($purchase_date));
+											$status = $order->status;
+											$total_amount = $order->total_amount;
+											?>
                                                 <tr>
-                                                    <td>1</td>
-                                                    <td>May 10, 2018</td>
-                                                    <td>Processing</td>
-                                                    <td>$25.00 for 1 item </td>
-                                                    <td><a class="view" href="cart.html">view</a></td>
+                                                    <td><?php echo $order_id;?></td>
+                                                    <td><?php echo $dispDate; ?></td>
+                                                    <td><?php echo $status; ?></td>
+                                                    <td>₹<?php echo $total_amount;?></td>
+                                                    <td><a class="view" href="<?php echo base_url(); ?>home/order_details/<?php echo $order_id;?>/">view</a></td>
                                                 </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>May 10, 2018</td>
-                                                    <td>Processing</td>
-                                                    <td>$17.00 for 1 item </td>
-                                                    <td><a class="view" href="cart.html">view</a></td>
-                                                </tr>
+                                           <?php } ?>
                                             </tbody>
                                         </table>
+                               <?php } ?>
                                     </div>
                                 </div>
                                 
