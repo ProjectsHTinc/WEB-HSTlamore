@@ -74,7 +74,7 @@ th{
 
 											</tbody>
 										</table>
-										<?php if($rows->status=="Success"){ ?>
+										<?php if($rows->status!="Pending" && $rows->status!="Payment Error" && $rows->status!="Failure"){ ?>
 												<a target="_blank" href="<?php echo base_url(); ?>admin/invoice/<?php echo base64_encode($rows->order_id); ?>" class="btn  btn-primary btn-outline">Print</a>
 									<?php	} ?>
 

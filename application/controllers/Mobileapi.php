@@ -122,7 +122,7 @@ class Mobileapi extends CI_Controller {
 	public function home_page()
 	{
 
-	  $_POST = json_decode(file_get_contents("php://input"), TRUE);
+	 $_POST = json_decode(file_get_contents("php://input"), TRUE);
 
 		if(!$this->checkMethod())
 		{
@@ -274,5 +274,219 @@ class Mobileapi extends CI_Controller {
 	}
 
 //-----------------------------------------------//
+
+
+
+//--------------------Product Wishlist  ---------------------------//
+
+	public function wishlist()
+	{
+
+	  $_POST = json_decode(file_get_contents("php://input"), TRUE);
+
+		if(!$this->checkMethod())
+		{
+			return FALSE;
+		}
+
+		if($_POST == FALSE)
+		{
+			$res = array();
+			$res["opn"] = "Login";
+			$res["scode"] = 204;
+			$res["message"] = "Input error";
+
+			echo json_encode($res);
+			return;
+		}
+		$product_id = $this->input->post("id");
+		$user_id = $this->input->post("user_id");
+		$data['result']=$this->mobileapimodel->prod_wishlist_add($product_id,$user_id);
+		$response = $data['result'];
+		//print_r($response);
+		echo json_encode($response);
+	}
+
+
+	public function remove_wishlist()
+	{
+
+	  $_POST = json_decode(file_get_contents("php://input"), TRUE);
+
+		if(!$this->checkMethod())
+		{
+			return FALSE;
+		}
+
+		if($_POST == FALSE)
+		{
+			$res = array();
+			$res["opn"] = "Login";
+			$res["scode"] = 204;
+			$res["message"] = "Input error";
+
+			echo json_encode($res);
+			return;
+		}
+		$product_id = $this->input->post("id");
+		$user_id = $this->input->post("user_id");
+		$data['result']=$this->mobileapimodel->remove_wishlist($product_id,$user_id);
+		$response = $data['result'];
+		//print_r($response);
+		echo json_encode($response);
+	}
+
+
+
+	public function view_wishlist()
+	{
+
+	  $_POST = json_decode(file_get_contents("php://input"), TRUE);
+
+		if(!$this->checkMethod())
+		{
+			return FALSE;
+		}
+
+		if($_POST == FALSE)
+		{
+			$res = array();
+			$res["opn"] = "Login";
+			$res["scode"] = 204;
+			$res["message"] = "Input error";
+
+			echo json_encode($res);
+			return;
+		}
+		$user_id = $this->input->post("user_id");
+		$data['result']=$this->mobileapimodel->view_wishlist($user_id);
+		$response = $data['result'];
+		//print_r($response);
+		echo json_encode($response);
+	}
+
+//------------------Product cart -----------------------------//
+
+		public function product_cart()
+		{
+
+			$_POST = json_decode(file_get_contents("php://input"), TRUE);
+
+			if(!$this->checkMethod())
+			{
+				return FALSE;
+			}
+
+			if($_POST == FALSE)
+			{
+				$res = array();
+				$res["opn"] = "Login";
+				$res["scode"] = 204;
+				$res["message"] = "Input error";
+
+				echo json_encode($res);
+				return;
+			}
+			$product_id = $this->input->post("product_id");
+			$prod_comb_id = $this->input->post("product_comb_id");
+			$quantity = $this->input->post("quantity");
+			$user_id = $this->input->post("user_id");
+			$data['result']=$this->mobileapimodel->product_cart($product_id,$prod_comb_id,$quantity,$user_id);
+			$response = $data['result'];
+			//print_r($response);
+			echo json_encode($response);
+		}
+
+		public function product_cart_remove()
+		{
+
+			$_POST = json_decode(file_get_contents("php://input"), TRUE);
+
+			if(!$this->checkMethod())
+			{
+				return FALSE;
+			}
+
+			if($_POST == FALSE)
+			{
+				$res = array();
+				$res["opn"] = "Login";
+				$res["scode"] = 204;
+				$res["message"] = "Input error";
+
+				echo json_encode($res);
+				return;
+			}
+			$product_id = $this->input->post("product_id");
+			$prod_comb_id = $this->input->post("product_comb_id");
+			$user_id = $this->input->post("user_id");
+			$data['result']=$this->mobileapimodel->product_cart_remove($product_id,$prod_comb_id,$user_id);
+			$response = $data['result'];
+			//print_r($response);
+			echo json_encode($response);
+		}
+
+
+		public function view_cart_items()
+		{
+
+			$_POST = json_decode(file_get_contents("php://input"), TRUE);
+
+			if(!$this->checkMethod())
+			{
+				return FALSE;
+			}
+
+			if($_POST == FALSE)
+			{
+				$res = array();
+				$res["opn"] = "Login";
+				$res["scode"] = 204;
+				$res["message"] = "Input error";
+
+				echo json_encode($res);
+				return;
+			}
+
+			$user_id = $this->input->post("user_id");
+			$data['result']=$this->mobileapimodel->view_cart_items($user_id);
+			$response = $data['result'];
+			//print_r($response);
+			echo json_encode($response);
+		}
+
+
+		public function cart_quantity()
+		{
+
+			$_POST = json_decode(file_get_contents("php://input"), TRUE);
+
+			if(!$this->checkMethod())
+			{
+				return FALSE;
+			}
+
+			if($_POST == FALSE)
+			{
+				$res = array();
+				$res["opn"] = "Login";
+				$res["scode"] = 204;
+				$res["message"] = "Input error";
+
+				echo json_encode($res);
+				return;
+			}
+
+			$cart_id = $this->input->post("cart_id");
+			$quantity = $this->input->post("quantity");
+			$user_id=$this->input->post("user_id");
+			$data['result']=$this->mobileapimodel->cart_quantity($cart_id,$quantity,$user_id);
+			$response = $data['result'];
+			//print_r($response);
+			echo json_encode($response);
+		}
+
+
+
 
 }

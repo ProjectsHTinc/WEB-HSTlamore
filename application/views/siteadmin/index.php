@@ -24,55 +24,43 @@
 
                 <!-- Row -->
                 <div class="row">
-                    <div class="col-lg-3 col-md-4 col-sm-5 col-xs-12">
-                        <div class="panel panel-default card-view">
-                            <div class="panel-heading">
-                                <div class="pull-left">
-                                    <h6 class="panel-title txt-dark">Total Products</h6>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="panel-wrapper collapse in">
-                                <div class="panel-body">
-                                    <div class="sm-graph-box">
-                                        <div class="row">
-                                            <div class="col-xs-6">
-                                                <div id="sparkline_1"></div>
-                                            </div>
-                                            <div class="col-xs-6">
-                                                <div class="counter-wrap text-right">
-                                                    <span class="counter-cap"></span><span class="counter"><?php foreach($res_count_product as $rows_pro_count){}  echo $rows_pro_count->count_product; ?></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel panel-default card-view">
-                            <div class="panel-heading">
-                                <div class="pull-left">
-                                    <h6 class="panel-title txt-dark">Total Customers</h6>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="panel-wrapper collapse in">
-                                <div class="panel-body">
-                                    <div class="sm-graph-box">
-                                        <div class="row">
-                                            <div class="col-xs-6">
-                                                <div id="sparkline_2"></div>
-                                            </div>
-                                            <div class="col-xs-6">
-                                                <div class="counter-wrap text-right">
-                                                    <span class="counter-cap"></span><span class="counter"><?php foreach($res_count_cust as $rows_cus_count){}  echo $rows_cus_count->count_cust; ?></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="col-lg-3 col-md-4 col-sm-5 col-xs-12 ">
+                      <div class="panel panel-default card-view pa-0">
+          							<div class="panel-wrapper collapse in">
+          								<div class="panel-body pa-0">
+          									<div class="sm-data-box bg-yellow">
+          										<div class="row ma-0">
+          											<div class="col-xs-5 text-center pa-0 icon-wrap-left">
+          												<i class="icon-rocket txt-light"></i>
+          											</div>
+          											<div class="col-xs-7 text-center data-wrap-right">
+          												<h6 class="txt-light">Total Products</h6>
+          												<span class="txt-light counter"><?php foreach($res_count_product as $rows_pro_count){}  echo $rows_pro_count->count_product; ?></span>
+          											</div>
+          										</div>
+          									</div>
+          								</div>
+          							</div>
+          						</div>
+                      <div class="panel panel-default card-view pa-0">
+          							<div class="panel-wrapper collapse in">
+          								<div class="panel-body pa-0">
+          									<div class="sm-data-box bg-red">
+          										<div class="row ma-0">
+          											<div class="col-xs-5 text-center pa-0 icon-wrap-left">
+          												<i class="icon-briefcase txt-light"></i>
+          											</div>
+          											<div class="col-xs-7 text-center data-wrap-right">
+          												<h6 class="txt-light">Total Customers</h6>
+          												<span class="txt-light counter counter-anim"><?php foreach($res_count_cust as $rows_cus_count){}  echo $rows_cus_count->count_cust; ?></span>
+          											</div>
+          										</div>
+          									</div>
+          								</div>
+          							</div>
+          						</div>
+
+                      
                         <!-- <div class="panel panel-default card-view">
                             <div class="panel-heading">
                                 <div class="pull-left">

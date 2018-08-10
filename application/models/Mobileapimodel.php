@@ -305,7 +305,7 @@ class Mobileapimodel extends CI_Model {
          if($res->num_rows()>0){
            $result=$res->result();
            foreach($result  as $rows){
-             $banner_list=array(
+             $banner_list[]=array(
                "id"=>$rows->id,
                "banner_title"=>$rows->banner_title,
                "banner_desc"=>$rows->banner_desc,
@@ -313,9 +313,10 @@ class Mobileapimodel extends CI_Model {
                "product_id"=>$rows->product_id,
              );
            }
-           $banner_list = array("status" => "success","banner_list"=>$banner_list);
+          $banner_list= array("status" => "success","msg"=>"Banner list","data"=>$banner_list);
+
          }else{
-         $banner_list = array("status" => "error");
+         $banner_list = array("status" => "error","msg"=>"No Banner list Found");
          }
 
 
@@ -325,16 +326,16 @@ class Mobileapimodel extends CI_Model {
             if($res->num_rows()>0){
               $result=$res->result();
               foreach($result  as $rows){
-                $ads_list=array(
+                $ads_list[]=array(
                   "id"=>$rows->id,
                   "ad_title"=>$rows->ad_title,
                   "sub_cat_id"=>$rows->sub_cat_id,
                   "ad_img"=>base_url().'assets/ads/'.$rows->ad_img,
                 );
               }
-              $ads_list = array("status" => "success","ads_list"=>$ads_list);
+            $ads_list = array("status" => "success","msg"=>"Ads List","data"=>$ads_list);
             }else{
-            $ads_list = array("status" => "error");
+            $ads_list = array("status" => "error","msg"=>"No Ads List Found");
             }
 
             //--------New Product  list----//
@@ -365,9 +366,9 @@ class Mobileapimodel extends CI_Model {
                       "stocks_left"=>$rows->stocks_left,
                     );
                 }
-              $data = array("status" => "success","product_list"=>$product_list);
+              $prd_list = array("status" => "success","msg"=>"products list","data"=>$product_list);
              }else{
-                $data = array("status" => "error");
+              $prd_list = array("status" => "error","msg"=>"No Products found");
              }
 
 
@@ -400,15 +401,16 @@ class Mobileapimodel extends CI_Model {
                        "stocks_left"=>$rows->stocks_left,
                      );
                  }
-               $data = array("status" => "success","popular_product_list"=>$popular_product_list);
-              }else{
-                 $data = array("status" => "error");
+               $popular_prd_list = array("status" => "success","msg"=>"popular products","data"=>$popular_product_list);
+                }else{
+              $popular_prd_list = array("status" => "error","msg"=>"No popular products");
               }
 
 
 
 
-        $data=array("status"=>"success","banner_list"=>$banner_list,"ads_list"=>$ads_list,"new_product"=>$product_list,"popular_product_list"=>$popular_product_list);
+      $data=array("status"=>"success","msg"=>"Home page data","banner_list"=>$banner_list,"ads_list"=>$ads_list,"new_product"=>$prd_list,"popular_product_list"=>$popular_prd_list);
+    //  $data=array("status"=>"success","msg"=>"Home page data","data"=>$response);
         return $data;
     }
 
@@ -511,8 +513,8 @@ class Mobileapimodel extends CI_Model {
       $res=$this->db->query($select);
        if($res->num_rows()>0){
           $result=$res->result();
-          foreach($result  as $rows){
-              $prd_details[]=array(
+          foreach($result  as $rows){  }
+              $prd_details=array(
                 "id"=>$rows->id,
                 "product_name"=>$rows->product_name,
                 "sku_code"=>$rows->sku_code,
@@ -533,10 +535,10 @@ class Mobileapimodel extends CI_Model {
                 "product_meta_keywords"=>$rows->product_meta_keywords,
                 "stocks_left"=>$rows->stocks_left,
               );
-          }
-        $product_details = array("status" => "success","product_details"=>$prd_details);
+
+        $product_details = array("status" => "success","msg"=>"product details","product_details"=>$prd_details);
        }else{
-          $product_details = array("status" => "error");
+          $product_details = array("status" => "error","msg"=>"No Records Found");
        }
 
 
@@ -560,9 +562,9 @@ class Mobileapimodel extends CI_Model {
                  "stocks_left"=>$rows->stocks_left,
                );
            }
-         $comb_prod = array("status" => "success","comb_product_list"=>$comb_product_list);
+         $comb_prod = array("status" => "success","msg"=>"Combined Products","comb_product_list"=>$comb_product_list);
         }else{
-           $comb_prod = array("status" => "error");
+           $comb_prod = array("status" => "error","msg"=>"No Record Found");
         }
 
 
@@ -580,16 +582,203 @@ class Mobileapimodel extends CI_Model {
                    "spec_value"=>$rows->spec_value,
                  );
              }
-           $prod_specs = array("status" => "success","spec_prod"=>$spec_prods);
+           $prod_specs = array("status" => "success","msg"=>"product specification","spec_prod"=>$spec_prods);
           }else{
-             $prod_specs = array("status" => "error");
+            $prod_specs = array("status" => "error","msg"=>"No specification");
           }
 
 
 
-        $data=array("status"=>"success","product_details"=>$product_details,"comb_product"=>$comb_prod,"product_specification"=>$prod_specs);
+        $data=array("status"=>"success","msg"=>"product details","product_details"=>$product_details,"comb_product"=>$comb_prod,"product_specification"=>$prod_specs);
         return $data;
 
+    }
+
+    //-------Product Wishlist -------///
+    function prod_wishlist_add($product_id,$user_id){
+     $select="SELECT * FROM cus_wishlist WHERE  customer_id='$user_id' AND product_id='$product_id'";
+      $res=$this->db->query($select);
+         if($res->num_rows()>0){
+           $data = array("status" => "error","msg"=>"Already");
+         }else{
+           $insert="INSERT INTO cus_wishlist (customer_id,product_id,created_at,updated_at) VALUES('$user_id','$product_id',NOW(),NOW())";
+           $res=$this->db->query($insert);
+           if($res){
+             $data = array("status" => "success","msg"=>"Wishlist Added");
+           }else{
+             $data = array("status" => "error","msg"=>"Something Went Wrong");
+           }
+         }
+        return $data;
+    }
+
+    function remove_wishlist($product_id,$user_id){
+      $delete="DELETE FROM cus_wishlist WHERE customer_id='$user_id' AND product_id='$product_id'";
+      $res=$this->db->query($delete);
+      if($res){
+        $data = array("status" => "success","msg"=>"Wishlist Removed");
+      }else{
+        $data = array("status" => "error","msg"=>"Something Went Wrong");
+      }
+        return $data;
+    }
+
+    function view_wishlist($user_id){
+      $select="SELECT p.* FROM cus_wishlist AS cw LEFT JOIN products AS p ON p.id=cw.product_id WHERE cw.customer_id='$user_id' AND p.status='Active'";
+      $res=$this->db->query($select);
+       if($res->num_rows()>0){
+          $result=$res->result();
+          foreach($result  as $rows){
+              $product_list[]=array(
+                "id"=>$rows->id,
+                "product_name"=>$rows->product_name,
+                "sku_code"=>$rows->sku_code,
+                "product_cover_img"=>base_url().'assets/products/'.$rows->product_cover_img,
+                "prod_size_chart"=>base_url().'assets/products/'.$rows->prod_size_chart,
+                "product_description"=>$rows->product_description,
+                "offer_status"=>$rows->offer_status,
+                "specification_status"=>$rows->specification_status,
+                "combined_status"=>$rows->combined_status,
+                "prod_actual_price"=>$rows->prod_actual_price,
+                "prod_mrp_price"=>$rows->prod_mrp_price,
+                "offer_percentage"=>$rows->offer_percentage,
+                "delivery_fee_status"=>$rows->delivery_fee_status,
+                "prod_return_policy"=>$rows->prod_return_policy,
+                "prod_cod"=>$rows->prod_cod,
+                "product_meta_title"=>$rows->product_meta_title,
+                "product_meta_desc"=>$rows->product_meta_desc,
+                "product_meta_keywords"=>$rows->product_meta_keywords,
+                "stocks_left"=>$rows->stocks_left,
+              );
+          }
+        $data = array("status" => "success","msg"=>"wishlist found","product_list"=>$product_list);
+       }else{
+        $data = array("status" => "error","msg"=>"No records found");
+       }
+        return $data;
+    }
+
+
+
+    //---------Product cart------//
+
+    function product_cart($product_id,$prod_comb_id,$quantity,$user_id){
+        $check="SELECT * FROM products WHERE id='$product_id'";
+        $res=$this->db->query($check);
+        $result=$res->result();
+        foreach($result as $rows_result){ }
+        $check_quantity=$rows_result->stocks_left;
+        $prod_actual_price=$rows_result->prod_actual_price;
+        if($quantity < $check_quantity){
+          $total_amount=$prod_actual_price * $quantity;
+          $check_cart="SELECT * FROM product_cart WHERE product_id='$product_id' AND cus_id='$user_id' AND status='Pending'";
+          $res_update=$this->db->query($check_cart);
+          $res_update->num_rows();
+          if($res_update->num_rows()==0){
+            $insert="INSERT INTO product_cart(product_id,product_combined_id,cus_id,quantity,price,total_amount,status,created_at,created_by) VALUES('$product_id','$prod_comb_id','$user_id','$quantity','$prod_actual_price','$total_amount','Pending',NOW(),'$user_id')";
+            $res=$this->db->query($insert);
+            if($res){
+              $data = array("status" => "success","msg"=>"Product added to cart Successfully");
+            }else{
+                $data = array("status" => "error","msg"=>"Something Went wrong");
+            }
+          }else{
+            $update="UPDATE product_cart SET product_id='$product_id',product_combined_id='$prod_comb_id',quantity='$quantity',price='$prod_actual_price',total_amount='$total_amount',status='Pending',updated_at=NOW(),updated_by='$user_id' WHERE cus_id='$user_id' AND product_id='$product_id' AND product_combined_id='$prod_comb_id' AND status='Pending'";
+            $re_update=$this->db->query($update);
+            if($re_update){
+              $data = array("status" => "success","msg"=>"Product added to cart Successfully");
+            }else{
+                $data = array("status" => "error","msg"=>"Something Went wrong");
+            }
+          }
+
+
+        }else{
+          $data = array("status" => "error","msg"=>"Out of Stocks");
+        }
+      return $data;
+    }
+
+
+    function product_cart_remove($product_id,$prod_comb_id,$user_id){
+      $delete="DELETE FROM product_cart WHERE cus_id='$user_id' AND product_id='$product_id' AND product_combined_id='$prod_comb_id'";
+      $res=$this->db->query($delete);
+      if($res){
+        $data = array("status" => "success","msg"=>"Product removed from cart");
+      }else{
+        $data = array("status" => "error","msg"=>"Something Went Wrong");
+      }
+        return $data;
+    }
+
+    function view_cart_items($user_id){
+      $select="SELECT p.product_name,p.product_cover_img,p.product_description,cm.category_name,IFNULL(am.attribute_value,' ') AS color_code,IFNULL(am.attribute_name,' ') AS color_name,IFNULL(ams.attribute_value,' ') AS size,pc.* FROM product_cart AS pc LEFT JOIN products AS p ON p.id=pc.product_id LEFT JOIN category_masters AS cm ON p.cat_id=cm.id LEFT JOIN product_combined AS comb ON comb.id=pc.product_combined_id LEFT JOIN attribute_masters AS am ON am.id=comb.mas_color_id LEFT JOIN attribute_masters AS ams ON ams.id=comb.mas_size_id WHERE pc.cus_id='$user_id' AND pc.status='Pending'";
+      $res=$this->db->query($select);
+     if($res->num_rows()>0){
+          $result=$res->result();
+          foreach($result  as $rows){
+              $cart_items[]=array(
+                "id"=>$rows->id,
+                "product_name"=>$rows->product_name,
+                "category_name"=>$rows->category_name,
+                "color_code"=>$rows->color_code,
+                "color_name"=>$rows->color_name,
+                "size"=>$rows->size,
+                "product_cover_img"=>base_url().'assets/products/'.$rows->product_cover_img,
+                "product_description"=>$rows->product_description,
+                "quantity"=>$rows->quantity,
+                "price"=>$rows->price,
+                "total_amount"=>$rows->total_amount,
+                "status"=>$rows->status,
+              );
+          }
+
+        $cart_total="SELECT SUM(total_amount) as cart_total FROM product_cart AS pc WHERE pc.cus_id='$user_id' AND pc.status='Pending'";
+        $res_cart=$this->db->query($cart_total);
+       if($res_cart->num_rows()>0){
+            $result_cart=$res_cart->result();
+            foreach($result_cart  as $rows_cart){ }
+              $cart_total_amt=$rows_cart->cart_total;
+              $cart = array("status" => "error","msg"=>"Payment Total","cart_payment"=>$cart_total_amt);
+          }else{
+              $cart = array("status" => "error","msg"=>"No amount");
+          }
+
+        $data = array("status" => "success","msg"=>"Cart found","view_cart_items"=>$cart_items,"cart_payment"=>$cart);
+       }else{
+        $data = array("status" => "error","msg"=>"No records found");
+       }
+        return $data;
+    }
+
+
+
+    function cart_quantity($cart_id,$quantity,$user_id){
+      $select="SELECT * FROM product_cart WHERE id='$cart_id'";
+      $res_cart=$this->db->query($select);
+      $result_cart=$res_cart->result();
+      foreach($result_cart  as $rows_cart){}
+      $prod_id=$rows_cart->product_id;
+      $current_quantity=$rows_cart->quantity;
+      $check="SELECT * FROM products WHERE id='$prod_id'";
+      $res=$this->db->query($check);
+      $result=$res->result();
+      foreach($result as $rows_result){ }
+      $update_quantity=$current_quantity+$quantity;
+      $check_quantity=$rows_result->stocks_left;
+      $prod_actual_price=$rows_result->prod_actual_price;
+      if($update_quantity < $check_quantity){
+        $update_cart="UPDATE product_cart SET quantity='$update_quantity' WHERE id='$cart_id' AND cus_id='$user_id'";
+        $res_cart=$this->db->query($update_cart);
+        if($res_cart){
+          $data = array("status" => "success","msg"=>"Product Quantity Updated");
+        }else{
+          $data = array("status" => "error","msg"=>"Something Went Wrong");
+        }
+      }else{
+        $data = array("status" => "error","msg"=>"Out of stocks");
+      }
+        return $data;
     }
 
 
