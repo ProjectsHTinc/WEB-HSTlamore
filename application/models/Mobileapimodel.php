@@ -569,7 +569,7 @@ class Mobileapimodel extends CI_Model {
 
 
 
-         //---product combination ---//
+         //---product specification ---//
          $select="SELECT sm.spec_name,ps.* FROM product_specification AS ps LEFT JOIN specification_masters AS sm ON sm.id=ps.spec_id WHERE product_id='$product_id' AND ps.status='Active'";
          $res=$this->db->query($select);
           if($res->num_rows()>0){
@@ -588,11 +588,58 @@ class Mobileapimodel extends CI_Model {
           }
 
 
+          //---product rating ---//
+          $select="SELECT COUNT(product_id) AS review_count,ROUND(AVG(rating)) AS average FROM product_review AS pr WHERE product_id='$product_id'";
+          $res=$this->db->query($select);
+           if($res->num_rows()>0){
+              $result=$res->result();
+              foreach($result  as $rows){}
+                  $prd_review=array(
+                    "review_count"=>$rows->review_count,
+                    "average"=>$rows->average,
+                  );
 
-        $data=array("status"=>"success","msg"=>"product details","product_details"=>$product_details,"comb_product"=>$comb_prod,"product_specification"=>$prod_specs);
+            $product_review = array("status" => "success","msg"=>"Review found","product_review"=>$prd_review);
+           }else{
+             $product_review = array("status" => "error","msg"=>"No Review");
+           }
+
+
+
+        $data=array("status"=>"success","msg"=>"product details","product_details"=>$product_details,"comb_product"=>$comb_prod,"product_specification"=>$prod_specs,"product_review"=>$product_review);
         return $data;
 
     }
+
+
+
+    function get_product_color($product_id,$size_id){
+      $select="SELECT am.attribute_value,am.attribute_name,pc.mas_color_id,pc.mas_size_id,ams.attribute_value AS size,pc.* FROM product_combined AS pc LEFT JOIN attribute_masters AS am ON am.id=pc.mas_color_id LEFT JOIN attribute_masters AS ams ON ams.id=pc.mas_size_id WHERE pc.product_id='$product_id' AND pc.mas_size_id='$size_id'  AND ams.status='Active'";
+      $res=$this->db->query($select);
+       if($res->num_rows()>0){
+          $result=$res->result();
+          foreach($result  as $rows){
+              $product_color[]=array(
+                "id"=>$rows->id,
+                "product_id"=>$rows->product_id,
+                "mas_color_id"=>$rows->mas_color_id,
+                "color_name"=>$rows->attribute_name,
+                "color_code"=>$rows->attribute_value,
+                "prod_actual_price"=>$rows->prod_actual_price,
+                "prod_mrp_price"=>$rows->prod_mrp_price,
+                "prod_default"=>$rows->prod_default,
+                "stocks_left"=>$rows->stocks_left,
+              );
+          }
+        $data = array("status" => "success","msg"=>"Product Color found","product_color"=>$product_color);
+       }else{
+          $data = array("status" => "error","msg"=>"No Record Found");
+       }
+       return $data;
+
+    }
+
+
 
     //-------Product Wishlist -------///
     function prod_wishlist_add($product_id,$user_id){
@@ -632,6 +679,7 @@ class Mobileapimodel extends CI_Model {
               $product_list[]=array(
                 "id"=>$rows->id,
                 "product_name"=>$rows->product_name,
+                "product_id"=>$rows->product_id,
                 "sku_code"=>$rows->sku_code,
                 "product_cover_img"=>base_url().'assets/products/'.$rows->product_cover_img,
                 "prod_size_chart"=>base_url().'assets/products/'.$rows->prod_size_chart,
@@ -668,7 +716,35 @@ class Mobileapimodel extends CI_Model {
         $result=$res->result();
         foreach($result as $rows_result){ }
         $check_quantity=$rows_result->stocks_left;
-        $prod_actual_price=$rows_result->prod_actual_price;
+        if($prod_comb_id=='0'){
+          $old_price=$rows_result->prod_actual_price;
+          $offer_status=$rows_result->offer_status;
+          if($offer_status=='1'){
+            $offer_percentage=$rows_result->offer_percentage;
+            $discount_value = ($old_price / 100) * $offer_percentage;
+            $offer_pirce = $old_price - $discount_value;
+          }else{
+            $offer_pirce=$rows_result->prod_actual_price;
+          }
+        }else{
+          $select="SELECT * FROM product_combined WHERE product_id='$product_id' AND id='$prod_comb_id'";
+          $res=$this->db->query($select);
+          $result_com=$res->result();
+          foreach($result_com as $row_comb){ }
+           $old_price_comb=$row_comb->prod_actual_price;
+           $offer_status=$rows_result->offer_status;
+
+          if($offer_status=='1'){
+            $offer_percentage=$rows_result->offer_percentage;
+            $discount_value = ($old_price_comb / 100) * $offer_percentage;
+            $offer_pirce = $old_price_comb - $discount_value;
+          }else{
+            $offer_pirce=$rows_result->prod_actual_price;
+          }
+        }
+         $prod_actual_price=round($offer_pirce);
+
+
         if($quantity < $check_quantity){
           $total_amount=$prod_actual_price * $quantity;
           $check_cart="SELECT * FROM product_cart WHERE product_id='$product_id' AND cus_id='$user_id' AND status='Pending'";
@@ -700,8 +776,8 @@ class Mobileapimodel extends CI_Model {
     }
 
 
-    function product_cart_remove($product_id,$prod_comb_id,$user_id){
-      $delete="DELETE FROM product_cart WHERE cus_id='$user_id' AND product_id='$product_id' AND product_combined_id='$prod_comb_id'";
+    function product_cart_remove($cart_id,$user_id){
+      $delete="DELETE FROM product_cart WHERE cus_id='$user_id' AND id='$cart_id'";
       $res=$this->db->query($delete);
       if($res){
         $data = array("status" => "success","msg"=>"Product removed from cart");
@@ -712,7 +788,7 @@ class Mobileapimodel extends CI_Model {
     }
 
     function view_cart_items($user_id){
-      $select="SELECT p.product_name,p.product_cover_img,p.product_description,cm.category_name,IFNULL(am.attribute_value,' ') AS color_code,IFNULL(am.attribute_name,' ') AS color_name,IFNULL(ams.attribute_value,' ') AS size,pc.* FROM product_cart AS pc LEFT JOIN products AS p ON p.id=pc.product_id LEFT JOIN category_masters AS cm ON p.cat_id=cm.id LEFT JOIN product_combined AS comb ON comb.id=pc.product_combined_id LEFT JOIN attribute_masters AS am ON am.id=comb.mas_color_id LEFT JOIN attribute_masters AS ams ON ams.id=comb.mas_size_id WHERE pc.cus_id='$user_id' AND pc.status='Pending'";
+      $select="SELECT p.product_name,p.stocks_left,p.product_cover_img,p.product_description,cm.category_name,IFNULL(am.attribute_value,' ') AS color_code,IFNULL(am.attribute_name,' ') AS color_name,IFNULL(ams.attribute_value,' ') AS size,pc.* FROM product_cart AS pc LEFT JOIN products AS p ON p.id=pc.product_id LEFT JOIN category_masters AS cm ON p.cat_id=cm.id LEFT JOIN product_combined AS comb ON comb.id=pc.product_combined_id LEFT JOIN attribute_masters AS am ON am.id=comb.mas_color_id LEFT JOIN attribute_masters AS ams ON ams.id=comb.mas_size_id WHERE pc.cus_id='$user_id' AND pc.status='Pending'";
       $res=$this->db->query($select);
      if($res->num_rows()>0){
           $result=$res->result();
@@ -720,9 +796,11 @@ class Mobileapimodel extends CI_Model {
               $cart_items[]=array(
                 "id"=>$rows->id,
                 "product_name"=>$rows->product_name,
+                "product_id"=>$rows->product_id,
                 "category_name"=>$rows->category_name,
                 "color_code"=>$rows->color_code,
                 "color_name"=>$rows->color_name,
+                "stocks_left"=>$rows->stocks_left,
                 "size"=>$rows->size,
                 "product_cover_img"=>base_url().'assets/products/'.$rows->product_cover_img,
                 "product_description"=>$rows->product_description,
@@ -781,6 +859,193 @@ class Mobileapimodel extends CI_Model {
         return $data;
     }
 
+
+      //--- Product review---//
+
+      function product_reviews($product_id){
+        $select="SELECT c.name,pr.* FROM  product_review AS pr LEFT JOIN customers AS c ON c.id=pr.cus_id WHERE pr.product_id='$product_id' AND pr.status='Active'";
+        $res=$this->db->query($select);
+       if($res->num_rows()>0){
+            $result=$res->result();
+            foreach($result  as $rows){
+                $prod_review[]=array(
+                  "id"=>$rows->id,
+                  "customer_name"=>$rows->name,
+                  "product_id"=>$rows->product_id,
+                  "rating"=>$rows->rating,
+                  "comment"=>$rows->comment,
+                );
+            }
+              $data = array("status" => "success","msg"=>"Reviews found","product_review"=>$prod_review);
+          }else{
+              $data = array("status" => "error","msg"=>"No Review found");
+          }
+          return $data;
+      }
+
+      function product_reviews_add($product_id,$user_id,$rating,$comment){
+        $check="SELECT * FROM product_review WHERE product_id='$product_id' AND cus_id='$user_id'";
+        $result=$this->db->query($check);
+       if($result->num_rows()==0){
+         $insert="INSERT INTO product_review (cus_id,product_id,rating,comment,status,created_at,created_by) VALUES('$user_id','$product_id','$rating','$comment','Active',NOW(),'$user_id')";
+         $res=$this->db->query($insert);
+         if($res){
+             $data = array("status" => "success","msg"=>"Review Added");
+         }else{
+             $data = array("status" => "error","msg"=>"Something Went wrong");
+         }
+       }else{
+         $data = array("status" => "error","msg"=>"Review added already");
+       }
+         return $data;
+      }
+
+      function product_review_check($product_id,$user_id){
+        $check="SELECT * FROM product_review WHERE product_id='$product_id' AND cus_id='$user_id'";
+        $result=$this->db->query($check);
+       if($result->num_rows()==0){
+         $data = array("status" => "success","msg"=>"Add Review");
+       }else{
+         $select="SELECT * FROM product_review WHERE product_id='$product_id' AND cus_id='$user_id'";
+         $result=$this->db->query($select);
+         $result_rev=$result->result();
+         foreach($result_rev  as $rows){}
+             $prod_review=array(
+               "id"=>$rows->id,
+               "product_id"=>$rows->product_id,
+               "rating"=>$rows->rating,
+               "comment"=>$rows->comment,
+             );
+          $data = array("status" => "success","msg"=>"Reviews found","product_review"=>$prod_review);
+       }
+       return $data;
+      }
+
+
+      function review_update($user_id,$rating,$comment,$review_id){
+        $check="UPDATE product_review SET rating='$rating',comment='$comment' WHERE cus_id='$user_id' AND id='$review_id'";
+        $result=$this->db->query($check);
+       if($result){
+         $data = array("status" => "success","msg"=>"Review Updated");
+       }else{
+          $data = array("status" => "error","msg"=>"Something Went Wrong");
+       }
+       return $data;
+      }
+
+      function address_list($user_id){
+        $select="SELECT * FROM cus_address  AS ca WHERE ca.cus_id='$user_id'";
+        $res=$this->db->query($select);
+        if($res->num_rows()>0){
+            $result=$res->result();
+            foreach($result  as $rows){
+                $addrss_list[]=array(
+                  "id"=>$rows->id,
+                  "state"=>$rows->state,
+                  "city"=>$rows->city,
+                  "pincode"=>$rows->pincode,
+                  "house_no"=>$rows->house_no,
+                  "street"=>$rows->street,
+                  "landmark"=>$rows->landmark,
+                  "full_name"=>$rows->full_name,
+                  "mobile_number"=>$rows->mobile_number,
+                  "email_address"=>$rows->email_address,
+                  "alternative_mobile_number"=>$rows->alternative_mobile_number,
+                );
+            }
+              $data = array("status" => "success","msg"=>"Address found","address_list"=>$addrss_list);
+          }else{
+              $data = array("status" => "error","msg"=>"No Address found");
+          }
+          return $data;
+
+      }
+
+
+      function address_create($user_id,$country_id,$state,$city,$pincode,$house_no,$street,$landmark,$full_name,$mobile_number,$email_address,$alternative_mobile_number,$address_type,$address_mode){
+        $insert="INSERT INTO cus_address (cus_id,country_id,state,city,pincode,house_no,street,landmark,full_name,mobile_number,email_address,alternative_mobile_number,address_type_id,address_mode,status,created_at,created_by)
+         VALUES('$user_id','$country_id','$state','$city','$pincode','$house_no','$street','$landmark','$full_name','$mobile_number','$email_address','$alternative_mobile_number','$address_type','$address_mode','Active','$user_id',NOW())";
+        $result=$this->db->query($insert);
+       if($result){
+         $data = array("status" => "success","msg"=>"Address Added");
+       }else{
+          $data = array("status" => "error","msg"=>"Something Went Wrong");
+       }
+       return $data;
+      }
+
+
+      function check_pincode($pin_code){
+        $select = "SELECT * FROM zipcode_masters WHERE zip_code='$pin_code' AND status='Active'";
+        $res=$this->db->query($select);
+        if($res->num_rows()==0){
+           $data = array("status" => "error","msg"=>"No Delivery for this Area");
+        }else{
+            foreach($res->result() as $rows) {}
+            $return_delivery=array(
+                "id"=>$rows->id,
+                "zipcode"=>$rows->zip_code,
+                "zip_desc"=>$rows->zip_desc,
+              );
+             $data = array("status" => "success","msg"=>"Delivery found","delivery_status"=>$return_delivery);
+            }
+          return $data;
+
+      }
+
+
+      function place_order($user_id,$address_id,$cus_notes){
+        $check_order = "SELECT * FROM purchase_order ORDER BY id DESC LIMIT 1";
+        $res=$this->db->query($check_order);
+
+        if($res->num_rows()>0){
+            foreach($res->result() as $rows) {
+                $old_order_id = $rows->id;
+            }
+            $order_id = $old_order_id+1;
+        } else {
+            $order_id = 1;
+        }
+        $today = date("Ymd");
+        $rand = strtoupper(substr(uniqid(sha1(time())),0,4));
+        $order_id = 'Lil'.$today . $rand . $order_id;
+        $select_cart="SELECT sum(total_amount) as total_amount,sum(quantity) as total_quantity FROM product_cart WHERE cus_id='$user_id' AND status='Pending'";
+        $result=$this->db->query($select_cart);
+        $res_cart=$result->result();
+        foreach($res_cart as $total_amount){}
+        $total=$total_amount->total_amount;
+
+        $tot_quantity=$total_amount->total_quantity;
+        $insert="INSERT INTO purchase_order (order_id,cus_id,purchase_date,cus_address_id,total_amount,status,cus_notes,created_at,created_by) VALUES('$order_id','$user_id',NOW(),'$address_id','$total','Success','$cus_notes',NOW(),'$user_id')";
+        $res=$this->db->query($insert);
+
+        //---Stocks left Update--//
+        $select_stock="SELECT * FROM product_cart WHERE cus_id='$user_id' AND status='Pending'";
+        $result_stock=$this->db->query($select_stock);
+        $res_stock=$result_stock->result();
+        foreach($res_stock as $rows_stock){
+          $prd_qu=$rows_stock->quantity;
+          $prd_id=$rows_stock->product_id;
+          $prd_com_id=$rows_stock->product_combined_id;
+          $update_stoc="UPDATE products SET stocks_left=stocks_left-'$prd_qu' WHERE id='$prd_id'";
+          $resu_stock=$this->db->query($update_stoc);
+          if($prd_com_id=='1'){
+            $update_comb_stoc="UPDATE product_combined SET stocks_left=stocks_left-'$prd_qu' WHERE id='$prd_com_id' AND product_id='$prd_id'";
+            $resu_stock=$this->db->query($update_comb_stoc);
+          }
+        }
+          //---Stocks left Update--//
+
+          //---Update Cart to Success--//
+        $update_cart="UPDATE product_cart SET order_id='$order_id',cus_id='$user_id',status='Success' WHERE cus_id='$user_id' AND status='Pending'";
+        $res_cart=$this->db->query($update_cart);
+        if($res_cart){
+          $data = array("status" => "success","msg"=>"Order Successfully Placed");
+        }else{
+          $data = array("status" => "error","msg"=>"Payment Error");
+        }
+          return $data;
+      }
 
 
 

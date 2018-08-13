@@ -8,8 +8,8 @@
 
 					<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
 					  <ol class="breadcrumb">
-						<li><a href="">Dashboard</a></li>
-						<li><a href="#"><span>Banner</span></a></li>
+							<li><a href="<?php echo base_url(); ?>adminlogin/home">Dashboard</a></li>
+							<li><a href="<?php echo base_url(); ?>admin/banner"><span>Banner</span></a></li>
 						<li class="active"><span>Edit </span></li>
 					  </ol>
 					</div>
@@ -135,7 +135,7 @@
 														</div>
 														<div class="form-actions mt-10">
 															<button type="submit" class="btn btn-success  mr-10" id="upload"> Save</button>
-															<button type="button" class="btn btn-default">Cancel</button>
+
 														</div>
 													</form>
 												</div>

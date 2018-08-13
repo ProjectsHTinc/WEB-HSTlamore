@@ -8,9 +8,9 @@
 
 					<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
 					  <ol class="breadcrumb">
-						<li><a href="">Dashboard</a></li>
-						<li><a href="#"><span>Category</span></a></li>
-						<li class="active"><span>Create</span></li>
+						<li><a href="<?php echo base_url(); ?>adminlogin/home">Dashboard</a></li>
+						<li><a href="<?php echo base_url(); ?>category/"><span> Category</span></a></li>
+						<li class="active"><span>Edit</span></li>
 					  </ol>
 					</div>
 			</div>
@@ -20,7 +20,7 @@
 							<div class="panel panel-default card-view">
 								<div class="panel-heading">
 									<div class="pull-left">
-										<h6 class="panel-title txt-dark">Create Category </h6>
+										<h6 class="panel-title txt-dark">Edit Category </h6>
 									</div>
 									<div class="clearfix"></div>
 								</div>
