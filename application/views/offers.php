@@ -1,28 +1,13 @@
-<?php
-if (count($category_details)>0){
-	foreach($category_details as $cat){ 
-		$base_cat_id = $cat->id;
-		$cat_name = $cat->category_name;
-		$cat_desc = $cat->category_desc;
-		$cat_image = $cat->category_image;
-		if ($cat_image == ''){
-			$cat_image = 'no_category.png';
-		}
-		$cat_image_url = base_url()."assets/category/".$cat_image;
-	}
-}
-?>
         <!-- Page Breadcrumb Start -->
-        <div class="mb-100" style="background: rgba(0, 0, 0, 0) url(<?php echo $cat_image_url; ?>) no-repeat scroll center center / cover;">
-        
+        <div class="main-breadcrumb mb-100">
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
-                        <div class="text-center ptb-70" >
-                            <h1><?php echo $cat_name;?></h1>
+                        <div class="breadcrumb-content text-center ptb-70">
+                            <h1>Offer Zone</h1>
                             <ul class="breadcrumb-list breadcrumb">
-                                <li><a href="<?php echo base_url(); ?>">home</a></li>
-                                <li><?php echo $cat_name;?></li>
+                                <li><a href="#">home</a></li>
+                                <li><a href="#">product details</a></li>
                             </ul>
                         </div>
                     </div>
@@ -38,7 +23,7 @@ if (count($category_details)>0){
                     <div class="col-md-9 col-md-push-3">
                         <!-- Sidebar Right Top Content Start -->
                         <div class="sidebar-desc-content">
-                            <p><?php echo $cat_desc; ?></p><hr>
+                            <p><?php echo "Offer Products" ?></p><hr>
                         </div>
                         <!-- Sidebar Right Top Content Start -->
                         <!-- Best Seller Product Start -->
@@ -69,8 +54,8 @@ if (count($category_details)>0){
                                         <div id="grid-view" class="tab-pane fade in active mt-40">
                                             <div class="row">
                                             <?php
-											if (count($cat_products)>0){
-												foreach($cat_products as $prod){ 
+											if (count($offer_products)>0){
+												foreach($offer_products as $prod){ 
 													$sproduct_id = $prod->id;
 													$product_id = $prod->id * 663399;
 													$enc_product_name = strtolower(preg_replace("/[^\w]/", "-", $prod->product_name));
@@ -171,11 +156,12 @@ if (count($category_details)>0){
 										$category_id = $rowm->id * 564738;
 										$category_name = strtolower(preg_replace("/[^\w]/", "-", $rowm->category_name));
 										$enc_category_id = base64_encode($category_id);
-										if ($base_cat_id == $cat_id){
-											echo '<li class="active"><a href="'.base_url().'home/categories/'.$cat_id.'/'.$category_name.'/">'.$rowm->category_name.'</a>';
-											} else {
-											echo '<li><a href="'.base_url().'home/categories/'.$cat_id.'/'.$category_name.'/">'.$rowm->category_name.'</a>';
-										}
+										echo '<li class="active"><a href="'.base_url().'home/categories/'.$cat_id.'/'.$category_name.'/">'.$rowm->category_name.'</a>';
+										//if ($base_cat_id == $cat_id){
+											//echo '<li class="active"><a href="'.base_url().'home/categories/'.$cat_id.'/'.$category_name.'/">'.$rowm->category_name.'</a>';
+											//} else {
+											//echo '<li><a href="'.base_url().'home/categories/'.$cat_id.'/'.$category_name.'/">'.$rowm->category_name.'</a>';
+										//}
                                     	$sub_catmenu = $this->homemodel->get_sub_catmenu($cat_id);
 											if (count($sub_catmenu)>0){
                                     			echo '<ul class="sub-categorie pl-30">';
@@ -185,11 +171,12 @@ if (count($category_details)>0){
 													$sub_category_id = $rows->id * 564738;
 													$sub_category_name = strtolower(preg_replace("/[^\w]/", "-", $rows->category_name));
 													$enc_sub_category_id = base64_encode($sub_category_id);
-													if ($base_cat_id == $sub_cat_id){
-											echo '<li class="active"><a href="'.base_url().'home/subcategories/'.$sub_cat_id.'/'.$sub_category_name.'/">'.$rows->category_name.'</a></li>';
-											} else {
-											echo '<li><a href="'.base_url().'home/subcategories/'.$sub_cat_id.'/'.$sub_category_name.'/">'.$rows->category_name.'</a></li>';
-										}
+													echo '<li class="active"><a href="'.base_url().'home/subcategories/'.$sub_cat_id.'/'.$sub_category_name.'/">'.$rows->category_name.'</a></li>';
+													//if ($base_cat_id == $sub_cat_id){
+											//echo '<li class="active"><a href="'.base_url().'home/subcategories/'.$sub_cat_id.'/'.$sub_category_name.'/">'.$rows->category_name.'</a></li>';
+											//} else {
+											//echo '<li><a href="'.base_url().'home/subcategories/'.$sub_cat_id.'/'.$sub_category_name.'/">'.$rows->category_name.'</a></li>';
+										//}
                                     				
                                     			}
                                     			echo '</ul>';

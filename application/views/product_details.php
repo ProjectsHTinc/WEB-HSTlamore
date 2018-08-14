@@ -269,7 +269,7 @@ if (count($product_gallery)>0){
                             <div class="product-button-actions">
                             <?php 
 								if ($stocks_left>0){ ?>
-                               	<button id='addcart' type="submit" class="add-to-cart">add to cart</button>
+                               	<button id='addcart' type="submit" class="add-to-cart" onclick="getStock()">add to cart</button>
                                 <button id='emptycart' type="button" class="add-to-cart" style="background:#e20202;display:none;">Out of Stock</button>
                              <?php } else { ?>
                              	<button id='emptycart' type="button" class="add-to-cart" style="background:#e20202;">Out of Stock</button>
@@ -623,6 +623,7 @@ if (count($product_gallery)>0){
         
         
 <script>
+
 $('#product-form').validate({ // initialize the plugin
     rules: {
 		 qty: {
@@ -767,7 +768,7 @@ $('#reviewform').validate({ // initialize the plugin
 					$('#reviewform')[0].reset();
 					location.reload();
 				} else {
-					alert("Error");
+					alert("Review Already Posted");
 				}
             }
         });

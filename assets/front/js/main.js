@@ -34,6 +34,8 @@ NOTE: main.js, All custom script and plugin activation script in this file.
  
 ================================================*/
 
+    
+
 (function ($) {
     "use Strict";
     /*----------------------------
@@ -42,6 +44,12 @@ NOTE: main.js, All custom script and plugin activation script in this file.
     $(window).load(function () {
         $(".preloader").fadeOut("slow");
     });
+
+	//$(document).ready(function(){
+ 		//$(document).bind("contextmenu",function(e){
+   			//return false;
+ 		//});
+	//});
     
     /*--------------------------
     2. Newsletter Popup
@@ -220,15 +228,16 @@ NOTE: main.js, All custom script and plugin activation script in this file.
     -----------------------------*/
     $("#slider-range").slider({
         range: true,
-        min: 80,
+        min: 0,
         max: 2000,
         values: [0, 2000],
         slide: function (event, ui) {
-            $("#amount").val("$" + ui.values[0] + "  $" + ui.values[1]);
+            $("#amount").val("₹" + ui.values[0] + "  ₹" + ui.values[1]);
         }
     });
-    $("#amount").val("$" + $("#slider-range").slider("values", 0) +
-        "  $" + $("#slider-range").slider("values", 1));
+
+    $("#amount").val("₹" + $("#slider-range").slider("values", 0) +
+        "  ₹" + $("#slider-range").slider("values", 1));
     
     /*-------------------------------------
     13. Most Viewd Product activation

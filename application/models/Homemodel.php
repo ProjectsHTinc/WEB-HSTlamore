@@ -1,12 +1,9 @@
 <?php
-
 Class Homemodel extends CI_Model
 {
-
   public function __construct()
   {
       parent::__construct();
-
   }
 
 //#################### Email ####################//
@@ -217,6 +214,11 @@ Class Homemodel extends CI_Model
 					$update_sql = "UPDATE customers SET last_login =NOW(),login_count='$login_count' WHERE id='$cust_id'";
 				 	$update_result = $this->db->query($update_sql);
 					
+					
+					$browser_sess_id = $this->session->userdata('browser_sess_id');
+					$updatesql = "UPDATE product_cart SET cus_id='$cust_id' WHERE browser_sess_id='$browser_sess_id' AND status = 'Pending'";
+					$update = $this->db->query($updatesql);
+					
 				echo "login";
 					}else{
 				echo "error";
@@ -231,7 +233,7 @@ Class Homemodel extends CI_Model
    }
    
     function customer_details($cust_id){
-		$sql = "SELECT * FROM customer_details WHERE id='$cust_id'";
+		$sql = "SELECT * FROM customer_details WHERE customer_id='$cust_id'";
 		$resu=$this->db->query($sql);
 		$res=$resu->result();
 		return $res;
@@ -250,10 +252,13 @@ Class Homemodel extends CI_Model
 			
 			$update_sql = "UPDATE customers SET created_at =NOW(),created_by ='$last_id' WHERE id='$last_id'";
 			$update_result = $this->db->query($update_sql);
-					
-			//$subject = "Customer Registration";
-			//$htmlContent = 'Dear '. $name . '<br><br>' .  'Username : '. $email .'<br>Password : '. $pwdconfirm .'<br><br><br>Regards<br>LittleAMore';
-			//$this->sendMail($email,$subject,$htmlContent);
+			
+			$subject = "LittleAMore - Customer Registration";
+			$htmlContent = 'Dear '. $name . '<br><br>' .  'Username : '. $email .'<br>Password : '. $pwdconfirm .'<br><br><br>Regards<br>LittleAMore';
+			$this->sendMail($email,$subject,$htmlContent);
+			
+			$mobile_message = "Username : ".$email.", Password : ".$pwdconfirm."";
+			$this->sendSMS($mobile,$mobile_message);
 						
 			echo "register";
    }
@@ -264,9 +269,9 @@ Class Homemodel extends CI_Model
 			$cust_update = $this->db->query($customer_update);
 
 			if ($cust_pic !="") {
-				$customer_details_update = "UPDATE customer_details SET first_name = '$fname',last_name = '$lname',birth_date  = '$dob',gender  ='$gender',newsletter_status ='$newsletter',profile_picture = '$cust_pic',updated_at =now(), updated_by = '$cust_id' WHERE id  ='$cust_id'";
+				 $customer_details_update = "UPDATE customer_details SET first_name = '$fname',last_name = '$lname',birth_date  = '$dob',gender  ='$gender',newsletter_status ='$newsletter',profile_picture = '$cust_pic',updated_at =now(), updated_by = '$cust_id' WHERE customer_id  ='$cust_id'";
 			} else {
-				$customer_details_update = "UPDATE customer_details SET first_name = '$fname',last_name = '$lname',birth_date = '$dob',gender  ='$gender',newsletter_status ='$newsletter',updated_at =now(),updated_by = '$cust_id' WHERE id  ='$cust_id'";
+				 $customer_details_update = "UPDATE customer_details SET first_name = '$fname',last_name = '$lname',birth_date = '$dob',gender  ='$gender',newsletter_status ='$newsletter',updated_at =now(),updated_by = '$cust_id' WHERE customer_id  ='$cust_id'";
 			}
 			$cust_detail_update = $this->db->query($customer_details_update);
 			
@@ -279,6 +284,42 @@ Class Homemodel extends CI_Model
    }
 
 
+     function cust_orders($cust_session_id){
+		$sql="SELECT * from purchase_order WHERE cus_id = '$cust_session_id'";
+	  	$resu=$this->db->query($sql);
+	  	$res=$resu->result();
+	  	return $res;
+   }
+     
+    function cust_order_details($order_id){
+		$sql="SELECT A.*,B.*,C.*,D.*, B.total_amount as cart_amount from purchase_order A, product_cart B, products C, cus_address D WHERE A.id = '$order_id' AND A.order_id = B.order_id AND B.product_id = C.id AND A.cus_address_id = D.id";
+	  	$resu=$this->db->query($sql);
+	  	$res=$resu->result();
+	  	return $res;
+   }
+   
+
+		function add_cust_address($cust_id,$ncountry_id,$nname,$naddress1,$naddress2,$ntown,$nstate,$nzip,$nemail,$nphone,$nphone1,$nlandmark){
+			
+			$check_address="SELECT * FROM cus_address WHERE cus_id = '$cust_id'";
+			$res=$this->db->query($check_address);
+				if($res->num_rows()>0){
+					$address_mode = '0';
+				}else{
+					$address_mode = '1';
+				}
+				$create = "INSERT INTO cus_address(cus_id,country_id,state,city,pincode,house_no,street,landmark,full_name,mobile_number,alternative_mobile_number,email_address,address_type_id,address_mode,status,created_at,created_by) VALUES('$cust_id','$ncountry_id','$nstate','$ntown','$nzip','$naddress1','$naddress2','$nlandmark','$nname','$nphone','$nphone1','$nemail','1','$address_mode','Active',now(),'$cust_id')";
+			$res = $this->db->query($create);
+			if ($res){
+				$datas=array('status'=>'success');
+			}else {
+				$datas=array('status'=>'failure');;
+			}
+			return $datas;
+			
+	}
+	
+	
 	function get_cust_address($cust_id){
 		$sql="SELECT A.*, B.country_name, C.address_type FROM cus_address A, country_master B, address_master C WHERE A.cus_id = '$cust_id' AND A.country_id = B.id AND A.address_type_id  = C.id AND A.status = 'Active' ORDER BY A.address_mode DESC";
 	  	$resu=$this->db->query($sql);
@@ -375,9 +416,12 @@ Class Homemodel extends CI_Model
 			$password_sql = "UPDATE customers SET password = '$enc_password' WHERE email ='$email'";
 			$reset_pass = $this->db->query($password_sql);
 			
-			//$subject = "Reset Password";
-			//$htmlContent = 'Dear '. $email . '<br><br>' .  'New Password : '. $random_password .'<br><br><br>Regards<br>LittleAMore';
-			//$this->sendMail($email,$subject,$htmlContent);
+			$subject = "LittleAMore - Reset Password";
+			$htmlContent = 'Dear '. $email . '<br><br>' .  'New Password : '. $random_password .'<br><br><br>Regards<br>LittleAMore';
+			$this->sendMail($email,$subject,$htmlContent);
+			
+			$mobile_message = "Username : ".$email.", Password : ".$random_password."";
+			$this->sendSMS($mobile,$mobile_message);
 			
 			echo "reset";
 		}else{
@@ -452,6 +496,7 @@ Class Homemodel extends CI_Model
    }
    
     function search_result($search_tags){
+		
 		$sql="SELECT * FROM tag_masters A,product_tags B,products C WHERE A.tag_name ='$search_tags' AND A.id = B.tag_id AND B.product_id = C.id AND C.status = 'Active'";
 		$resu=$this->db->query($sql);
 	  	$res=$resu->result();
@@ -490,8 +535,22 @@ Class Homemodel extends CI_Model
 	  	return $res;
    }
    
+      function get_comproduct_details($prod_id){
+		$sql="SELECT * FROM product_combined WHERE id ='$prod_id' AND status = 'Active' ";
+	  	$resu=$this->db->query($sql);
+	  	$res=$resu->result();
+	  	return $res;
+   }
+   
     function get_offer_details($prod_id){
 		$sql="SELECT * FROM product_offer WHERE product_id ='$prod_id' AND status = 'Active'";
+	  	$resu=$this->db->query($sql);
+	  	$res=$resu->result();
+	  	return $res;
+   }
+   
+      function get_offer_products(){
+		$sql="SELECT * FROM products WHERE offer_status ='1' AND status = 'Active'";
 	  	$resu=$this->db->query($sql);
 	  	$res=$resu->result();
 	  	return $res;
@@ -538,41 +597,123 @@ Class Homemodel extends CI_Model
 	  	return $res;
    }
    
-   function cart_insert($product_id,$com_product_id,$browser_sess_id,$cust_id,$quantity,$price,$total_amount){
+   function cart_insert($product_id,$com_product_id,$browser_sess_id,$cust_id,$quantity){
 	   
-	   $sel_cart = "SELECT * FROM product_cart WHERE product_id = '$product_id' AND product_combined_id ='$com_product_id' AND browser_sess_id ='$browser_sess_id'";
-		$cart_res = $this->db->query($sel_cart);
+	   $product_details = $this->homemodel->get_productdetails($product_id);
+	   
+	   if (count($product_details)>0){
+			foreach($product_details as $prod){ 
+				$product_id = $prod->id;
+				$cat_id = $prod->cat_id;
+				$product_name = $prod->product_name;
+				$sku_code = $prod->sku_code;
+				$size_chart = $prod->prod_size_chart;
+				$product_description = $prod->product_description;
+				$product_cover_img = $prod->product_cover_img;
+				$prod_mrp_price = $prod->prod_mrp_price ;
+				$prod_actual_price = $prod->prod_actual_price;
+				$combined_status = $prod->combined_status;
+				$offer_status = $prod->offer_status;
+				$stocks_left = $prod->stocks_left;
+				$price = $prod_actual_price;
+				
+				if ($offer_status =='1'){
+					$offer_details = $this->homemodel->get_offer_details($product_id);
+					if (count($offer_details)>0){
+						foreach($offer_details as $offer){ 
+							$offer_percentage = $offer->offer_percentage;
+						}
+					}
+					$soffer_price = ($offer_percentage / 100) * $prod_actual_price;
+					$doffer_price = $prod_actual_price - $soffer_price;
+					$offer_price = number_format((float)$doffer_price, 2, '.', '');
+					$price = $offer_price;
+				}
+				
+		
+				if ($combined_status =='1'){
+					$cproduct_details = $this->homemodel->get_comproduct_details($com_product_id);
+					if (count($cproduct_details)>0){
+						foreach($cproduct_details as $cprod){ 
+							$c_product_id = $cprod->id;
+							$c_size_id = $cprod->mas_size_id;
+							$c_color_id = $cprod->mas_color_id;
+							$c_prod_actual_price = $cprod->prod_actual_price;
+							$c_mrp_price = $cprod->prod_mrp_price;
+							$price = $c_prod_actual_price;
+							$stocks_left = $cprod->stocks_left;
+						}
+					}
+					
+					if ($offer_status =='1'){
+						$offer_details = $this->homemodel->get_offer_details($product_id);
+					if (count($offer_details)>0){
+						foreach($offer_details as $offer){ 
+							$offer_percentage = $offer->offer_percentage;
+						}
+					}
+						$soffer_price = ($offer_percentage / 100) * $c_prod_actual_price;
+						$doffer_price = $c_prod_actual_price - $soffer_price;
+						$offer_price = number_format((float)$doffer_price, 2, '.', '');
+						$price = $offer_price;
+						
+					}
+				}
+		}
+	}
+		if ($quantity<=$stocks_left){
+			 $total_amount = $quantity * $price;
+		} else {
+			$quantity = $stocks_left;
+			$total_amount = $stocks_left * $price;
+		}
+			if ($cust_id!=''){
+				$sel_cart = "SELECT * FROM product_cart WHERE product_id = '$product_id' AND product_combined_id ='$com_product_id' AND cus_id ='$cust_id' AND order_id = '' AND status='Pending'";
+			} else {
+				$sel_cart = "SELECT * FROM product_cart WHERE product_id = '$product_id' AND product_combined_id ='$com_product_id' AND browser_sess_id ='$browser_sess_id' AND order_id = '' AND status='Pending'";
+			}
+			$cart_res = $this->db->query($sel_cart);
 			if($cart_res->num_rows()>0){
 				foreach($cart_res->result() as $cart_rows) { 
 					$cart_id = $cart_rows->id;
+					$squantity = $cart_rows->quantity;
+					$chk_quantity = $squantity + $quantity;
 				}
-				$cart_update = "UPDATE product_cart SET quantity = quantity+$quantity,total_amount = total_amount+$total_amount,updated_at =now(), updated_by = '$cust_id' WHERE id  ='$cart_id'";
-				$result = $this->db->query($cart_update);
+				
+				if ($stocks_left >= $chk_quantity){
+					 $cart_update = "UPDATE product_cart SET quantity = quantity+$quantity,total_amount = total_amount+$total_amount,updated_at =now(), updated_by = '$cust_id' WHERE id  ='$cart_id'";
+					$result = $this->db->query($cart_update);
+				}
 			} else {
-	   			$cart_insert="INSERT INTO product_cart(product_id,product_combined_id,browser_sess_id,cus_id,quantity,price,total_amount,status,created_at,created_by) VALUES('$product_id','$com_product_id','$browser_sess_id','$cust_id','$quantity','$price','$total_amount','Pending',now(),'$cust_id')";
+	   		         $cart_insert="INSERT INTO product_cart(product_id,product_combined_id,browser_sess_id,cus_id,quantity,price,total_amount,status,created_at,created_by) VALUES('$product_id','$com_product_id','$browser_sess_id','$cust_id','$quantity','$price','$total_amount','Pending',now(),'$cust_id')";
 				$result=$this->db->query($cart_insert);
 			}
-	   
+			
+			//exit;
 	   		if ($result){
 				$datas=array('status'=>'success');
 			}else {
 				$datas=array('status'=>'failure');;
 			}
 			return $datas;
-
    } 
     
+	
 	 function add_cart($product_id,$browser_sess_id,$cust_id){
+		
 		$sel_product = "SELECT * FROM products WHERE id = '$product_id'";
 		$product_res=$this->db->query($sel_product);
+		
 			if($product_res->num_rows()>0){
 				foreach($product_res->result() as $pro_rows) { 
 					$prod_price = $pro_rows->prod_actual_price;
 					$offer_status = $pro_rows->offer_status;
+					$stocks_left = $pro_rows->stocks_left;
+					$chk_quantity = $stocks_left +1;
 				}
 			}
-		
-				if ($offer_status =='1'){
+			
+			if ($offer_status =='1'){
 					$offer_details = $this->homemodel->get_offer_details($product_id);
 				if (count($offer_details)>0){
 					foreach($offer_details as $offer){ 
@@ -584,23 +725,32 @@ Class Homemodel extends CI_Model
 					$prod_price = number_format((float)$doffer_price, 2, '.', '');
 				}
 		
-		$sel_cart = "SELECT * FROM product_cart WHERE product_id = '$product_id' AND browser_sess_id ='$browser_sess_id' ";
-		$cart_res = $this->db->query($sel_cart);
+		
+			if ($cust_id!=''){
+				  $sel_cart = "SELECT * FROM product_cart WHERE product_id = '$product_id' AND cus_id ='$cust_id' AND order_id='' AND status='Pending'";
+			} else {
+				  $sel_cart = "SELECT * FROM product_cart WHERE product_id = '$product_id' AND browser_sess_id ='$browser_sess_id' AND order_id='' AND status='Pending'";
+				}
+			$cart_res = $this->db->query($sel_cart);
 			if($cart_res->num_rows()>0){
 				foreach($cart_res->result() as $cart_rows) { 
-					$cart_id = $cart_rows->id;
+					 $cart_id = $cart_rows->id;
+					 $quantity = $cart_rows->quantity;
+					 $chk_quantity = $quantity +1;
 				}
-				if ($cust_id!=''){
+	
+				if ($stocks_left >= $chk_quantity){
 					$cart_update = "UPDATE product_cart SET quantity = quantity+1,total_amount = total_amount+$prod_price,cus_id ='$cust_id', updated_at =now(), updated_by = '$cust_id' WHERE id  ='$cart_id'";
-				} else {
-					$cart_update = "UPDATE product_cart SET quantity = quantity+1,total_amount = total_amount+$prod_price,updated_at =now(), updated_by = '$cust_id' WHERE id  ='$cart_id'";
+					$result = $this->db->query($cart_update);
 				}
-				$result = $this->db->query($cart_update);
-			} else {
-	   			$cart_details="INSERT INTO product_cart(product_id,product_combined_id,browser_sess_id,cus_id,quantity,price,total_amount,status,created_at,created_by) VALUES('$product_id','0','$browser_sess_id','$cust_id','1','$prod_price','$prod_price','Pending',now(),'$cust_id')";
-			$result=$this->db->query($cart_details);
-			}
 			
+			} else {
+				if ($stocks_left <= $chk_quantity){
+	   				$cart_details="INSERT INTO product_cart(product_id,product_combined_id,browser_sess_id,cus_id,quantity,price,total_amount,status,created_at,created_by) VALUES('$product_id','0','$browser_sess_id','$cust_id','1','$prod_price','$prod_price','Pending',now(),'$cust_id')";
+				$result=$this->db->query($cart_details);
+					}
+			}
+//exit;
 			if ($result){
 				$datas=array('status'=>'success');
 			}else {
@@ -609,38 +759,131 @@ Class Homemodel extends CI_Model
 			return $datas;
 
    } 
-			
+
+
 	function cart_list(){
-		$browser_sess_id = $this->session->userdata('browser_sess_id');
-		$sql = "SELECT A.*,B.product_name,B.product_cover_img,B.stocks_left FROM product_cart A,products B WHERE A.product_id = B.id AND A.browser_sess_id = '$browser_sess_id' AND A.order_id = '' AND A.status='Pending' ORDER BY A.id";
+			 $browser_sess_id = $this->session->userdata('browser_sess_id');
+		 	 $cust_id = $this->session->userdata('cust_session_id');
+			 
+			 if ($cust_id!=''){
+				    $sql = "SELECT A.*,B.product_name,B.product_cover_img,B.stocks_left FROM product_cart A,products B WHERE A.product_id = B.id AND A.cus_id = '$cust_id' AND A.order_id = '' AND A.status='Pending' ORDER BY A.id";
+			 } else {
+			 	   $sql = "SELECT A.*,B.product_name,B.product_cover_img,B.stocks_left FROM product_cart A,products B WHERE A.product_id = B.id AND A.browser_sess_id = '$browser_sess_id' AND A.order_id = '' AND A.status='Pending' ORDER BY A.id";
+			 }
 		$resu=$this->db->query($sql);
 		$res=$resu->result();
 		return $res;
    }
    
-	function update_cart($cart_id,$quantity,$price){
+   
+   function update_cart($cart_id,$product_id,$quantity,$price){
 		$cust_id = $this->session->userdata('cust_session_id');
 		$cont_cart = count($cart_id);
 
-			for($i=0;$i<$cont_cart;$i++){
-				$sqty = $quantity[$i];
+		for($i=0;$i<$cont_cart;$i++){
+				
+				$scart_id = $cart_id[$i];
+				$squantity = $quantity[$i];
 				$sprice = $price[$i];
-				$stotal = $sqty * $sprice;
-				if ($cust_id!=''){
-					$update="UPDATE product_cart SET quantity='$quantity[$i]',total_amount='$stotal',cus_id ='$cust_id' WHERE id='$cart_id[$i]'";
-				} else {
-					$update="UPDATE product_cart SET quantity='$quantity[$i]',total_amount='$stotal' WHERE id='$cart_id[$i]'";
+				
+				
+				$sel_cart = "SELECT * FROM product_cart WHERE id = '$scart_id'";
+				$cart_res = $this->db->query($sel_cart);
+			
+				foreach($cart_res->result() as $cart_rows) { 
+					 $product_id = $cart_rows->product_id;
+					 $product_combined_id = $cart_rows->product_combined_id;
 				}
-			$res=$this->db->query($update);	
+				
+			$product_details = $this->homemodel->get_productdetails($product_id);
+	   
+			if (count($product_details)>0){
+				foreach($product_details as $prod){ 
+					$product_id = $prod->id;
+					$cat_id = $prod->cat_id;
+					$product_name = $prod->product_name;
+					$sku_code = $prod->sku_code;
+					$size_chart = $prod->prod_size_chart;
+					$product_description = $prod->product_description;
+					$product_cover_img = $prod->product_cover_img;
+					$prod_mrp_price = $prod->prod_mrp_price ;
+					$prod_actual_price = $prod->prod_actual_price;
+					$combined_status = $prod->combined_status;
+					$offer_status = $prod->offer_status;
+					$stocks_left = $prod->stocks_left;
+					$price = $prod_actual_price;
+					
+					if ($offer_status =='1'){
+						$offer_details = $this->homemodel->get_offer_details($product_id);
+						if (count($offer_details)>0){
+							foreach($offer_details as $offer){ 
+								$offer_percentage = $offer->offer_percentage;
+							}
+						}
+						$soffer_price = ($offer_percentage / 100) * $prod_actual_price;
+						$doffer_price = $prod_actual_price - $soffer_price;
+						$offer_price = number_format((float)$doffer_price, 2, '.', '');
+						$price = $offer_price;
+					}
+					
+			
+					if ($combined_status =='1'){
+						$cproduct_details = $this->homemodel->get_comproduct_details($product_combined_id);
+						if (count($cproduct_details)>0){
+							foreach($cproduct_details as $cprod){ 
+								$c_product_id = $cprod->id;
+								$c_size_id = $cprod->mas_size_id;
+								$c_color_id = $cprod->mas_color_id;
+								$c_prod_actual_price = $cprod->prod_actual_price;
+								$c_mrp_price = $cprod->prod_mrp_price;
+								$price = $c_prod_actual_price;
+								$stocks_left = $cprod->stocks_left;
+							}
+						}
+						
+						if ($offer_status =='1'){
+							$offer_details = $this->homemodel->get_offer_details($product_id);
+						if (count($offer_details)>0){
+							foreach($offer_details as $offer){ 
+								$offer_percentage = $offer->offer_percentage;
+							}
+						}
+							$soffer_price = ($offer_percentage / 100) * $c_prod_actual_price;
+							$doffer_price = $c_prod_actual_price - $soffer_price;
+							$offer_price = number_format((float)$doffer_price, 2, '.', '');
+							$price = $offer_price;
+							
+						}
+					}
+				}
 			}
+			
+			if ($squantity<=$stocks_left){
+				 $total_amount = $squantity * $price;
+				  $update="UPDATE product_cart SET quantity='$quantity[$i]',total_amount='$total_amount' WHERE id='$cart_id[$i]'";
+			} else {
+				$squantity = $stocks_left;
+				$total_amount = $stocks_left * $price;
+				 $update="UPDATE product_cart SET quantity='$squantity',total_amount='$total_amount' WHERE id='$cart_id[$i]'";
+			}
+			$res=$this->db->query($update);
+			
+			if ($cust_id!=''){
+					$update="UPDATE product_cart SET cus_id ='$cust_id' WHERE id='$cart_id[$i]'";
+					$res=$this->db->query($update);
+				} 
+
+		}
 			if ($res){
 				$datas=array('status'=>'success');
 			}else {
 				$datas=array('status'=>'failure');;
 			}
 			return $datas;
+			
+			
    }
-   
+     
     function cart_delete($cart_id){
 			$del_cart = "DELETE FROM product_cart WHERE id = '$cart_id'";
 			$res=$this->db->query($del_cart);
@@ -688,13 +931,20 @@ Class Homemodel extends CI_Model
 		$rand = strtoupper(substr(uniqid(sha1(time())),0,4));
 		$order_id = 'Lil'.$today . $rand . $order_id;
 		
-
 		$inssql = "INSERT INTO purchase_order(order_id ,browser_sess_id ,cus_id ,purchase_date,cus_address_id,total_amount,status,cus_notes,created_at,created_by) VALUES('$order_id','$browser_sess_id','$cust_id',now(),'$address_id','$total_amt','Pending','$ncheckout_mess',now(),'$cust_id')";
 		$insert = $this->db->query($inssql);
 
 		$updatesql = "UPDATE product_cart SET order_id='$order_id',cus_id='$cust_id' WHERE browser_sess_id='$browser_sess_id'";
 		$update = $this->db->query($updatesql);
-				
+		
+		
+		$subject = "Order Confirmation - Your Order with LittleAmore [".$order_id."] has been successfully placed!";
+		$htmlContent = "Hi ".$full_name.", Order successfully placed.<br><br>Your order will be delivered with in One Week.<br>We are pleased to confirm your order no ".$order_id.".<br><br>Thank you for shopping with LittleAMore!";
+		$this->sendMail($nemail,$subject,$htmlContent);
+		
+		$mobile_message = "Order Confirmation - Your Order with LittleAmore [".$order_id."] has been successfully placed!";
+		$this->sendSMS($nphone,$mobile_message);
+			
 		$res=array('order_id'=>$order_id,'address'=>$address);
 		
 		return $res;
@@ -735,18 +985,21 @@ Class Homemodel extends CI_Model
 		$updatesql = "UPDATE product_cart SET order_id='$order_id',cus_id='$cust_id' WHERE browser_sess_id='$browser_sess_id'";
 		$update = $this->db->query($updatesql);
 		
+		
+		 $subject = "Order Confirmation - Your Order with LittleAmore [".$order_id."] has been successfully placed!";
+		 $htmlContent = "Hi ".$oname.", Order successfully placed.<br><br>Your order will be delivered with in One Week.<br>We are pleased to confirm your order no ".$order_id.".<br><br>Thank you for shopping with LittleAMore!";
+		$this->sendMail($oemail,$subject,$htmlContent);
+		
+		
+		$mobile_message = "Order Confirmation - Your Order with LittleAmore [".$order_id."] has been successfully placed!";
+		$this->sendSMS($ophone,$mobile_message);
+		
 		$res=array('order_id'=>$order_id,'address'=>$address);
 		
 		return $res;
    }
    
-     function orders($cust_session_id){
-		$sql="SELECT * from purchase_order WHERE cus_id = '$cust_session_id'";
-	  	$resu=$this->db->query($sql);
-	  	$res=$resu->result();
-	  	return $res;
-   }
-   
+  
       
    function add_wishlist($product_id){
 			$cust_id = $this->session->userdata('cust_session_id');
@@ -787,7 +1040,7 @@ Class Homemodel extends CI_Model
    }
    
     function list_tags(){
-		$sql = "SELECT * FROM `tag_masters` WHERE status ='Active' ORDER BY `tag_name` ASC ";
+		$sql = "SELECT * FROM `tag_masters` WHERE status ='Active' GROUP BY `tag_name` ORDER BY `tag_name` ASC";
 		$resu=$this->db->query($sql);
 		$res=$resu->result();
 		return $res;
@@ -810,13 +1063,18 @@ Class Homemodel extends CI_Model
    }
    
    function add_review($ruser_id,$rproduct_id,$comments,$rating){
+	   
+		$check_review = "SELECT * FROM product_review WHERE product_id = '$rproduct_id' AND cus_id = '$ruser_id'";
+		$result = $this->db->query($check_review);
+		if($result->num_rows()==0){
 			$insert = "INSERT INTO product_review(`cus_id`,`product_id`,`rating`,`comment`,`status`,`created_at`,`created_by`) VALUES ('$ruser_id', '$rproduct_id','$rating', '$comments','Active',now(),'$ruser_id');";
 			$res = $this->db->query($insert);
-			if ($res){
-				echo "success";
-			}else {
-				echo "error";
-			}
+		}
+		if ($res){
+			echo "success";
+		}else {
+			echo "error";
+		}
    }
    
    function update_review($reviewid,$ruser_id,$rproduct_id,$comments,$rating){

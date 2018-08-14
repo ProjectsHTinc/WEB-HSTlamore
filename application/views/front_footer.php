@@ -26,12 +26,9 @@
                                 <h4 class="footer-title">information</h4>
                                 <div class="footer-content">
                                     <ul class="footer-list">
-                                        <li><a href="#">about us</a></li>
-                                        <li><a href="#">delivery information</a></li>
-                                        <li><a href="<?php echo base_url(); ?>privacy/">privacy policy</a></li>
-                                        <li><a href="#">terms & conditions</a></li>
-                                        <li><a href="#">warranty</a></li>
-                                        <li><a href="#">FAQ</a></li>
+                                    	<li><a href="<?php echo base_url(); ?>aboutus/">about Us</a></li>
+                                        <li><a href="<?php echo base_url(); ?>contactus/">Contact Us</a></li>
+                                        <li><a href="<?php echo base_url(); ?>offers/">Offer Zone</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -41,12 +38,12 @@
                                 <h4 class="footer-title">extras</h4>
                                 <div class="footer-content">
                                     <ul class="footer-list">
-                                        <li><a href="#">brands</a></li>
-                                        <li><a href="#">gift certificates</a></li>
-                                        <li><a href="#">Affiliate</a></li>
-                                        <li><a href="#">Specials</a></li>
-                                        <li><a href="#">contact us</a></li>
+                                    	<li><a href="#">delivery information</a></li>
+                                        <li><a href="<?php echo base_url(); ?>privacy/">privacy policy</a></li>
+                                        <li><a href="#">terms & conditions</a></li>
+                                        <li><a href="#">warranty</a></li>
                                         <li><a href="#">returns</a></li>
+                                        <li><a href="#">FAQ</a></li>
                                         <li><a href="#">Map</a></li>
                                     </ul>
                                 </div>
@@ -127,8 +124,6 @@
     <script src="<?php echo base_url(); ?>assets/front/js/plugins.js"></script>
     <!-- main js -->
     <script src="<?php echo base_url(); ?>assets/front/js/main.js"></script>
-	 <!-- shop function js -->
-    <script src="<?php echo base_url(); ?>assets/front/js/shop_functions.js"></script>
 <script>
 	$( function() {
     var availableTags = [<?php
@@ -156,16 +151,7 @@
 	});
 	
   });
-    
-  function reset_cookies(){
-		var search_values = "<?php echo get_cookie('search_values')?>";
-		//alert(search_values);
-		//document.cookie = search_values + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-		//document.cookie = "search_values= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
-	   	//document.cookie = search_values + '=; expires=Thu, 01-Jan-70 00:00:01 GMT;';
-      	//window.location.reload();
-		//location.reload();
-	}
+
  </script>
     
      </body>

@@ -1,11 +1,13 @@
 <?php
 	//print_r($cust_details);
 	$redirect_url = base_url()."login/";
+	
 	if (!empty($cust_logindetails)){
 		foreach($cust_logindetails as $cust_logres){ }
 	} else {
 		header("Location: ".$redirect_url);
 	}
+	
 	if (!empty($cust_details)){
 		foreach($cust_details as $cust_res){ }
 	} else {

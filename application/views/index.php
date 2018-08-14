@@ -179,7 +179,7 @@
                             <div class="banner-description">
                                 <h3><?php echo $disp_product_name; ?></h3>
                                 <h5><?php echo $disp_offer_name; ?></h5>
-                                <a href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/">shop now</a>
+                                <a href="<?php echo base_url(); ?>offers/">View Offers</a>
                             </div>
                         </div>
                     </div>

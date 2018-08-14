@@ -136,6 +136,8 @@ class Home extends CI_Controller {
 			$newsletter=$this->input->post('newsletter');
 
 			$datas['res']=$this->homemodel->customer_update($cust_session_id,$fname,$lname,$mobile,$email,$dob,$gender,$cust_pic,$newsletter);
+			
+			
 			 	if($datas['res']['status']=='success'){
 					redirect(base_url()."cust_details/");
 				}else{
@@ -193,11 +195,29 @@ class Home extends CI_Controller {
 		$datas['count_cart_session'] = $this->homemodel->cart_list();
 		$datas['count_wishlist'] = $this->homemodel->list_wishlist();
 		$datas['tag_result'] = $this->homemodel->list_tags();
-		$datas['orders'] = $this->homemodel->orders($cust_session_id);
+		$datas['orders'] = $this->homemodel->cust_orders($cust_session_id);
 		//print_r($datas['orders']);
 		if ($cust_session_id !='') {
 			$this->load->view('front_header',$datas);
 			$this->load->view('cust_orders');
+			$this->load->view('front_footer',$datas);
+		} else {
+			redirect(base_url()."login/");
+		}
+	}
+	
+	public function cust_order_details()
+	{
+		$cust_session_id = $this->session->userdata('cust_session_id');
+		$datas['main_catmenu'] = $this->homemodel->get_main_catmenu();
+		$datas['count_cart_session'] = $this->homemodel->cart_list();
+		$datas['count_wishlist'] = $this->homemodel->list_wishlist();
+		$datas['tag_result'] = $this->homemodel->list_tags();
+		$datas['order_details'] = $this->homemodel->cust_order_details($cust_session_id);
+		//print_r($datas['orders']);
+		if ($cust_session_id !='') {
+			$this->load->view('front_header',$datas);
+			$this->load->view('cust_order_details');
 			$this->load->view('front_footer',$datas);
 		} else {
 			redirect(base_url()."login/");
@@ -211,7 +231,8 @@ class Home extends CI_Controller {
 		$datas['count_cart_session'] = $this->homemodel->cart_list();
 		$datas['count_wishlist'] = $this->homemodel->list_wishlist();
 		$datas['tag_result'] = $this->homemodel->list_tags();
-		
+		$datas['countrylist'] = $this->homemodel->countrylist();
+		$datas['cust_details'] = $this->homemodel->customer_details($cust_session_id);
 		$datas['cust_address'] = $this->homemodel->get_cust_address($cust_session_id);
 		if ($cust_session_id !='') {
 			$this->load->view('front_header',$datas);
@@ -219,6 +240,30 @@ class Home extends CI_Controller {
 			$this->load->view('front_footer',$datas);
 		} else {
 			redirect(base_url()."login/");
+		}
+	}
+	
+	public function cust_address_add()
+	{
+		$cust_id = $this->session->userdata('cust_session_id');
+		$ncountry_id = $this->input->post('ncountry_id');
+		$nname = $this->input->post('nname');
+		$naddress1 = $this->input->post('naddress1');
+		$naddress2 = $this->input->post('naddress2');
+		$ntown = $this->input->post('ntown');
+		$nstate = $this->input->post('nstate');
+		$nzip = $this->input->post('nzip');
+		$nemail = $this->input->post('nemail');
+		$nphone = $this->input->post('nphone');
+		$nphone1 = $this->input->post('nphone1');
+		$nlandmark = $this->input->post('nlandmark');
+			
+		$datas['res']=$this->homemodel->add_cust_address($cust_id,$ncountry_id,$nname,$naddress1,$naddress2,$ntown,$nstate,$nzip,$nemail,$nphone,$nphone1,$nlandmark);
+		
+		if($datas['res']['status']=='success'){
+			redirect(base_url()."cust_address/");
+		}else{
+			redirect(base_url()."error/");
 		}
 	}
 	
@@ -333,6 +378,20 @@ class Home extends CI_Controller {
 	
 	}
 	
+		public function offers()
+	{
+		$datas['main_catmenu'] = $this->homemodel->get_main_catmenu();
+		$datas['count_cart_session'] = $this->homemodel->cart_list();
+		$datas['count_wishlist'] = $this->homemodel->list_wishlist();
+		$datas['tag_result'] = $this->homemodel->list_tags();
+		$datas['maincat_count'] = $this->homemodel->get_maincat_count();
+		$datas['offer_products'] = $this->homemodel->get_offer_products();
+		//print_r($datas);
+		$this->load->view('front_header',$datas);
+		$this->load->view('offers',$datas);
+		$this->load->view('front_footer',$datas);
+	}
+	
 	public function subcategories($cat_id,$cat_name)
 	{
 		$datas['main_catmenu'] = $this->homemodel->get_main_catmenu();
@@ -389,16 +448,14 @@ class Home extends CI_Controller {
 		$cust_session_id = $this->session->userdata('cust_session_id'); 
 		$quantity=$this->input->post('qty');
 		$price=$this->input->post('price');
-		$tot_amount= $quantity * $price;
-		$total_amount = number_format($tot_amount,2);
 		
 		//$datas['main_catmenu'] = $this->homemodel->get_main_catmenu();
-		$datas['res']=$this->homemodel->cart_insert($product_id,$com_product_id,$browser_sess_id,$cust_session_id,$quantity,$price,$tot_amount);
+		$datas['res']=$this->homemodel->cart_insert($product_id,$com_product_id,$browser_sess_id,$cust_session_id,$quantity);
 		
 		if($datas['res']['status']=='success'){
 			redirect(base_url()."viewcart/");
 		}else{
-			redirect(base_url()."error/");
+			redirect(base_url()."viewcart/");
 		}
 	}
 	
@@ -407,13 +464,12 @@ class Home extends CI_Controller {
 	{
 		$browser_sess_id = $this->session->userdata('browser_sess_id');
 		$cust_session_id = $this->session->userdata('cust_session_id');
-		
-		//$datas['main_catmenu'] = $this->homemodel->get_main_catmenu();
+
 		$datas['res']=$this->homemodel->add_cart($product_id,$browser_sess_id,$cust_session_id);
 		if($datas['res']['status']=='success'){
 			redirect(base_url()."viewcart/");
 		}else{
-			redirect(base_url()."error/");
+			redirect(base_url()."viewcart/");
 		}
 	}
 	
@@ -423,10 +479,7 @@ class Home extends CI_Controller {
 		$datas['count_cart_session'] = $this->homemodel->cart_list();
 		$datas['count_wishlist'] = $this->homemodel->list_wishlist();
 		$datas['tag_result'] = $this->homemodel->list_tags();
-		$browser_sess_id = $this->session->userdata('browser_sess_id');
-		$cust_session_id = $this->session->userdata('cust_session_id');
 
-		$datas['cart_list'] = $this->homemodel->cart_list();
 		$this->load->view('front_header',$datas);
 		$this->load->view('cart',$datas);
 		$this->load->view('front_footer',$datas);
@@ -446,9 +499,10 @@ class Home extends CI_Controller {
 	public function updatecart()
 	{
 		$cart_id = $this->input->post('cart_id');
+		$product_id = $this->input->post('product_id');
 		$quantity = $this->input->post('quantity');
 		$price = $this->input->post('price');
-		$datas['res'] = $this->homemodel->update_cart($cart_id,$quantity,$price);
+		$datas['res'] = $this->homemodel->update_cart($cart_id,$product_id,$quantity,$price);
 
 		if($datas['res']['status']=='success'){
 			redirect(base_url()."viewcart/");
@@ -535,8 +589,8 @@ class Home extends CI_Controller {
 			$this->load->view('cart_process',$datas);
 			$this->load->view('front_footer',$datas);
 			
-			$this->session->unset_userdata('__ci_last_regenerate');
-			$this->session->unset_userdata('browser_sess_id');
+			//$this->session->unset_userdata('__ci_last_regenerate');
+			//$this->session->unset_userdata('browser_sess_id');
 		
 			} else {
 			redirect(base_url()."login/");

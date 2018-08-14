@@ -70,9 +70,17 @@
                                 
                                 <div id="orders" class="tab-pane fade in active">
                                     <h3>Orders</h3>
-                                    <div class="table-responsive">
+                                    <div class="table-content table-responsive">
                         <?php
-                        if (count($orders)>0){
+                        		if (count($order_details)>0){
+									foreach($order_details as $order){ 
+											$id = $order->id;
+											$order_id = $order->order_id;
+											$purchase_date = $order->purchase_date;
+											$dispDate = date("d M Y", strtotime($purchase_date));
+											$status = $order->status;
+											$total_amount = $order->total_amount;
+									}
 						?>
                                         <table class="table">
                                             <thead>
@@ -85,20 +93,15 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                            <?php foreach($orders as $order){ 
-											$id = $order->id;
-											$order_id = $order->order_id;
-											$purchase_date = $order->purchase_date;
-											$dispDate = date("d M Y", strtotime($purchase_date));
-											$status = $order->status;
-											$total_amount = $order->total_amount;
+                                            <?php 
+												foreach($order_details as $order){ 
 											?>
                                                 <tr>
-                                                    <td><?php echo $order_id;?></td>
-                                                    <td><?php echo $dispDate; ?></td>
-                                                    <td><?php echo $status; ?></td>
-                                                    <td>₹<?php echo $total_amount;?></td>
-                                                    <td><a class="view" href="<?php echo base_url(); ?>home/cust_order_details/<?php echo $id;?>/">view</a></td>
+                                                    <td class="product-thumbnail"><img src="<?php echo base_url(); ?>assets/products/<?php echo $order->product_cover_img;?>" alt="cart-image" /></td>
+                                                    <td><?php echo $order->product_name; ?></td>
+                                                    <td><?php echo $order->quantity; ?></td>
+                                                    <td>₹<?php echo $order->cart_amount; ?></td>
+                                                    <td><a class="view" href="<?php echo base_url(); ?>home/cus_order_details/<?php echo $id;?>/">view</a></td>
                                                 </tr>
                                            <?php } ?>
                                             </tbody>

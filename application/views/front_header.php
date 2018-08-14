@@ -71,6 +71,7 @@
         </div>
         <!-- Preloader End -->
        
+       
         <!-- Header Area Start -->
         <header>
            <div class="container-fluid header-top-area header-sticky">
@@ -93,10 +94,10 @@
                         </ul>
                     </div>
                     <!-- Primary-Menu Start -->
-                    <div class="col-lg-7 col-md-7 col-sm-12  hidden-sm hidden-xs">
+                    <div class="col-lg-6 col-md-7 col-sm-12  hidden-sm hidden-xs">
                         <div class="primary-menu">
                             <nav>
-                                <ul class="primary-menu-list text-center">
+                                <ul class="primary-menu-list">
                                     <li><a href="<?php echo base_url(); ?>">home</a></li>
 									<?php 
 									if (count($main_catmenu)>0){
@@ -121,19 +122,25 @@
                                     	echo '</li>';
                                    		}
 									} ?>
-                                    <li><a href="<?php echo base_url(); ?>aboutus/">about us</a></li>
-                                    <li><a href="<?php echo base_url(); ?>contactus/">contact us</a></li>
-                                </ul>
+                                    <!--<li><a href="<?php echo base_url(); ?>aboutus/">about us</a></li>
+                                    <li><a href="<?php echo base_url(); ?>contactus/">contact us</a></li>-->
+                                  </ul>
                             </nav>
                         </div>
                     </div>
                     <!-- Primary-Menu End -->
                     <!-- Header All Shopping Selection Start -->
-                    <div class="col-lg-3 col-md-2 col-sm-6 col-xs-7 full-col pr-0">
+                    <div class="col-lg-4 col-md-2 col-sm-6 col-xs-7 full-col pr-0">
                         <div class="main-selection">
                             <ul class="selection-list text-right">
+                            <li class="hidden-control">
+                                <form method="post" action="<?php echo base_url(); ?>home/search/" name="search_form">
+                                    <input type="text" class="form-control" name="search_tags" id="search_tags" placeholder="Search for products...">
+                                </form>
+							</li>
                                 <!-- Searcch Box Start -->
-                                <li class="hidden-control"><i class="pe-7s-search"></i>
+                                <!--<li class="hidden-control">
+                                <i class="pe-7s-search"></i>
                                     <ul class="search-form ht-dropdown">
                                         <li>
 										<form method="post" action="<?php echo base_url(); ?>home/search/" name="search_form">
@@ -142,7 +149,7 @@
 										</form>
                                         </li>
                                     </ul>
-                                </li>
+                                </li>-->
                                 <!-- Search Box End -->
                                 <?php if ($cust_session_id !=''){ ?><li><a href="<?php echo base_url(); ?>wishlist/"><i class="pe-7s-like"></i><span><?php echo count($count_wishlist); ?></span></a></li><?php } ?>
                                 <li><a href="<?php echo base_url(); ?>viewcart/"><i class="pe-7s-shopbag"></i><span><?php echo count($count_cart_session); ?></span></a></li>
@@ -168,9 +175,10 @@
                         </div>
                     </div>
                     <!-- Header All Shopping Selection End -->
+                   
                     <!-- Mobile Menu  Start -->
                     <div class="mobile-menu visible-sm visible-xs">
-<nav>
+							<nav>
                                 <ul>
                                     <li><a href="<?php echo base_url(); ?>">home</a></li>
 									<?php 
@@ -196,8 +204,8 @@
                                     	echo '</li>';
                                    		}
 									} ?>
-                                    <li><a href="<?php echo base_url(); ?>aboutus/">about us</a></li>
-                                    <li><a href="<?php echo base_url(); ?>contactus/">contact us</a></li>
+                                     <!--<li><a href="<?php echo base_url(); ?>aboutus/">about us</a></li>
+                                    <li><a href="<?php echo base_url(); ?>contactus/">contact us</a></li>-->
                                 </ul>
                             </nav>
                     </div>

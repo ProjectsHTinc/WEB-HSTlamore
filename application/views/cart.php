@@ -28,7 +28,7 @@
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <!-- Form Start -->
                         <?php
-                        if (count($cart_list)>0){
+                        if (count($count_cart_session)>0){
 						?>
                         <form name="checkout" id="checkout" method="post" action="<?php echo base_url(); ?>home/updatecart/">
                             <!-- Table Content Start -->
@@ -47,7 +47,8 @@
                                     <tbody>
                                     <?php 
 									$total_amount = '0';
-									foreach($cart_list as $clist){ 
+									$check_quantity = array();
+									foreach($count_cart_session as $clist){ 
 										$cart_id = $clist->id;
 										$sproduct_id = $clist->product_id;
 										$product_combined_id = $clist->product_combined_id;
@@ -72,6 +73,7 @@
 												$product_size = '';
 												$product_colour = '';
 											}
+
 									?>
                                         <tr>
                                             <td class="product-thumbnail">
@@ -79,14 +81,16 @@
                                             </td>
                                             <td class="product-name"><a href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/"><?php echo $clist->product_name; ?></a><br /><?php echo $product_size;?>, <?php echo $product_colour;?></td>
                                             <td class="product-price"><span class="amount">₹<?php echo $clist->price; ?></span></td>
-                                            <td class="product-quantity"><input name="quantity[]" type="number" value="<?php echo $clist->quantity; ?>" min="1" max="<?php echo $stocks_left;?>" /></td>
+                                            <td class="product-quantity"><input name="quantity[]" type="number" value="<?php echo $clist->quantity; ?>" min="1" max="<?php echo $stocks_left;?>" /><?php if ($stocks_left =='0'){ echo "<br><span class='error'>Out of Stock</span>"; } ?></td>
                                             <td class="product-subtotal">₹<?php echo $clist->total_amount; ?></td>
                                             <td class="product-remove"> <a href="<?php echo base_url(); ?>home/deletecart/<?php echo $cart_id; ?>/" onclick="return confirm('Are you sure?')"><i class="fa fa-times" aria-hidden="true"></i></a></td>
                                         </tr>
+                                        <input type="hidden" name="product_id[]" value="<?php echo $sproduct_id; ?>" />
                                         <input type="hidden" name="cart_id[]" value="<?php echo $cart_id; ?>" />
                                         <input type="hidden" name="price[]" value="<?php echo $price; ?>" />
                                        <?php 
 									   $total_amount = $total_amount + $stotal;
+									   $check_quantity[] = $stocks_left;
 									   } ?>
                                     </tbody>
                                 </table>
@@ -98,6 +102,11 @@
                                     <div class="buttons-cart">
                                         <input type="submit" value="Update Cart" />
                                         <a href="<?php echo base_url(); ?>">Continue Shopping</a>
+										<?php if($this->session->flashdata('message')){?>
+                                           <div class="alert alert-success">      
+                                            <?php echo $this->session->flashdata('message')?>
+                                         </div>
+                                         <?php } ?>
                                     </div>
                                 </div>
                                 <!-- Cart Button Start -->
@@ -121,7 +130,13 @@
                                             </tbody>
                                         </table>
                                         <div class="wc-proceed-to-checkout">
-                                            <a href="<?php echo base_url(); ?>home/checkout/">Proceed to Checkout</a>
+                                        <?php //print_r($check_quantity); 
+										if (!in_array("0",$check_quantity))
+										{
+											echo "<a href='".base_url()."home/checkout/'>Proceed to Checkout</a>";
+										} 
+										?>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -136,4 +151,5 @@
                  <!-- Row End -->
             </div>
         </div>
+        
         <!-- cart-main-area & wish list end -->

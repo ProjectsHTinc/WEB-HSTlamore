@@ -417,7 +417,7 @@ input#newsletter-permission {
     color: #505050;
     text-transform: capitalize;
     margin: 0 18px;
-    padding-bottom: 37px;
+    padding-bottom: 43px;
 }
 
 .primary-menu-list > li:hover > a {
@@ -526,7 +526,7 @@ input#newsletter-permission {
 }
 
 .selection-list > li {
-    padding-bottom: 30px;
+    padding-bottom: 40px;
     position: relative;
 }
 
@@ -1919,8 +1919,8 @@ ul.pull-left.home-4-search i {
 
 .ui-widget.ui-widget-content {
     border: none;
-    background: #d7d7d7;
-    height: 3px;
+    /*background: #d7d7d7;
+    height: 3px;*/
 }
 
 .ui-slider-horizontal .ui-slider-handle {
