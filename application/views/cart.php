@@ -129,15 +129,14 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                        <div class="wc-proceed-to-checkout">
-                                        <?php //print_r($check_quantity); 
-										if (!in_array("0",$check_quantity))
-										{
-											echo "<a href='".base_url()."home/checkout/'>Proceed to Checkout</a>";
-										} 
+                                         <?php
+										if (!in_array("0",$check_quantity)) {
 										?>
-                                            
-                                        </div>
+                                        <div class="wc-proceed-to-checkout">
+												<a href="<?php echo base_url()?>home/checkout/" onclick="check_quantity()">Proceed to Checkout</a>
+                                         </div>
+										<?php } ?>
+                                        
                                     </div>
                                 </div>
                                 <!-- Cart Totals End -->
@@ -151,5 +150,25 @@
                  <!-- Row End -->
             </div>
         </div>
-        
         <!-- cart-main-area & wish list end -->
+<script>
+	function check_quantity()
+		{
+			var browser_sess_id ='<?php echo $this->session->userdata('browser_sess_id');?>';
+			var cust_id = '<?php echo $this->session->userdata('cust_session_id');?>';
+			var result = '';
+
+			//make the ajax call
+			$.ajax({
+			url: '<?php echo base_url(); ?>home/cartcheck/',
+			type: 'POST',
+			data: {browser_sess_id : browser_sess_id,cust_id : cust_id},
+			success: function(response) {
+				//alert(response);
+			 	if (response == "Error") {
+                       location.href = '<?php echo base_url(); ?>viewcart/';
+                } 
+			}
+			});
+		}
+</script>

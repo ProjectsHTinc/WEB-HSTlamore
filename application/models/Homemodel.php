@@ -762,19 +762,127 @@ Class Homemodel extends CI_Model
 
 
 	function cart_list(){
+			 
 			 $browser_sess_id = $this->session->userdata('browser_sess_id');
 		 	 $cust_id = $this->session->userdata('cust_session_id');
 			 
 			 if ($cust_id!=''){
+				    //$sql = "SELECT A.*,B.product_name,B.product_cover_img,B.stocks_left FROM product_cart A,products B WHERE A.product_id = B.id AND A.cus_id = '$cust_id' AND A.order_id = '' AND A.status='Pending' ORDER BY A.id";
+					$sql = "SELECT A.*,B.prod_actual_price,B.offer_status,B.combined_status FROM product_cart A,products B WHERE A.product_id = B.id AND A.cus_id = '$cust_id' AND A.order_id = '' AND A.status='Pending' ORDER BY A.id";
+			 } else {
+			 	  // $sql = "SELECT A.*,B.product_name,B.product_cover_img,B.stocks_left FROM product_cart A,products B WHERE A.product_id = B.id AND A.browser_sess_id = '$browser_sess_id' AND A.order_id = '' AND A.status='Pending' ORDER BY A.id";
+				    $sql = "SELECT A.*,B.prod_actual_price,B.offer_status,B.combined_status FROM product_cart A,products B WHERE A.product_id = B.id AND A.browser_sess_id = '$browser_sess_id' AND A.order_id = '' AND A.status='Pending' ORDER BY A.id";
+			 }
+			$cart_res=$this->db->query($sql);
+		
+			if($cart_res->num_rows()>0){
+				foreach($cart_res->result() as $cart_rows) { 
+					 $cart_id = $cart_rows->id;
+					  $product_id = $cart_rows->product_id;
+					  $com_product_id = $cart_rows->product_combined_id;
+					  $quantity = $cart_rows->quantity;
+					  $prod_actual_price = $cart_rows->prod_actual_price;
+					  $offer_status = $cart_rows->offer_status;
+					  $combined_status = $cart_rows->combined_status;
+					 $price = $prod_actual_price;
+					 
+					if ($offer_status =='1'){
+						$offer_details = $this->homemodel->get_offer_details($product_id);
+						if (count($offer_details)>0){
+							foreach($offer_details as $offer){ 
+								$offer_percentage = $offer->offer_percentage;
+							}
+						}
+						$soffer_price = ($offer_percentage / 100) * $prod_actual_price;
+						$doffer_price = $prod_actual_price - $soffer_price;
+						$offer_price = number_format((float)$doffer_price, 2, '.', '');
+						$price = $offer_price;
+					}
+					
+					if ($combined_status =='1'){
+					$cproduct_details = $this->homemodel->get_comproduct_details($com_product_id);
+					if (count($cproduct_details)>0){
+						foreach($cproduct_details as $cprod){ 
+							$c_product_id = $cprod->id;
+							$c_size_id = $cprod->mas_size_id;
+							$c_color_id = $cprod->mas_color_id;
+							$prod_actual_price = $cprod->prod_actual_price;
+							$c_mrp_price = $cprod->prod_mrp_price;
+							$price = $prod_actual_price;
+							$stocks_left = $cprod->stocks_left;
+						}
+					}
+					
+					if ($offer_status =='1'){
+						$offer_details = $this->homemodel->get_offer_details($product_id);
+						if (count($offer_details)>0){
+							foreach($offer_details as $offer){ 
+								$offer_percentage = $offer->offer_percentage;
+							}
+						}
+							$soffer_price = ($offer_percentage / 100) * $prod_actual_price;
+							$doffer_price = $prod_actual_price - $soffer_price;
+							$offer_price = number_format((float)$doffer_price, 2, '.', '');
+							$price = $offer_price;
+						}
+					}
+					$total_price = $quantity * $price;
+					//echo $cart_id;
+					//echo "<br>";
+					//echo $prod_actual_price;
+					//echo "<br>";
+					//echo $quantity;
+					//echo "<br>";
+					//echo $price;
+					//echo "<br>";
+					//echo $total_price;
+					//echo "<br><br><br>";
+					
+					$cart_update = "UPDATE product_cart SET quantity = '$quantity',price = '$price',total_amount = '$total_price',cus_id ='$cust_id', updated_at =now(), updated_by = '$cust_id' WHERE id  ='$cart_id'";
+					$result = $this->db->query($cart_update);
+				}
+		}
+		
+		 if ($cust_id!=''){
 				    $sql = "SELECT A.*,B.product_name,B.product_cover_img,B.stocks_left FROM product_cart A,products B WHERE A.product_id = B.id AND A.cus_id = '$cust_id' AND A.order_id = '' AND A.status='Pending' ORDER BY A.id";
+					//$sql = "SELECT A.*,B.prod_actual_price,B.offer_status,B.combined_status FROM product_cart A,products B WHERE A.product_id = B.id AND A.cus_id = '$cust_id' AND A.order_id = '' AND A.status='Pending' ORDER BY A.id";
 			 } else {
 			 	   $sql = "SELECT A.*,B.product_name,B.product_cover_img,B.stocks_left FROM product_cart A,products B WHERE A.product_id = B.id AND A.browser_sess_id = '$browser_sess_id' AND A.order_id = '' AND A.status='Pending' ORDER BY A.id";
+				    //$sql = "SELECT A.*,B.prod_actual_price,B.offer_status,B.combined_status FROM product_cart A,products B WHERE A.product_id = B.id AND A.browser_sess_id = '$browser_sess_id' AND A.order_id = '' AND A.status='Pending' ORDER BY A.id";
 			 }
-		$resu=$this->db->query($sql);
-		$res=$resu->result();
-		return $res;
+			$cart_res=$this->db->query($sql);
+			$res=$cart_res->result();
+			return $res;
    }
    
+   
+   	function check_cart($browser_sess_id,$cust_id){
+			 
+			 if ($cust_id!=''){
+				     $sql = "SELECT A.*,B.product_name,B.product_cover_img,B.stocks_left FROM product_cart A,products B WHERE A.product_id = B.id AND A.cus_id = '$cust_id' AND A.order_id = '' AND A.status='Pending' ORDER BY A.id";
+			 } else {
+			 	     $sql = "SELECT A.*,B.product_name,B.product_cover_img,B.stocks_left FROM product_cart A,products B WHERE A.product_id = B.id AND A.browser_sess_id = '$browser_sess_id' AND A.order_id = '' AND A.status='Pending' ORDER BY A.id";
+			 }
+			$cart_res = $this->db->query($sql);
+			foreach($cart_res->result() as $cart_rows) { 
+				$product_combined_id = $cart_rows->product_combined_id;
+				$stocks_left = $cart_rows->stocks_left;
+				if ($product_combined_id >0){
+					$cproduct_details = $this->homemodel->get_colour_size($product_combined_id);
+					if (count($cproduct_details)>0){
+						foreach($cproduct_details as $cprod){ 
+							 $stocks_left = $cprod->stocks_left;
+						}
+					} 
+				}
+					if  ($stocks_left =='0')
+					{
+						echo "Error";
+						exit;
+					}
+				}
+		
+   }
    
    function update_cart($cart_id,$product_id,$quantity,$price){
 		$cust_id = $this->session->userdata('cust_session_id');

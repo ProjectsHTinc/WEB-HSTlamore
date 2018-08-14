@@ -486,6 +486,13 @@ class Home extends CI_Controller {
 		
 	}
 	
+	public function cartcheck()
+	{
+		$browser_sess_id=$this->input->post('browser_sess_id');
+		$cust_id=$this->input->post('cust_id');
+		$datas=$this->homemodel->check_cart($browser_sess_id,$cust_id);
+	}
+	
 	public function deletecart($cart_id)
 	{
 		$datas['res']=$this->homemodel->cart_delete($cart_id);
