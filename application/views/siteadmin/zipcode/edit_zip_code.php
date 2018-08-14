@@ -13,7 +13,7 @@
 
 					<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
 					  <ol class="breadcrumb">
-						<li><a href="">Dashboard</a></li>
+						<li><a href="<?php echo base_url(); ?>adminlogin/home">Dashboard</a></li>
 						<li><a href="<?php echo base_url(); ?>admin/zipcode"><span>Zip Code</span></a></li>
 						<li class="active"><span>Update</span></li>
 					  </ol>

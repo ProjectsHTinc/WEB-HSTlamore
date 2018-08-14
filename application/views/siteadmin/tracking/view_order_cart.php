@@ -16,8 +16,8 @@ th{
 
 					<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
 					  <ol class="breadcrumb">
-						<li><a href="">Dashboard</a></li>
-						<li><a href="#"><span>Orders</span></a></li>
+							<li><a href="<?php echo base_url(); ?>adminlogin/home">Dashboard</a></li>
+							<li><a href="<?php echo base_url(); ?>admin/tracking"><span>Orders</span></a></li>
 						<li class="active"><span>View order cart </span></li>
 					  </ol>
 					</div>
@@ -74,7 +74,7 @@ th{
 
 											</tbody>
 										</table>
-										<?php if($rows->status=="Success"){ ?>
+										<?php if($rows->status!="Pending" && $rows->status!="Payment Error" && $rows->status!="Failure"){ ?>
 												<a target="_blank" href="<?php echo base_url(); ?>admin/invoice/<?php echo base64_encode($rows->order_id); ?>" class="btn  btn-primary btn-outline">Print</a>
 									<?php	} ?>
 

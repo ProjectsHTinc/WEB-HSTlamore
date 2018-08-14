@@ -13,8 +13,8 @@
 
 					<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
 					  <ol class="breadcrumb">
-						<li><a href="">Dashboard</a></li>
-						<li><a href="<?php echo base_url(); ?>admin/specification"><span>Specification</span></a></li>
+							<li><a href="<?php echo base_url(); ?>adminlogin/home">Dashboard</a></li>
+							<li><a href="<?php echo base_url(); ?>admin/specification"><span>Specification</span></a></li>
 						<li class="active"><span>Create</span></li>
 					  </ol>
 					</div>
