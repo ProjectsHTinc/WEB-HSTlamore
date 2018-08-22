@@ -60,7 +60,7 @@
           							</div>
           						</div>
 
-                      
+
                         <!-- <div class="panel panel-default card-view">
                             <div class="panel-heading">
                                 <div class="pull-left">

@@ -58,7 +58,7 @@
 													<tr>
 														<td><?php echo $i; ?></td>
 														<td><?php echo $row_val->name; ?></td>
-														<td><?php echo $newDate = date("F", strtotime($row_val->purchase_date)); ?></td>
+														<td><?php echo $newDate = date("d-F", strtotime($row_val->purchase_date)); ?></td>
 														<td><?php echo $row_val->order_id; ?></td>
 														<td class="sum"><?php echo $row_val->total_amount; ?></td>
 														<td>

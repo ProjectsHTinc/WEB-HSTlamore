@@ -19,7 +19,7 @@ Class Trackingmodel extends CI_Model
    }
 
    function get_all_success_orders(){
-     $select="SELECT po.*,c.id,c.name FROM  purchase_order AS po left join customers as c on c.id=po.cus_id WHERE po.status='Success' ORDER BY  po.id  DESC LIMIT 10";
+     $select="SELECT po.*,c.id,c.name FROM  purchase_order AS po left join customers as c on c.id=po.cus_id WHERE po.status='Success' ORDER BY  po.purchase_date  DESC LIMIT 10";
      $res=$this->db->query($select);
       return $res->result();
    }

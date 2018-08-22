@@ -5,6 +5,8 @@ class Mobileapimodel extends CI_Model {
     function __construct()
     {
         parent::__construct();
+        $this->load->model('smsmodel');
+        $this->load->model('mailmodel');
     }
 
 
@@ -238,11 +240,11 @@ class Mobileapimodel extends CI_Model {
 					$update_gcm = $this->db->query($sQuery);
 				}
 
-    				$response = array("status" => "Success", "msg" => "Login Successfully", "userData" => $userData);
+    				$response = array("status" => "success", "msg" => "Login Successfully", "userData" => $userData);
     				return $response;
 		} else {
 
-					$response = array("status" => "Error", "msg" => "Invalid login");
+					$response = array("status" => "error", "msg" => "Invalid login");
 					return $response;
 		}
 	}
@@ -287,9 +289,9 @@ class Mobileapimodel extends CI_Model {
 			//$htmlContent = 'Dear '. $name . '<br><br>' .  'Username : '. $email .'<br>Password : '. $pwdconfirm .'<br><br><br>Regards<br>LittleAMore';
 			//$this->sendMail($email,$subject,$htmlContent);
 
-			$response = array("status" => "Success", "msg" => "Signup Successfully");
+			$response = array("status" => "success", "msg" => "Signup Successfully");
 		} else {
-		    $response = array("status" => "Error", "msg" => "User Already Register");
+		    $response = array("status" => "error", "msg" => "User Already Register");
 		}
 	    return $response;
 	}
@@ -432,9 +434,9 @@ class Mobileapimodel extends CI_Model {
                "category_desc"=>$rows->category_desc,
              );
            }
-           $data = array("status" => "success","category_list"=>$category_list);
+           $data = array("status" => "success","msg"=>"Category found","category_list"=>$category_list);
          }else{
-         $data = array("status" => "error");
+         $data = array("status" => "error","msg"=>"No category found");
          }
         return $data;
     }
@@ -455,9 +457,9 @@ class Mobileapimodel extends CI_Model {
                    "category_desc"=>$rows->category_desc,
                  );
                }
-               $data = array("status" => "success","sub_category_list"=>$sub_cat_list);
+               $data = array("status" => "success","msg"=>"category found","sub_category_list"=>$sub_cat_list);
              }else{
-             $data = array("status" => "error");
+             $data = array("status" => "error","msg"=>"No category found");
              }
             return $data;
         }
@@ -466,8 +468,14 @@ class Mobileapimodel extends CI_Model {
 //#################### Category and sub category based product list ####################//
 
 
-  function product_list($cat_id,$sub_cat_id){
-    $select="SELECT * FROM products WHERE cat_id='$cat_id' AND sub_cat_id='$sub_cat_id' AND status='Active'";
+  function product_list($cat_id,$sub_cat_id,$user_id){
+    if($user_id=='0'){
+      $cus_id=0;
+    }else{
+      $cus_id=$user_id;
+    }
+    $select="SELECT p.*,IFNULL(cw.customer_id,'0') AS wishlisted FROM products AS p
+    LEFT JOIN  cus_wishlist AS cw ON cw.product_id=p.id AND cw.customer_id='$cus_id' WHERE cat_id='$cat_id' AND sub_cat_id='$sub_cat_id' AND status='Active'";
     $res=$this->db->query($select);
      if($res->num_rows()>0){
         $result=$res->result();
@@ -492,11 +500,12 @@ class Mobileapimodel extends CI_Model {
               "product_meta_desc"=>$rows->product_meta_desc,
               "product_meta_keywords"=>$rows->product_meta_keywords,
               "stocks_left"=>$rows->stocks_left,
+              "wishlisted"=>$rows->wishlisted,
             );
         }
-      $data = array("status" => "success","product_list"=>$product_list);
+      $data = array("status" => "success","msg"=>"Products found","product_list"=>$product_list);
      }else{
-        $data = array("status" => "error");
+        $data = array("status" => "error","msg"=>"No Products found");
      }
       return $data;
 
@@ -505,11 +514,15 @@ class Mobileapimodel extends CI_Model {
 
     //-------Product details -------///
 
-    function product_details($product_id){
-
+    function product_details($product_id,$user_id){
+      if($user_id=='0'){
+        $cus_id=0;
+      }else{
+        $cus_id=$user_id;
+      }
 
       //---product detail---//
-      $select="SELECT * FROM products WHERE id='$product_id'  AND status='Active'";
+      $select="SELECT p.*,IFNULL(cw.customer_id,'0') AS wishlisted FROM products as p LEFT JOIN  cus_wishlist AS cw ON cw.product_id=p.id AND cw.customer_id='$cus_id' WHERE p.id='$product_id'  AND p.status='Active'";
       $res=$this->db->query($select);
        if($res->num_rows()>0){
           $result=$res->result();
@@ -534,6 +547,7 @@ class Mobileapimodel extends CI_Model {
                 "product_meta_desc"=>$rows->product_meta_desc,
                 "product_meta_keywords"=>$rows->product_meta_keywords,
                 "stocks_left"=>$rows->stocks_left,
+                "wishlisted"=>$rows->wishlisted,
               );
 
         $product_details = array("status" => "success","msg"=>"product details","product_details"=>$prd_details);
@@ -673,35 +687,35 @@ class Mobileapimodel extends CI_Model {
     function view_wishlist($user_id){
       $select="SELECT p.* FROM cus_wishlist AS cw LEFT JOIN products AS p ON p.id=cw.product_id WHERE cw.customer_id='$user_id' AND p.status='Active'";
       $res=$this->db->query($select);
-       if($res->num_rows()>0){
-          $result=$res->result();
-          foreach($result  as $rows){
-              $product_list[]=array(
-                "id"=>$rows->id,
-                "product_name"=>$rows->product_name,
-                "product_id"=>$rows->product_id,
-                "sku_code"=>$rows->sku_code,
-                "product_cover_img"=>base_url().'assets/products/'.$rows->product_cover_img,
-                "prod_size_chart"=>base_url().'assets/products/'.$rows->prod_size_chart,
-                "product_description"=>$rows->product_description,
-                "offer_status"=>$rows->offer_status,
-                "specification_status"=>$rows->specification_status,
-                "combined_status"=>$rows->combined_status,
-                "prod_actual_price"=>$rows->prod_actual_price,
-                "prod_mrp_price"=>$rows->prod_mrp_price,
-                "offer_percentage"=>$rows->offer_percentage,
-                "delivery_fee_status"=>$rows->delivery_fee_status,
-                "prod_return_policy"=>$rows->prod_return_policy,
-                "prod_cod"=>$rows->prod_cod,
-                "product_meta_title"=>$rows->product_meta_title,
-                "product_meta_desc"=>$rows->product_meta_desc,
-                "product_meta_keywords"=>$rows->product_meta_keywords,
-                "stocks_left"=>$rows->stocks_left,
-              );
-          }
-        $data = array("status" => "success","msg"=>"wishlist found","product_list"=>$product_list);
-       }else{
+       if($res->num_rows()==0){
         $data = array("status" => "error","msg"=>"No records found");
+       }else{
+
+        $result=$res->result();
+        foreach($result  as $rows){
+            $product_list[]=array(
+              "id"=>$rows->id,
+              "product_name"=>$rows->product_name,
+              "sku_code"=>$rows->sku_code,
+              "product_cover_img"=>base_url().'assets/products/'.$rows->product_cover_img,
+              "prod_size_chart"=>base_url().'assets/products/'.$rows->prod_size_chart,
+              "product_description"=>$rows->product_description,
+              "offer_status"=>$rows->offer_status,
+              "specification_status"=>$rows->specification_status,
+              "combined_status"=>$rows->combined_status,
+              "prod_actual_price"=>$rows->prod_actual_price,
+              "prod_mrp_price"=>$rows->prod_mrp_price,
+              "offer_percentage"=>$rows->offer_percentage,
+              "delivery_fee_status"=>$rows->delivery_fee_status,
+              "prod_return_policy"=>$rows->prod_return_policy,
+              "prod_cod"=>$rows->prod_cod,
+              "product_meta_title"=>$rows->product_meta_title,
+              "product_meta_desc"=>$rows->product_meta_desc,
+              "product_meta_keywords"=>$rows->product_meta_keywords,
+              "stocks_left"=>$rows->stocks_left,
+            );
+        }
+      $data = array("status" => "success","msg"=>"wishlist found","product_list"=>$product_list);
        }
         return $data;
     }
@@ -788,6 +802,48 @@ class Mobileapimodel extends CI_Model {
     }
 
     function view_cart_items($user_id){
+      $Select_price="SELECT * FROM products WHERE status='Active'";
+      $res_price=$this->db->query($Select_price);
+      if($res_price->num_rows()>0){
+        $result=$res_price->result();
+        foreach($result as $rows_price){
+          $offer_status=$rows_price->offer_status;
+          $combined_status=$rows_price->combined_status;
+          $id=$rows_price->id;
+          if($combined_status=='1'){
+            $select_comb="SELECT * FROM product_combined WHERE product_id='$id' AND status='Active'";
+            $res_comb=$this->db->query($select_comb);
+            $result_comb=$res_comb->result();
+            foreach($result_comb as $rows_comb){
+            $comb_prd_price=$rows_comb->prod_actual_price;
+            if($offer_status=='1'){
+                $offer_percentage=$rows_price->offer_percentage;
+                $discount_value = ($comb_prd_price / 100) * $offer_percentage;
+                $offer_pirce = $comb_prd_price - $discount_value;
+            }else{
+              $offer_pirce=$rows_price->prod_actual_price;
+            }
+            $prod_actual_price=round($offer_pirce);
+            $update_cart_price="UPDATE product_cart SET price='$prod_actual_price',total_amount=quantity *'$prod_actual_price'  WHERE product_id='$id' AND status='Pending'";
+            $res=$this->db->query($update_cart_price);
+            }
+          }else{
+            $old_price_comb=$rows_price->prod_actual_price;
+            if($offer_status=='1'){
+              $offer_percentage=$rows_price->offer_percentage;
+              $discount_value = ($old_price_comb / 100) * $offer_percentage;
+              $offer_pirce = $old_price_comb - $discount_value;
+            }else{
+              $offer_pirce=$rows_price->prod_actual_price;
+            }
+            $prod_actual_price=round($offer_pirce);
+            $update_cart_price="UPDATE product_cart SET price='$prod_actual_price',total_amount=quantity *'$prod_actual_price'  WHERE product_id='$id' AND status='Pending'";
+            $res=$this->db->query($update_cart_price);
+          }
+        }
+      }
+
+
       $select="SELECT p.product_name,p.stocks_left,p.product_cover_img,p.product_description,cm.category_name,IFNULL(am.attribute_value,' ') AS color_code,IFNULL(am.attribute_name,' ') AS color_name,IFNULL(ams.attribute_value,' ') AS size,pc.* FROM product_cart AS pc LEFT JOIN products AS p ON p.id=pc.product_id LEFT JOIN category_masters AS cm ON p.cat_id=cm.id LEFT JOIN product_combined AS comb ON comb.id=pc.product_combined_id LEFT JOIN attribute_masters AS am ON am.id=comb.mas_color_id LEFT JOIN attribute_masters AS ams ON ams.id=comb.mas_size_id WHERE pc.cus_id='$user_id' AND pc.status='Pending'";
       $res=$this->db->query($select);
      if($res->num_rows()>0){
@@ -1048,6 +1104,125 @@ class Mobileapimodel extends CI_Model {
       }
 
 
+
+      function password_update($user_id,$password){
+        $new_pwd=md5($password);
+        $update="UPDATE customers SET password='$new_pwd' WHERE id='$user_id'";
+        $res=$this->db->query($update);
+        if($res){
+          $data = array("status" => "success","msg"=>"Password Updated Successfully");
+        }else{
+          $data = array("status" => "error","msg"=>"Password Error");
+        }
+          return $data;
+      }
+
+      function check_password($user_id,$password){
+        $new_pwd=md5($password);
+        $update="SELECT * FROM  customers  WHERE id='$user_id' AND password='$new_pwd'";
+        $res=$this->db->query($update);
+        if($res->num_rows()==0){
+          $data = array("status" => "error","msg"=>"Password error");
+        }else{
+          $data = array("status" => "success","msg"=>"Password Verified");
+        }
+          return $data;
+      }
+
+      function get_profile_details($user_id){
+        $select = "SELECT c.*,cd.* FROM customers as c left join customer_details as cd on c.id=cd.customer_id where c.id='$user_id' and c.status='Active'";
+        $res=$this->db->query($select);
+        if($res->num_rows()==0){
+           $data = array("status" => "error","msg"=>"No Profile found");
+        }else{
+            foreach($res->result() as $rows) {}
+            $profile=array(
+                "id"=>$rows->id,
+                "first_name"=>$rows->first_name,
+                "last_name"=>$rows->last_name,
+                "birth_date"=>$rows->birth_date,
+                "gender"=>$rows->gender,
+                "profile_picture"=>base_url().'assets/front/profile/'.$rows->profile_picture,
+                "newsletter_status"=>$rows->newsletter_status,
+                "phone_number"=>$rows->phone_number,
+                "email"=>$rows->email,
+              );
+             $data = array("status" => "success","msg"=>"Profile found","get_profile_details"=>$profile);
+            }
+          return $data;
+      }
+
+
+      function update_profile_details($user_id,$first_name,$last_name,$email,$mobile_number,$gender,$dob,$newsletter_status){
+        $check_email="SELECT * FROM customers WHERE email='$email' AND id!='$user_id'";
+        $res=$this->db->query($check_email);
+        if($res->num_rows()==0){
+           $check_mobile="SELECT * FROM customers WHERE phone_number='$mobile_number' AND id!='$user_id'";
+          $res_mob=$this->db->query($check_mobile);
+            if($res_mob->num_rows()==0){
+              $update="UPDATE customer_details SET first_name='$first_name',last_name='$last_name',birth_date='$dob',gender='$gender',newsletter_status='$newsletter_status' WHERE customer_id='$user_id'";
+              $res=$this->db->query($update);
+              $update_main="UPDATE customers SET name='$first_name',phone_number='$mobile_number',email='$email' WHERE id='$user_id'";
+              $res_main=$this->db->query($update_main);
+              if($res_main){
+                $data = array("status" => "success","msg"=>"Profile Updated Successfully");
+              }else{
+                $data = array("status" => "error","msg"=>"Profile Error");
+              }
+
+            }else{
+              $data = array("status" => "error","msg"=>"Mobile number Already Exist");
+            }
+        }else{
+          $data = array("status" => "error","msg"=>"Email Already Exist");
+        }
+        return  $data;
+      }
+
+      function forgot_password($email_phone){
+        $check="SELECT * FROM customers where phone_number='$email_phone' or email='$email_phone'";
+        $res=$this->db->query($check);
+        if($res->num_rows()==0){
+            $data = array("status" => "error","msg"=>"No Email or Mobile number registered");
+        }else{
+          $result=$res->result();
+          foreach($result as $rows){}
+           $phone=$rows->phone_number;
+
+          $id=$rows->id;
+          $email= $rows->email;
+          $otp= rand(100000, 999999);
+          $textmessage='Password Reset OTP '.$otp.'';
+          $notes =utf8_encode($textmessage);
+          $this->smsmodel->send_sms($phone,$notes);
+          $update_otp="UPDATE customers SET mobile_otp='$otp' WHERE id='$id'";
+          $res_otp=$this->db->query($update_otp);
+          if($res_otp){
+            $data = array("status" => "success","msg"=>"OTP has sent to regsitered Mobile number");
+          }else{
+            $data = array("status" => "error","msg"=>"No Email or phone number registered");
+          }
+        }
+          return $data;
+      }
+
+      function verify_otp_password($email_phone,$otp){
+        $check="SELECT * FROM customers where phone_number='$email_phone' or email='$email_phone'";
+        $res=$this->db->query($check);
+        if($res->num_rows()==0){
+            $data = array("status" => "error","msg"=>"No Email or Mobile number registered");
+          }else{
+            $result=$res->result();
+            foreach($result as $rows){}
+            $mobile_otp=$rows->mobile_otp;
+            if($mobile_otp==$otp){
+              $data = array("status" => "success","msg"=>"OTP Verified Successfully");
+            }else{
+              $data = array("status" => "error","msg"=>"You have entered invalid OTP");
+            }
+          }
+          return $data;
+      }
 
 }
 ?>
