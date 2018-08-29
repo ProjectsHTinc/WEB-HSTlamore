@@ -166,89 +166,219 @@ class Mobileapimodel extends CI_Model {
 //#################### Main Login ####################//
 	public function Login($username,$password,$mob_key,$mobile_type)
 	{
-	    $cust_id = '';
 
-		$sql = "SELECT * FROM customers WHERE password = md5('".$password."') AND status = 'Active' AND (phone_number = '$username' OR email = '$username')";
+      $cust_id = '';
+      $sql = "SELECT * FROM customers WHERE password = md5('".$password."') AND status = 'Active' AND (phone_number = '$username' OR email = '$username')";
 
-		$user_result = $this->db->query($sql);
-		$ress = $user_result->result();
-		if($user_result->num_rows()>0)
-		{
-			foreach ($user_result->result() as $rows)
-			{
-			  $cust_id = $rows->id;
-			  $login_count = $rows->login_count+1;
-			}
+      $user_result = $this->db->query($sql);
+      $ress = $user_result->result();
+      if($user_result->num_rows()>0)
+      {
+        foreach ($user_result->result() as $rows)
+        {
+          $cust_id = $rows->id;
+          $login_count = $rows->login_count+1;
+        }
 
-			$sql = "SELECT
-					A.id AS customer_id,
-					A.phone_number,
-					A.email,
-					B.first_name,
-					B.last_name,
-					B.birth_date,
-					B.gender,
-					B.profile_picture,
-					B.newsletter_status,
-					A.login_count,
-					A.last_login
-				FROM
-					customers A,
-					customer_details B
-				WHERE
-					A.id = B.customer_id AND A.id = '$cust_id'";
-			$cust_result = $this->db->query($sql);
-			$ress = $cust_result->result();
+        $sql = "SELECT
+            A.id AS customer_id,
+            A.phone_number,
+            A.email,
+            B.first_name,
+            B.last_name,
+            B.birth_date,
+            B.gender,
+            B.profile_picture,
+            B.newsletter_status,
+            A.login_count,
+            A.last_login
+          FROM
+            customers A,
+            customer_details B
+          WHERE
+            A.id = B.customer_id AND A.id = '$cust_id'";
+        $cust_result = $this->db->query($sql);
+        $ress = $cust_result->result();
 
-			if($cust_result->num_rows()>0)
-			{
-				foreach ($cust_result->result() as $rows)
-				{
-				  $profile_picture = $rows->profile_picture;
-				}
+        if($cust_result->num_rows()>0)
+        {
+          foreach ($cust_result->result() as $rows)
+          {
+            $profile_picture = $rows->profile_picture;
+          }
 
-				if ($profile_picture != ''){
-			        $profile_picture = base_url().'assets/front/profile/'.$profile_picture;
-			    }else {
-			         $profile_picture = '';
-			    }
+          if ($profile_picture != ''){
+                $profile_picture = base_url().'assets/front/profile/'.$profile_picture;
+            }else {
+                 $profile_picture = '';
+            }
 
-				$userData  = array(
-							"customer_id" => $ress[0]->customer_id,
-							"phone_number" => $ress[0]->phone_number,
-							"email" => $ress[0]->email,
-							"first_name" => $ress[0]->first_name,
-							"last_name" => $ress[0]->last_name,
-							"birth_date" => $ress[0]->birth_date,
-							"gender" => $ress[0]->gender,
-							"profile_picture" => $profile_picture,
-							"newsletter_status" => $ress[0]->newsletter_status,
-							"login_count" => $ress[0]->login_count,
-							"last_login" => $ress[0]->last_login
-				);
-			}
-				$update_sql = "UPDATE customers SET last_login=NOW(),login_count='$login_count' WHERE id='$cust_id'";
-				$update_result = $this->db->query($update_sql);
+          $userData  = array(
+                "customer_id" => $ress[0]->customer_id,
+                "phone_number" => $ress[0]->phone_number,
+                "email" => $ress[0]->email,
+                "first_name" => $ress[0]->first_name,
+                "last_name" => $ress[0]->last_name,
+                "birth_date" => $ress[0]->birth_date,
+                "gender" => $ress[0]->gender,
+                "profile_picture" => $profile_picture,
+                "newsletter_status" => $ress[0]->newsletter_status,
+                "login_count" => $ress[0]->login_count,
+                "last_login" => $ress[0]->last_login
+          );
+        }
+          $update_sql = "UPDATE customers SET last_login=NOW(),login_count='$login_count' WHERE id='$cust_id'";
+          $update_result = $this->db->query($update_sql);
 
-				$gcmQuery = "SELECT * FROM cus_notification_master WHERE mob_key like '%" .$mob_key. "%' LIMIT 1";
-				$gcm_result = $this->db->query($gcmQuery);
-				$gcm_ress = $gcm_result->result();
+          $gcmQuery = "SELECT * FROM cus_notification_master WHERE mob_key like '%" .$mob_key. "%' LIMIT 1";
+          $gcm_result = $this->db->query($gcmQuery);
+          $gcm_ress = $gcm_result->result();
 
-				if($gcm_result->num_rows()==0)
-				{
-					$sQuery = "INSERT INTO cus_notification_master (cus_id,mob_key,mobile_type,created_at ) VALUES ('". $cust_id . "','". $mob_key . "','". $mobile_type . "',now())";
-					$update_gcm = $this->db->query($sQuery);
-				}
+          if($gcm_result->num_rows()==0)
+          {
+            $sQuery = "INSERT INTO cus_notification_master (cus_id,mob_key,mobile_type,created_at ) VALUES ('". $cust_id . "','". $mob_key . "','". $mobile_type . "',now())";
+            $update_gcm = $this->db->query($sQuery);
+          }
 
-    				$response = array("status" => "success", "msg" => "Login Successfully", "userData" => $userData);
-    				return $response;
-		} else {
+              $response = array("status" => "success", "msg" => "Login Successfully", "userData" => $userData);
+              return $response;
+      } else {
 
-					$response = array("status" => "error", "msg" => "Invalid login");
-					return $response;
-		}
+            $response = array("status" => "error", "msg" => "Invalid login");
+            return $response;
+      }
+
+
+
 	}
 
+
+   function social_login($username,$mob_key,$mobile_type,$login_type,$first_name,$last_name)
+  {
+    if($login_type=='g+' || $login_type=='fb'){
+      $select="SELECT * FROM customers WHERE  email = '$username'";
+      $user_res= $this->db->query($select);
+      if($user_res->num_rows()==0){
+        $insert="INSERT INTO customers (name,email,login_type,login_count,status) VALUES('$first_name','$username','$login_type','1','Active')";
+        $cus_result = $this->db->query($insert);
+        $insert_id = $this->db->insert_id();
+        $insert_details="INSERT INTO customer_details(customer_id,first_name,last_name,newsletter_status,created_at,created_by)VALUES('$insert_id','$first_name','$last_name','1',NOW(),'$insert_id')";
+        $cus_result_details = $this->db->query($insert_details);
+        $sql = "SELECT  A.id AS customer_id,A.phone_number,A.email,B.first_name,B.last_name,B.birth_date,B.gender,B.profile_picture,B.newsletter_status,A.login_count,A.last_login FROM customers A,customer_details B  WHERE  A.id = B.customer_id AND A.id = '$insert_id'";
+          $cust_result = $this->db->query($sql);
+          $ress = $cust_result->result();
+
+                  if($cust_result->num_rows()>0)
+                  {
+                    foreach ($cust_result->result() as $rows)
+                    {
+                      $profile_picture = $rows->profile_picture;
+                    }
+
+                    if ($profile_picture != ''){
+                          $profile_picture = base_url().'assets/front/profile/'.$profile_picture;
+                      }else {
+                           $profile_picture = '';
+                      }
+
+                    $userData  = array(
+                          "customer_id" => $ress[0]->customer_id,
+                          "phone_number" => $ress[0]->phone_number,
+                          "email" => $ress[0]->email,
+                          "first_name" => $ress[0]->first_name,
+                          "last_name" => $ress[0]->last_name,
+                          "birth_date" => $ress[0]->birth_date,
+                          "gender" => $ress[0]->gender,
+                          "profile_picture" => $profile_picture,
+                          "newsletter_status" => $ress[0]->newsletter_status,
+                          "login_count" => $ress[0]->login_count,
+                          "last_login" => $ress[0]->last_login
+                    );
+                  }
+
+
+                    $gcmQuery = "SELECT * FROM cus_notification_master WHERE mob_key like '%" .$mob_key. "%' LIMIT 1";
+                    $gcm_result = $this->db->query($gcmQuery);
+                    $gcm_ress = $gcm_result->result();
+
+                    if($gcm_result->num_rows()==0)
+                    {
+                      $sQuery = "INSERT INTO cus_notification_master (cus_id,mob_key,mobile_type,created_at ) VALUES ('". $id . "','". $mob_key . "','". $mobile_type . "',now())";
+                      $update_gcm = $this->db->query($sQuery);
+                    }
+
+            $response = array("status" => "success", "msg" => "Login Successfully", "userData" => $userData);
+            return $response;
+
+
+
+      }else{
+        $res_check=$user_res->result();
+        foreach($res_check as $rows_check){}
+        $check_status=$rows_check->status;
+        $id=$rows_check->id;
+        $login_count = $rows_check->login_count+1;
+        if($check_status=='Active'){
+  $sql = "SELECT  A.id AS customer_id,A.phone_number,A.email,B.first_name,B.last_name,B.birth_date,B.gender,B.profile_picture,B.newsletter_status,A.login_count,A.last_login FROM customers A,customer_details B  WHERE  A.id = B.customer_id AND A.id = '$id'";
+          $cust_result = $this->db->query($sql);
+          $ress = $cust_result->result();
+
+                  if($cust_result->num_rows()>0)
+                  {
+                    foreach ($cust_result->result() as $rows)
+                    {
+                      $profile_picture = $rows->profile_picture;
+                    }
+
+                    if ($profile_picture != ''){
+                          $profile_picture = base_url().'assets/front/profile/'.$profile_picture;
+                      }else {
+                           $profile_picture = '';
+                      }
+
+                    $userData  = array(
+                          "customer_id" => $ress[0]->customer_id,
+                          "phone_number" => $ress[0]->phone_number,
+                          "email" => $ress[0]->email,
+                          "first_name" => $ress[0]->first_name,
+                          "last_name" => $ress[0]->last_name,
+                          "birth_date" => $ress[0]->birth_date,
+                          "gender" => $ress[0]->gender,
+                          "profile_picture" => $profile_picture,
+                          "newsletter_status" => $ress[0]->newsletter_status,
+                          "login_count" => $ress[0]->login_count,
+                          "last_login" => $ress[0]->last_login
+                    );
+                  }
+                    $update_sql = "UPDATE customers SET last_login=NOW(),login_count='$login_count' WHERE id='$id'";
+                    $update_result = $this->db->query($update_sql);
+
+                    $gcmQuery = "SELECT * FROM cus_notification_master WHERE mob_key like '%" .$mob_key. "%' LIMIT 1";
+                    $gcm_result = $this->db->query($gcmQuery);
+                    $gcm_ress = $gcm_result->result();
+
+                    if($gcm_result->num_rows()==0)
+                    {
+                      $sQuery = "INSERT INTO cus_notification_master (cus_id,mob_key,mobile_type,created_at ) VALUES ('". $id . "','". $mob_key . "','". $mobile_type . "',now())";
+                      $update_gcm = $this->db->query($sQuery);
+                    }
+
+                        $response = array("status" => "success", "msg" => "Login Successfully", "userData" => $userData);
+                        return $response;
+                } else {
+
+                  $response = array("status" => "error", "msg" => "Account blocked");
+                  return $response;
+                }
+      }
+    }else{
+      $response = array("status" => "error", "msg" => "Something Went Wrong");
+      return $response;
+    }
+
+
+
+  }
 //#################### Main Login End ####################//
 
 
@@ -1223,6 +1353,109 @@ class Mobileapimodel extends CI_Model {
           }
           return $data;
       }
+
+
+
+      function view_orders($user_id){
+        $select="SELECT po.*,ca.* FROM purchase_order as po left join cus_address as ca on ca.id=po.cus_address_id where po.cus_id='$user_id'";
+        $res=$this->db->query($select);
+        if($res->num_rows()>0){
+            $result=$res->result();
+            foreach($result  as $rows){
+                $order_details[]=array(
+                  "id"=>$rows->id,
+                  "order_id"=>$rows->order_id,
+                  "cus_id"=>$rows->cus_id,
+                  "purchase_date"=>$rows->purchase_date,
+                  "total_amount"=>$rows->total_amount,
+                  "status"=>$rows->status,
+                  "cus_notes"=>$rows->cus_notes,
+                  "state"=>$rows->state,
+                  "city"=>$rows->city,
+                  "pincode"=>$rows->pincode,
+                  "house_no"=>$rows->house_no,
+                  "street"=>$rows->street,
+                  "landmark"=>$rows->landmark,
+                  "full_name"=>$rows->full_name,
+                  "mobile_number"=>$rows->mobile_number,
+                  "email_address"=>$rows->email_address,
+                  "alternative_mobile_number"=>$rows->alternative_mobile_number,
+                );
+            }
+              $data = array("status" => "success","msg"=>"orders found","order_details"=>$order_details);
+          }else{
+              $data = array("status" => "error","msg"=>"No orders found");
+          }
+          return $data;
+
+      }
+
+
+      function check_my_order($order_id){
+        $select="SELECT pc.id as cart_id,ca.*,pur.cus_address_id,c.*,p.id as product_id,p.product_name,p.product_cover_img,am.attribute_value,am.attribute_name,ams.attribute_value AS size,pc.*,comb.id FROM product_cart AS pc
+LEFT JOIN products AS p ON p.id=pc.product_id LEFT JOIN product_combined AS comb ON comb.id=pc.product_combined_id LEFT JOIN attribute_masters AS am ON am.id=comb.mas_color_id
+LEFT JOIN attribute_masters AS ams ON ams.id=comb.mas_size_id LEFT JOIN purchase_order AS pur ON pur.order_id=pc.order_id LEFT JOIN customers AS c ON pur.cus_id=c.id
+LEFT JOIN cus_address AS ca ON ca.id=pur.cus_address_id WHERE pc.order_id='$order_id'";
+        $res=$this->db->query($select);
+        if($res->num_rows()>0){
+            $result=$res->result();
+            foreach($result  as $rows){
+                $my_order_details[]=array(
+                  "id"=>$rows->cart_id,
+                  "product_name"=>$rows->product_name,
+                  "product_id"=>$rows->product_id,
+                  "product_cover_img"=>base_url().'assets/products/'.$rows->product_cover_img,
+                  "color_name"=>$rows->attribute_name,
+                  "size"=>$rows->size,
+                  "price"=>$rows->price,
+                  "quantity"=>$rows->quantity,
+                );
+            }
+              $data = array("status" => "success","msg"=>"orders found","my_order_details"=>$my_order_details);
+          }else{
+              $data = array("status" => "error","msg"=>"No orders found");
+          }
+          return $data;
+      }
+
+
+
+      function search_product($search_name,$user_id){
+        $select="SELECT tm.id as tag_id,tm.tag_name,p.*,IFNULL(cw.customer_id,'0') AS wishlisted FROM tag_masters as tm left join product_tags as pt on tm.id=pt.tag_id left join products as p on  p.id=pt.product_id LEFT JOIN  cus_wishlist AS cw ON cw.product_id=p.id AND cw.customer_id='$user_id' WHERE tm.tag_name LIKE '$search_name%' AND p.status='Active'  GROUP by p.id";
+       $res=$this->db->query($select);
+       if($res->num_rows()==0){
+          $data = array("status" => "failure","msg"=>"No Product found");
+        }else{
+            $result_search=$res->result();
+            foreach($result_search  as $rows){
+                $product_list[]=array(
+                  "id"=>$rows->id,
+                  "product_name"=>$rows->product_name,
+                  "sku_code"=>$rows->sku_code,
+                  "product_cover_img"=>base_url().'assets/products/'.$rows->product_cover_img,
+                  "prod_size_chart"=>base_url().'assets/products/'.$rows->prod_size_chart,
+                  "product_description"=>$rows->product_description,
+                  "offer_status"=>$rows->offer_status,
+                  "specification_status"=>$rows->specification_status,
+                  "combined_status"=>$rows->combined_status,
+                  "prod_actual_price"=>$rows->prod_actual_price,
+                  "prod_mrp_price"=>$rows->prod_mrp_price,
+                  "offer_percentage"=>$rows->offer_percentage,
+                  "delivery_fee_status"=>$rows->delivery_fee_status,
+                  "prod_return_policy"=>$rows->prod_return_policy,
+                  "prod_cod"=>$rows->prod_cod,
+                  "product_meta_title"=>$rows->product_meta_title,
+                  "product_meta_desc"=>$rows->product_meta_desc,
+                  "product_meta_keywords"=>$rows->product_meta_keywords,
+                  "stocks_left"=>$rows->stocks_left,
+                  "wishlisted"=>$rows->wishlisted,
+                );
+            }
+        $data = array("status" => "success","msg"=>"Product Search  found","product_list"=>$product_list);
+        }
+        return $data;
+      }
+
 
 }
 ?>
