@@ -12,7 +12,7 @@
 	$dataSize = sizeof($decryptValues);
 
 
-/* 	echo "<table cellspacing=4 cellpadding=4>";
+	echo "<table cellspacing=4 cellpadding=4>";
  	for($i = 0; $i < $dataSize; $i++) 
  	{
  		$information=explode('=',$decryptValues[$i]);
@@ -20,7 +20,7 @@
  	    		if($i==2)	echo $bank=$information[2];
  	    	echo '<tr><td>'.$information[$i].'</td><td>'.$information[$i].'</td></tr>';
  	}
- 	echo "</table><br>"; */
+ 	echo "</table><br>";
 
 for($i = 0; $i < $dataSize; $i++) 
 	{
