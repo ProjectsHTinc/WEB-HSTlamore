@@ -88,7 +88,7 @@ for($i = 0; $i < $dataSize; $i++)
 			$query = "UPDATE purchase_order SET status = 'Success' WHERE order_id = '$orderid'";
 			$objRs  = mysql_query($query) or die("Could not select Query ");
 			
-			 header("Location: https://www.happysanztech.com/lamore/");
+			 header("Location: https://www.happysanztech.com/lamore/cust_orders/");
     	}
 
     	if($order_status=="Aborted")
