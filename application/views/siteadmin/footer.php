@@ -52,5 +52,6 @@ hr{
 	     $('#datable_1').DataTable();
        $('.colorpicker').colorpicker();
      });
+
     </script>
 </html>

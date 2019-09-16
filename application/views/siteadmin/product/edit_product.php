@@ -39,7 +39,7 @@
 		</div>
 
 
-		<div class="row">
+		<div class="row" id="prod_info_detail">
 						<div class="col-md-12">
 							<div class="panel panel-default card-view">
 								<div class="panel-heading">
@@ -857,7 +857,7 @@ function deletecomb(a_id){
 								 hideAfter: 3500,
 									stack: 6
 								});
-									 $("#prod_info").load(location.href+" #prod_info>*","");
+									// $("#prod_info_detail").load(location.href+" #prod_info_detail>*","");
 							} else{
 									sweetAlert("Oops...", response, "error");
 							}
