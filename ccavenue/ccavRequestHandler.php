@@ -25,7 +25,6 @@ include("connection.php");
     */
     $merchant_id = $_POST["merchant_id"];
 	$order_id = $_POST["order_id"];
-	$purchase_id = $_POST["purchase_id"];
 	$amount = trim($_POST["amount"]);
 	$currency = $_POST["currency"];
 	$redirect_url = $_POST["redirect_url"];
@@ -33,12 +32,10 @@ include("connection.php");
 	$language = $_POST["language"];
 
 	$resp_data = "merchant_id=".$merchant_id."&";
-	$resp_data .= "purchase_id=".$purchase_id."&";
 	$resp_data .= "order_id=".$order_id."&";
+	$resp_data .= "amount=".$amount."&";
 	
-	
-	
-	$sQuery = "SELECT
+/* 	$sQuery = "SELECT
                 B.pricing
                 FROM
                     institute_plan_history A,
@@ -56,7 +53,7 @@ include("connection.php");
 		$resp_data .= "amount=".$purchase_amount."&";
 	} else {
 		$resp_data .= "amount=".$amount."&";
-	}
+	} */
 	
 	$resp_data .= "currency=".$currency."&";
 	$resp_data .= "redirect_url=".$redirect_url."&";

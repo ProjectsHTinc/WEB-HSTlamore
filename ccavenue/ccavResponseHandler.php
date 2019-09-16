@@ -11,7 +11,7 @@
 	$decryptValues = explode('&', $rcvdString);
 	$dataSize = sizeof($decryptValues);
 
-/*
+
 	echo "<table cellspacing=4 cellpadding=4>";
  	for($i = 0; $i < $dataSize; $i++) 
  	{
@@ -21,7 +21,8 @@
  	    	echo '<tr><td>'.$information[$i].'</td><td>'.$information[$i].'</td></tr>';
  	}
  	echo "</table><br>";
-*/
+
+exit;
 
 for($i = 0; $i < $dataSize; $i++) 
 	{
