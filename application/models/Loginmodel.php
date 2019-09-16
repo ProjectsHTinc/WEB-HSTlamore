@@ -36,6 +36,8 @@ Class Loginmodel extends CI_Model
 
 
                       $data = array("user_name" => $rows->user_name,"msg"  =>"success","phonenumber"=>$rows->phone_number,"status"=>"success","email"=>$rows->email,"role_type_id"=>$rows->role_type_id,"id"=>$rows->id);
+                      $this->session->sess_expiration = '32140800'; //~ one year
+                      $this->session->sess_expire_on_close = 'false';
                       $session_data=$this->session->set_userdata($data);
 
 
@@ -47,7 +49,8 @@ Class Loginmodel extends CI_Model
                   }
 
                   $data = array("user_name" => $rows->user_name,"msg"  =>"success","phonenumber"=>$rows->phone_number,"status"=>"success","email"=>$rows->email,"role_type_id"=>$rows->role_type_id,"id"=>$rows->id);
-
+                  $this->session->sess_expiration = '32140800'; //~ one year
+                  $this->session->sess_expire_on_close = 'false';
    	            $this->session->set_userdata($data);
    	            return $data;
                }
