@@ -69,8 +69,8 @@ for($i = 0; $i < $dataSize; $i++)
 		if($i==41)  $bin_country=$information[1];	
 	}
 
-		$browser_id = $this->session->userdata('browser_sess_id');
-		$cust_id = $this->session->userdata('cust_session_id');
+		//$browser_id = $this->session->userdata('browser_sess_id');
+		$cust_id = '1';
 
     	/* $string = $orderid;
         $result = explode("-", $string);
