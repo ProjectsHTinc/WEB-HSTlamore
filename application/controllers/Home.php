@@ -6,9 +6,10 @@ class Home extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->helper('url');
 		$this->load->library('session');
+		$this->load->helper('url');
 		$this->load->helper('cookie');
+		$this->load->helper('pdf_helper');
 		$this->load->model('homemodel');
 	}
 
@@ -206,15 +207,15 @@ class Home extends CI_Controller {
 		}
 	}
 	
-	public function cust_order_details()
+	public function cust_order_details($order_id)
 	{
 		$cust_session_id = $this->session->userdata('cust_session_id');
 		$datas['main_catmenu'] = $this->homemodel->get_main_catmenu();
 		$datas['count_cart_session'] = $this->homemodel->cart_list();
 		$datas['count_wishlist'] = $this->homemodel->list_wishlist();
 		$datas['tag_result'] = $this->homemodel->list_tags();
-		$datas['order_details'] = $this->homemodel->cust_order_details($cust_session_id);
-		//print_r($datas['orders']);
+		$datas['address_details'] = $this->homemodel->cust_order_address($order_id);
+		$datas['order_details'] = $this->homemodel->cust_order_details($order_id);
 		if ($cust_session_id !='') {
 			$this->load->view('front_header',$datas);
 			$this->load->view('cust_order_details');
@@ -700,6 +701,10 @@ class Home extends CI_Controller {
 		$datas['res']=$this->homemodel->contact_us($name,$email,$website,$subject,$message);
 	}
 	
-
+	public function order_pdf()
+	{
+		$datas['count_cart_session'] = $this->homemodel->cart_list();
+		$this->load->view('pdfreport', $datas);
+	}
 	
 }

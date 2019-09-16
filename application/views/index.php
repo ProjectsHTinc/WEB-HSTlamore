@@ -24,7 +24,6 @@
 						//$sproduct_id = $prod->product_id;
 						$product_id = $imglist->id * 663399;
 						$enc_product_name = strtolower(preg_replace("/[^\w]/", "-", $imglist->product_name));
-												
 						$enc_product_id = base64_encode($product_id);
 				?>
                     <!-- Slider htmlcaption Start-->
