@@ -959,7 +959,8 @@ class Mobileapi extends CI_Controller {
 						return;
 					}
 
-					$pin_code=$this->input->post("pin_code");
+					 $pin_code=$this->input->post("pin_code");
+					
 					$data['result']=$this->mobileapimodel->check_pincode($pin_code);
 					$response = $data['result'];
 					//print_r($response);
