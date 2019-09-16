@@ -12,7 +12,7 @@
 	$dataSize = sizeof($decryptValues);
 
 
-	echo "<table cellspacing=4 cellpadding=4>";
+/* 	echo "<table cellspacing=4 cellpadding=4>";
  	for($i = 0; $i < $dataSize; $i++) 
  	{
  		$information=explode('=',$decryptValues[$i]);
@@ -20,9 +20,7 @@
  	    		if($i==2)	echo $bank=$information[2];
  	    	echo '<tr><td>'.$information[$i].'</td><td>'.$information[$i].'</td></tr>';
  	}
- 	echo "</table><br>";
-
-exit;
+ 	echo "</table><br>"; */
 
 for($i = 0; $i < $dataSize; $i++) 
 	{
@@ -71,43 +69,42 @@ for($i = 0; $i < $dataSize; $i++)
 		if($i==41)  $bin_country=$information[1];	
 	}
 
+		$browser_id = $this->session->userdata('browser_sess_id');
+		$cust_id = $this->session->userdata('cust_session_id');
 
-    	$string = $orderid;
+    	/* $string = $orderid;
         $result = explode("-", $string);
         $order_id=$result[0];  
         $user_id= $result[1];
-        $purchase_id = $result[2];
+        $purchase_id = $result[2]; */
         
 
-        $sQuery = "INSERT INTO ccavenue_status (order_id,user_id,track_id,bank_ref_no,order_status,failure_message,payment_mode,card_name,status_code,status_message,currency,amount,billing_name,billing_address, billing_city,billing_state,billing_zip,billing_country,billing_tel,billing_email,delievery_name,delievery_address,delievery_city,delievery_state,delievery_zip,delievery_country,delievery_tel,merch_param1,merch_param2,merch_param3,merch_param4,merch_param5,vault,offer_type,offer_code,discount_value, mer_amt,eci_value,retry,response_code,billing_notes,trans_date,bin_country) VALUES ('$orderid','$user_id','$track_id','$bank_ref_no','$order_status','$failure_message','$payment_mode','$card_name','$status_code','$status_message','$currency','$amount','$billing_name','$billing_address','$billing_city','$billing_state','$billing_zip','$billing_country','$billing_tel','$billing_email','$delievery_name','$delievery_address','$delievery_city','$delievery_state','$delievery_zip','$delievery_country','$delievery_tel','$merch_param1','$merch_param2','$merch_param3','$merch_param4','$merch_param5','$vault','$offer_type','$offer_code','$discount_value','$mer_amt','$eci_value','$retry','$response_code','$billing_notes','$transdate','$bin_country')";
+        $sQuery = "INSERT INTO ccavenue_status (order_id,user_id,track_id,bank_ref_no,order_status,failure_message,payment_mode,card_name,status_code,status_message,currency,amount,billing_name,billing_address, billing_city,billing_state,billing_zip,billing_country,billing_tel,billing_email,delievery_name,delievery_address,delievery_city,delievery_state,delievery_zip,delievery_country,delievery_tel,merch_param1,merch_param2,merch_param3,merch_param4,merch_param5,vault,offer_type,offer_code,discount_value, mer_amt,eci_value,retry,response_code,billing_notes,trans_date,bin_country) VALUES ('$orderid','$cust_id','$track_id','$bank_ref_no','$order_status','$failure_message','$payment_mode','$card_name','$status_code','$status_message','$currency','$amount','$billing_name','$billing_address','$billing_city','$billing_state','$billing_zip','$billing_country','$billing_tel','$billing_email','$delievery_name','$delievery_address','$delievery_city','$delievery_state','$delievery_zip','$delievery_country','$delievery_tel','$merch_param1','$merch_param2','$merch_param3','$merch_param4','$merch_param5','$vault','$offer_type','$offer_code','$discount_value','$mer_amt','$eci_value','$retry','$response_code','$billing_notes','$transdate','$bin_country')";
         $objRs  = mysql_query($sQuery) or die("Could not select Query ");
 
        
 
     	if($order_status=="Success")
     	{
-			/* $query = "UPDATE institute_plan_history SET purchase_order_id = '$orderid' WHERE id = '$purchase_id'";
+			$query = "UPDATE purchase_order SET status = 'Success' WHERE order_id = '$orderid'";
 			$objRs  = mysql_query($query) or die("Could not select Query ");
 			
-            $enc_purchase_id = base64_encode($purchase_id);
-            header("Location: https://ensyfi.com/new_site/user/order_confirm/".$enc_purchase_id.""); */
-			
-			 header("Location: https://ensyfi.com/new_site/");
+			 header("Location: https://www.happysanztech.com/lamore/");
     	}
 
     	if($order_status=="Aborted")
     	{
-    	   header("Location: https://ensyfi.com/new_site/");
+    	   header("Location: https://www.happysanztech.com/lamore/");
     	}
     	
     	if($order_status=="Failure")
     	{
-    	    header("Location: https://ensyfi.com/new_site/");
+    	    header("Location: https://www.happysanztech.com/lamore/");
     	}
     	
     	if($order_status=="Invalid")
     	{
-    	    header("Location: https://ensyfi.com/new_site/");
+    	    header("Location: https://www.happysanztech.com/lamore/");
 
     	}
 
