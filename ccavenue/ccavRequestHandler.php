@@ -15,8 +15,8 @@ include("connection.php");
 	
 	$merchant_data='';
 	$resp_data = '';
-	$working_key='CA4120A14E0FB331E45F4B110C904EEA';//Shared by CCAVENUES
-	$access_code='AVRA85GF94BB60ARBB';//Shared by CCAVENUES
+	$working_key='66DE435387A4C12180CCB5350B4B6552';//Shared by CCAVENUES
+	$access_code='AVAU84GD83BV10UAVB';//Shared by CCAVENUES
 	
 	/*
 	foreach ($_POST as $key => $value){
