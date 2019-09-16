@@ -292,14 +292,22 @@ Class Homemodel extends CI_Model
    }
      
     function cust_order_details($order_id){
-		$sql="SELECT A.*,B.*,C.*,D.*, B.total_amount as cart_amount from purchase_order A, product_cart B, products C, cus_address D WHERE A.id = '$order_id' AND A.order_id = B.order_id AND B.product_id = C.id AND A.cus_address_id = D.id";
+		$sql="SELECT A.*,B.*,C.* from purchase_order A, product_cart B, products C WHERE A.id = '$order_id' AND A.order_id = B.order_id AND B.product_id = C.id";
 	  	$resu=$this->db->query($sql);
 	  	$res=$resu->result();
 	  	return $res;
    }
    
-
-		function add_cust_address($cust_id,$ncountry_id,$nname,$naddress1,$naddress2,$ntown,$nstate,$nzip,$nemail,$nphone,$nphone1,$nlandmark){
+   
+     function cust_order_address($order_id){
+		$sql="SELECT A.*,B.*,C.*, A.status AS order_stauts from purchase_order A, cus_address B, country_master C WHERE A.id = '$order_id' AND A.cus_address_id = B.id AND B.country_id = C.id";
+	  	$resu=$this->db->query($sql);
+	  	$res=$resu->result();
+	  	return $res;
+   }
+   
+   
+	function add_cust_address($cust_id,$ncountry_id,$nname,$naddress1,$naddress2,$ntown,$nstate,$nzip,$nemail,$nphone,$nphone1,$nlandmark){
 			
 			$check_address="SELECT * FROM cus_address WHERE cus_id = '$cust_id'";
 			$res=$this->db->query($check_address);
@@ -1116,7 +1124,7 @@ Class Homemodel extends CI_Model
 			$res = $this->db->query($check_wishlist);
 
 			if($res->num_rows()==0){
-				$insert = "INSERT INTO cus_wishlist(`customer_id`, `product_id`, `created_at`, `updated_at`) VALUES ('$cust_id', '$product_id', now(), '$guest_session');";
+				$insert = "INSERT INTO cus_wishlist(`customer_id`, `product_id`, `created_at`) VALUES ('$cust_id', '$product_id', now())";
 				$res = $this->db->query($insert);
 			}
 			if ($res){

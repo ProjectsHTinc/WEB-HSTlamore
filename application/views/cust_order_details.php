@@ -69,42 +69,65 @@
                             <div class="tab-content dashboard-content mt-all-40">
                                 
                                 <div id="orders" class="tab-pane fade in active">
-                                    <h3>Orders</h3>
+                                    <h3>Order Details</h3>
                                     <div class="table-content table-responsive">
+                       
                         <?php
-                        		if (count($order_details)>0){
-									foreach($order_details as $order){ 
-											$id = $order->id;
-											$order_id = $order->order_id;
-											$purchase_date = $order->purchase_date;
-											$dispDate = date("d M Y", strtotime($purchase_date));
-											$status = $order->status;
-											$total_amount = $order->total_amount;
-									}
+                       if (count($address_details)>0){
+						   foreach($address_details as $order_address){ 
+									$timestamp = strtotime($order_address->purchase_date);
+									$print_total_amount = $order_address->total_amount;
+						   }
 						?>
-                                        <table class="table">
+                         <table width="100%" class="table">
+                          <tr>
+                            <td style="text-align:left;line-height:30px;width:50%">
+							<?php echo $order_address->full_name; ?><br>
+							<?php echo $order_address->house_no; ?>, <?php echo $order_address->street; ?><br>
+							<?php echo $order_address->state; ?>, <?php echo $order_address->city; ?><br>
+							<?php echo $order_address->pincode; ?><br>
+							<?php echo $order_address->country_name; ?><br>
+							<?php echo $order_address->mobile_number; ?><br>
+							<?php echo $order_address->email_address; ?><br>
+							</td>
+                            <td style="text-align:left;line-height:30px;width:50%;">
+								Order ID : <?php echo $order_address->order_id; ?><br>
+								Order Date : <?php echo date('d/m/Y', $timestamp); ?><br>
+								Order Status : <?php echo $order_address->order_stauts; ?>
+							</td>
+                          </tr>
+                        </table>
+                        <?php
+						}
+						if (count($order_details)>0){
+						?>
+                                        <table width="100%" class="table">
                                             <thead>
                                                 <tr>
-                                                    <th>Order</th>
-                                                    <th>Date</th>
-                                                    <th>Status</th>
-                                                    <th>Total</th>
-                                                    <th>Actions</th>	 	 	 	
+                                                    <th style="width:60%">Product Name</th>
+                                                    <th style="width:20%">Quantity</th>
+                                                    <th style="width:20%">Amount</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                             <?php 
-												foreach($order_details as $order){ 
+												foreach($order_details as $order){
 											?>
                                                 <tr>
-                                                    <td class="product-thumbnail"><img src="<?php echo base_url(); ?>assets/products/<?php echo $order->product_cover_img;?>" alt="cart-image" /></td>
-                                                    <td><?php echo $order->product_name; ?></td>
-                                                    <td><?php echo $order->quantity; ?></td>
-                                                    <td>₹<?php echo $order->cart_amount; ?></td>
-                                                    <td><a class="view" href="<?php echo base_url(); ?>home/cus_order_details/<?php echo $id;?>/">view</a></td>
+                                                    <td style="text-align:left;width:60%"><?php echo $order->product_name; ?></td>
+                                                    <td style="width:20%"><?php echo $order->quantity; ?></td>
+                                                    <td style="width:20%">₹<?php echo $order->total_amount; ?></td>
                                                 </tr>
                                            <?php } ?>
-                                            </tbody>
+										  
+											
+												<tr>
+                                                    <th style="width:60%">&nbsp;</th>
+                                                    <th style="width:20%"><b>Total Amount</b></th>
+                                                    <th style="width:20%"><b>₹<?php echo $print_total_amount; ?></b></th>
+                                                </tr>
+
+                                             </tbody>
                                         </table>
                                <?php } ?>
                                     </div>

@@ -59,16 +59,82 @@ $route['forgotpassword'] = 'home/forgotpassword';
 $route['myaccount'] = 'home/myaccount';
 $route['cust_change_password'] = 'home/cust_change_password';
 $route['cust_orders'] = 'home/cust_orders';
+$route['cust_order_details/(:any)'] = 'home/cust_order_details/$order_id';
 $route['cust_address'] = 'home/cust_address';
 $route['cust_details'] = 'home/cust_details';
 $route['cart'] = 'home/cart';
+$route['viewcart'] = 'home/viewcart';
+$route['addcart/(:any)'] = 'home/addcart/$product_id';
 $route['checkout'] = 'home/checkout';
-$route['(:any)/categories/(:any)'] = 'home/categories/$id/$name';
-$route['product_details'] = 'home/product_details';
+$route['categories/(:any)/(:any)'] = 'home/categories/$id/$name';
+$route['product_details/(:any)/(:any)'] = 'home/product_details/$id/$name';
 $route['aboutus'] = 'home/aboutus';
 $route['contactus'] = 'home/contactus';
+$route['offers'] = 'home/offers';
+$route['privacy'] = 'home/privacy';
 $route['wishlist'] = 'home/wishlist';
 
-//---------------------------------------------------------------//
+//----------------------------------------------------------------------------------------------//
 
 
+//------- Admin------------//
+
+
+//------- Specification Masters------------//
+
+$route['admin/specification'] = 'specification/index';
+$route['admin/specification/(:any)'] = 'specification/edit/$id';
+
+//------- Tag Masters------------//
+
+$route['admin/tags'] = 'tagmaster/index';
+$route['admin/tag/(:any)'] = 'tagmaster/edit/$id';
+
+
+//------- Zip code Masters------------//
+
+$route['admin/zipcode'] = 'zipcodemaster/index';
+$route['admin/zipcode/(:any)'] = 'zipcodemaster/edit/$id';
+
+//------- Products Masters------------//
+
+$route['admin/products'] = 'productmaster/index';
+$route['admin/view_products'] = 'productmaster/view_products';
+$route['admin/products/(:any)'] = 'productmaster/edit_product/$id';
+$route['admin/edit_combined_products/(:any)'] = 'productmaster/edit_combined_products/$id';
+$route['admin/add_sub_product/(:any)'] = 'productmaster/add_sub_product/$id';
+$route['admin/add_specification/(:any)'] = 'productmaster/add_specification/$id';
+$route['admin/edit_specifcation/(:any)'] = 'productmaster/edit_specifcation/$id';
+$route['admin/add_tags/(:any)'] = 'productmaster/add_tags/$id';
+$route['admin/product/review/(:any)'] = 'productmaster/view_review/$id';
+
+//------- Tracking modules------------//
+$route['admin/tracking'] = 'tracking/index';
+$route['admin/check_orders/(:any)'] = 'tracking/check_orders/$id';
+$route['admin/invoice/(:any)'] = 'tracking/print_order/$id';
+$route['admin/list_of_orders'] = 'tracking/list_of_orders/$id';
+
+//------- sales modules------------//
+$route['admin/sales'] = 'salesmaster/index';
+$route['admin/day_wise_sales'] = 'salesmaster/day_wise_sales';
+$route['admin/month_wise_sales'] = 'salesmaster/month_wise_sales';
+
+//------- Promotional modules------------//
+$route['admin/banner'] = 'banner/index';
+$route['admin/edit_banner/(:any)'] = 'banner/edit_banner/$id';
+
+
+//------------Ads----------------//
+
+$route['admin/ads'] = 'adsmaster/index';
+$route['admin/edit_ads/(:any)'] = 'adsmaster/edit_ads/$id';
+
+//------------Offers----------------//
+
+$route['admin/offers'] = 'offermaster/index';
+$route['admin/edit_offer/(:any)'] = 'offermaster/edit_offer/$id';
+
+//------------Customer----------------//
+
+$route['admin/customers'] = 'customerprofile/index';
+$route['admin/customer_details/(:any)'] = 'customerprofile/customer_details/$id';
