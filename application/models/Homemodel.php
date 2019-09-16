@@ -1124,7 +1124,7 @@ Class Homemodel extends CI_Model
 			$res = $this->db->query($check_wishlist);
 
 			if($res->num_rows()==0){
-				$insert = "INSERT INTO cus_wishlist(`customer_id`, `product_id`, `created_at`, `updated_at`) VALUES ('$cust_id', '$product_id', now())";
+				$insert = "INSERT INTO cus_wishlist(`customer_id`, `product_id`, `created_at`) VALUES ('$cust_id', '$product_id', now())";
 				$res = $this->db->query($insert);
 			}
 			if ($res){
