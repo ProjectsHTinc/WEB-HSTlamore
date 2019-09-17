@@ -751,6 +751,8 @@ Class Homemodel extends CI_Model
 					 $quantity = $cart_rows->quantity;
 					 $chk_quantity = $quantity +1;
 				}
+	echo $stocks_left;
+	echo $chk_quantity;
 	
 				if ($stocks_left >= $chk_quantity){
 					echo $cart_update = "UPDATE product_cart SET quantity = quantity+1,total_amount = total_amount+$prod_price,cus_id ='$cust_id', updated_at =now(), updated_by = '$cust_id' WHERE id  ='$cart_id'";
@@ -758,6 +760,10 @@ Class Homemodel extends CI_Model
 				}
 			
 			} else {
+				
+					echo $stocks_left;
+	echo $chk_quantity;
+	
 				if ($stocks_left <= $chk_quantity){
 	   				echo $cart_details="INSERT INTO product_cart(product_id,product_combined_id,browser_sess_id,cus_id,quantity,price,total_amount,status,created_at,created_by) VALUES('$product_id','0','$browser_sess_id','$cust_id','1','$prod_price','$prod_price','Pending',now(),'$cust_id')";
 					$result=$this->db->query($cart_details);
