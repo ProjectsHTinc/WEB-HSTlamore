@@ -24,11 +24,9 @@ include("connection.php");
 	} */
     
 
-
-
      $merchant_id = $_POST["merchant_id"];
 	 $order_id = $_POST["order_id"];
-	echo $amount = $_POST["amount"];
+	 $amount = $_POST["amount"];
 	 $currency = $_POST["currency"];
 	 $redirect_url = $_POST["redirect_url"];
 	 $cancel_url = $_POST["cancel_url"];
@@ -36,20 +34,17 @@ include("connection.php");
 
 	$resp_data = "merchant_id=".$merchant_id."&";
 	$resp_data .= "order_id=".$order_id."&";
-	//$resp_data .= "amount=".$amount."&";
 	
 	
-		echo $sQuery = "SELECT * FROM purchase_order WHERE order_id ='" .$order_id. "'";
-        $objRs = mysql_query($sQuery);
-            if (mysql_num_rows($objRs)> 0)
-        	{
-				echo "IF";
-        		while ($row = mysql_fetch_array($objRs))
-        		{
-					echo "WHILE";
-        		    echo $purchase_amount = $row['total_amount'];
-        		}
-            }
+	$sQuery = "SELECT * FROM purchase_order WHERE order_id ='" .$order_id. "'";
+	$objRs = mysql_query($sQuery);
+		if (mysql_num_rows($objRs)> 0)
+		{
+			while ($row = mysql_fetch_array($objRs))
+			{
+				$purchase_amount = $row['total_amount'];
+			}
+		}
 			
 	if ($amount != $purchase_amount){
 		$resp_data .= "amount=".$purchase_amount."&";
@@ -62,8 +57,6 @@ include("connection.php");
 	$resp_data .= "cancel_url=".$cancel_url."&";
 	$resp_data .= "language=".$language."&";
 	
-	echo $resp_data;
-	exit;
 	
 
 	$encrypted_data=encrypt($resp_data,$working_key); // Method for encrypting the data.
