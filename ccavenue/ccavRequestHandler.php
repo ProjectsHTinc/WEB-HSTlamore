@@ -28,7 +28,7 @@ include("connection.php");
 
      $merchant_id = $_POST["merchant_id"];
 	 $order_id = $_POST["order_id"];
-	echo $amount = trim($_POST["amount"]);
+	echo $amount = $_POST["amount"];
 	 $currency = $_POST["currency"];
 	 $redirect_url = $_POST["redirect_url"];
 	 $cancel_url = $_POST["cancel_url"];
@@ -39,13 +39,13 @@ include("connection.php");
 	//$resp_data .= "amount=".$amount."&";
 	
 	
-		echo $sQuery = "SELECT * FROM purchase_order WHERE order_id ='" .$order_id. "'  LIMIT 1";
+		echo $sQuery = "SELECT * FROM purchase_order WHERE order_id ='" .$order_id. "'";
         $objRs = mysql_query($sQuery);
             if (mysql_num_rows($objRs)> 0)
         	{
         		while ($row = mysql_fetch_array($objRs))
         		{
-        		    echo $purchase_amount = trim($row['total_amount']);
+        		    echo $purchase_amount = $row['total_amount'];
         		}
             }
 			
