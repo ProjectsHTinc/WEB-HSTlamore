@@ -691,6 +691,9 @@ Class Homemodel extends CI_Model
 				echo $stocks_left;
 				echo $chk_quantity;
 				
+				
+		exit;
+		
 				if ($stocks_left >= $chk_quantity){
 					 $cart_update = "UPDATE product_cart SET quantity = quantity+$quantity,total_amount = total_amount+$total_amount,updated_at =now(), updated_by = '$cust_id' WHERE id  ='$cart_id'";
 					$result = $this->db->query($cart_update);
