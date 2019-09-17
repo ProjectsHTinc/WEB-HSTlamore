@@ -38,13 +38,17 @@ include("connection.php");
 	$resp_data .= "order_id=".$order_id."&";
 	//$resp_data .= "amount=".$amount."&";
 	
- 	echo $sQuery = "SELECT total_amount FROM purchase_order WHERE order_id = '$order_id' LIMIT 1";
-	$objRs = mysql_query($sQuery);
-	while ($row = mysql_fetch_array($objRs))
-	{
-		echo $purchase_amount  = trim($row['total_amount']);
-	}
-
+	
+		$sQuery = "SELECT total_amount FROM purchase_order WHERE order_id ='" .$order_id. "'  LIMIT 1";
+        $objRs = mysql_query($sQuery);
+            if (mysql_num_rows($objRs)> 0)
+        	{
+        		while ($row = mysql_fetch_array($objRs))
+        		{
+        		    echo $purchase_amount = trim($row['total_amount']);
+        		}
+            }
+			
 	if ($amount != $purchase_amount){
 		echo $resp_data .= "amount=".$purchase_amount."&";
 	} else {
