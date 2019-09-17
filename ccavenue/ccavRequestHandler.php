@@ -43,8 +43,10 @@ include("connection.php");
         $objRs = mysql_query($sQuery);
             if (mysql_num_rows($objRs)> 0)
         	{
+				echo "IF";
         		while ($row = mysql_fetch_array($objRs))
         		{
+					echo "WHILE";
         		    echo $purchase_amount = $row['total_amount'];
         		}
             }
