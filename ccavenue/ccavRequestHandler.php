@@ -39,7 +39,7 @@ include("connection.php");
 	//$resp_data .= "amount=".$amount."&";
 	
 	
-		$sQuery = "SELECT total_amount FROM purchase_order WHERE order_id ='" .$order_id. "'  LIMIT 1";
+		echo $sQuery = "SELECT * FROM purchase_order WHERE order_id ='" .$order_id. "'  LIMIT 1";
         $objRs = mysql_query($sQuery);
             if (mysql_num_rows($objRs)> 0)
         	{
@@ -50,9 +50,9 @@ include("connection.php");
             }
 			
 	if ($amount != $purchase_amount){
-		echo $resp_data .= "amount=".$purchase_amount."&";
+		$resp_data .= "amount=".$purchase_amount."&";
 	} else {
-		echo $resp_data .= "amount=".$amount."&";
+		 $resp_data .= "amount=".$amount."&";
 	} 
 	
 	$resp_data .= "currency=".$currency."&";
