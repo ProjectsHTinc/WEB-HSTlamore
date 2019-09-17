@@ -23,7 +23,8 @@ include("connection.php");
 		$merchant_data.=$key.'='.$value.'&';
 	}
     */
-	
+
+
     $merchant_id = $_POST["merchant_id"];
 	$order_id = $_POST["order_id"];
 	$amount = trim($_POST["amount"]);
@@ -36,7 +37,7 @@ include("connection.php");
 	$resp_data .= "order_id=".$order_id."&";
 	//$resp_data .= "amount=".$amount."&";
 	
- 	$sQuery = "SELECT total_amount FROM purchase_order WHERE order_id = '$$order_id' LIMIT 1";
+ 	$sQuery = "SELECT total_amount FROM purchase_order WHERE order_id = '$order_id' LIMIT 1";
 	$objRs = mysql_query($sQuery);
 	while ($row = mysql_fetch_array($objRs))
 	{
