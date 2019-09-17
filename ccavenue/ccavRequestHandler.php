@@ -18,12 +18,13 @@ include("connection.php");
 	$working_key='66DE435387A4C12180CCB5350B4B6552';//Shared by CCAVENUES
 	$access_code='AVAU84GD83BV10UAVB';//Shared by CCAVENUES
 	
-	/*
+	
 	foreach ($_POST as $key => $value){
 		$merchant_data.=$key.'='.$value.'&';
 	}
-    */
+    
 
+exit;
 
     $merchant_id = $_POST["merchant_id"];
 	$order_id = $_POST["order_id"];
