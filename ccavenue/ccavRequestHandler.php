@@ -26,13 +26,13 @@ include("connection.php");
 
 
 
-    echo $merchant_id = $_POST["merchant_id"];
-	echo $order_id = $_POST["order_id"];
+     $merchant_id = $_POST["merchant_id"];
+	 $order_id = $_POST["order_id"];
 	echo $amount = trim($_POST["amount"]);
-	echo $currency = $_POST["currency"];
-	echo $redirect_url = $_POST["redirect_url"];
-	echo $cancel_url = $_POST["cancel_url"];
-	echo $language = $_POST["language"];
+	 $currency = $_POST["currency"];
+	 $redirect_url = $_POST["redirect_url"];
+	 $cancel_url = $_POST["cancel_url"];
+	 $language = $_POST["language"];
 
 	$resp_data = "merchant_id=".$merchant_id."&";
 	$resp_data .= "order_id=".$order_id."&";
