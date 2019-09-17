@@ -759,7 +759,7 @@ Class Homemodel extends CI_Model
 			
 			} else {
 				if ($stocks_left <= $chk_quantity){
-	   				ech0 $cart_details="INSERT INTO product_cart(product_id,product_combined_id,browser_sess_id,cus_id,quantity,price,total_amount,status,created_at,created_by) VALUES('$product_id','0','$browser_sess_id','$cust_id','1','$prod_price','$prod_price','Pending',now(),'$cust_id')";
+	   				echo $cart_details="INSERT INTO product_cart(product_id,product_combined_id,browser_sess_id,cus_id,quantity,price,total_amount,status,created_at,created_by) VALUES('$product_id','0','$browser_sess_id','$cust_id','1','$prod_price','$prod_price','Pending',now(),'$cust_id')";
 					$result=$this->db->query($cart_details);
 					}
 			}
