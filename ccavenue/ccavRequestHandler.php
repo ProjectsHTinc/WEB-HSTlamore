@@ -4,7 +4,7 @@ include("connection.php");
 ?>
 <html>
 <head>
-<title> Non-Seamless-kit</title>
+<title>Little A More - Payment</title>
 </head>
 <body>
 <center>
@@ -23,6 +23,7 @@ include("connection.php");
 		$merchant_data.=$key.'='.$value.'&';
 	}
     */
+	
     $merchant_id = $_POST["merchant_id"];
 	$order_id = $_POST["order_id"];
 	$amount = trim($_POST["amount"]);
@@ -33,27 +34,20 @@ include("connection.php");
 
 	$resp_data = "merchant_id=".$merchant_id."&";
 	$resp_data .= "order_id=".$order_id."&";
-	$resp_data .= "amount=".$amount."&";
+	//$resp_data .= "amount=".$amount."&";
 	
-/* 	$sQuery = "SELECT
-                B.pricing
-                FROM
-                    institute_plan_history A,
-                    institute_plans B
-                WHERE
-                    A.id = '$purchase_id' AND A.institute_plan_id = B.id
-                LIMIT 1";
+ 	$sQuery = "SELECT total_amount FROM purchase_order WHERE order_id = '$$order_id' LIMIT 1";
 	$objRs = mysql_query($sQuery);
 	while ($row = mysql_fetch_array($objRs))
 	{
-		$purchase_amount  = trim($row['pricing']);
+		$purchase_amount  = trim($row['total_amount']);
 	}
 
 	if ($amount != $purchase_amount){
 		$resp_data .= "amount=".$purchase_amount."&";
 	} else {
 		$resp_data .= "amount=".$amount."&";
-	} */
+	} 
 	
 	$resp_data .= "currency=".$currency."&";
 	$resp_data .= "redirect_url=".$redirect_url."&";
