@@ -675,6 +675,8 @@ Class Homemodel extends CI_Model
 			$quantity = $stocks_left;
 			$total_amount = $stocks_left * $price;
 		}
+		
+		
 			if ($cust_id!=''){
 				$sel_cart = "SELECT * FROM product_cart WHERE product_id = '$product_id' AND product_combined_id ='$com_product_id' AND cus_id ='$cust_id' AND order_id = '' AND status='Pending'";
 			} else {
@@ -687,27 +689,21 @@ Class Homemodel extends CI_Model
 					$squantity = $cart_rows->quantity;
 					$chk_quantity = $squantity + $quantity;
 				}
+					
+					if ($stocks_left >= $chk_quantity){
+						$cart_update = "UPDATE product_cart SET quantity = quantity+$quantity,total_amount = total_amount+$total_amount,updated_at =now(), updated_by = '$cust_id' WHERE id  ='$cart_id'";
+						$result = $this->db->query($cart_update);
+						$datas=array('status'=>'success');
+					} else {
+						$datas=array('status'=>'failure');;
+					}
 				
-				echo $stocks_left;
-				echo $chk_quantity;
-				
-		
-				if ($stocks_left >= $chk_quantity){
-					 echo $cart_update = "UPDATE product_cart SET quantity = quantity+$quantity,total_amount = total_amount+$total_amount,updated_at =now(), updated_by = '$cust_id' WHERE id  ='$cart_id'";
-					 $result = $this->db->query($cart_update);
-				}
 			} else {
-	   		         echo  $cart_insert="INSERT INTO product_cart(product_id,product_combined_id,browser_sess_id,cus_id,quantity,price,total_amount,status,created_at,created_by) VALUES('$product_id','$com_product_id','$browser_sess_id','$cust_id','$quantity','$price','$total_amount','Pending',now(),'$cust_id')";
+	   		         $cart_insert="INSERT INTO product_cart(product_id,product_combined_id,browser_sess_id,cus_id,quantity,price,total_amount,status,created_at,created_by) VALUES('$product_id','$com_product_id','$browser_sess_id','$cust_id','$quantity','$price','$total_amount','Pending',now(),'$cust_id')";
 					 $result=$this->db->query($cart_insert);
+					 $datas=array('status'=>'success');
 			}
 			
-			exit;
-			
-	   		if ($result){
-				$datas=array('status'=>'success');
-			}else {
-				$datas=array('status'=>'failure');;
-			}
 			return $datas;
    } 
     
@@ -751,32 +747,26 @@ Class Homemodel extends CI_Model
 					 $quantity = $cart_rows->quantity;
 					 $chk_quantity = $quantity +1;
 				}
-	echo $stocks_left;
-	echo $chk_quantity;
 	
 				if ($stocks_left >= $chk_quantity){
-					echo $cart_update = "UPDATE product_cart SET quantity = quantity+1,total_amount = total_amount+$prod_price,cus_id ='$cust_id', updated_at =now(), updated_by = '$cust_id' WHERE id  ='$cart_id'";
+					$cart_update = "UPDATE product_cart SET quantity = quantity+1,total_amount = total_amount+$prod_price,cus_id ='$cust_id', updated_at =now(), updated_by = '$cust_id' WHERE id  ='$cart_id'";
 					$result = $this->db->query($cart_update);
+					$datas=array('status'=>'success');
+				} else {
+					$datas=array('status'=>'failure');;
 				}
 			
 			} else {
-				
-					echo $stocks_left;
-	echo $chk_quantity;
-	
 				if ($stocks_left <= $chk_quantity){
-	   				echo $cart_details="INSERT INTO product_cart(product_id,product_combined_id,browser_sess_id,cus_id,quantity,price,total_amount,status,created_at,created_by) VALUES('$product_id','0','$browser_sess_id','$cust_id','1','$prod_price','$prod_price','Pending',now(),'$cust_id')";
-					$result=$this->db->query($cart_details);
-					}
+						$cart_details="INSERT INTO product_cart(product_id,product_combined_id,browser_sess_id,cus_id,quantity,price,total_amount,status,created_at,created_by) VALUES('$product_id','0','$browser_sess_id','$cust_id','1','$prod_price','$prod_price','Pending',now(),'$cust_id')";
+						$result=$this->db->query($cart_details);
+						$datas=array('status'=>'success');
+				} else {
+						$datas=array('status'=>'failure');;
+				}
 			}
-exit;
-			if ($result){
-				$datas=array('status'=>'success');
-			}else {
-				$datas=array('status'=>'failure');;
-			}
-			return $datas;
 
+			return $datas;
    } 
 
 
