@@ -121,22 +121,12 @@
 											<input type="hidden" name="amount" value="<?php echo number_format((float)$total_amount, 2, '.', '');?>"/>
 											<input type="hidden" name="currency" value="INR"/>
 											<input type="hidden" name="redirect_url" value="<?php echo base_url(); ?>ccavenue/ccavResponseHandler.php"/>
-											<input type="hidden" name="cancel_url" value="<?php echo base_url(); ?>cancel//"/>
+											<input type="hidden" name="cancel_url" value="<?php echo base_url(); ?>"/>
 											<input type="hidden" name="language" value="EN"/>
 											<input type="submit" value="CheckOut" class="btn btn-primary">
+											
 										</form>
-			
-                                       <!--<form method="post" name="customerData"  class="confirm_process" action="http://hobbistan.com/web/ccavenue/ccavRequestHandler.php">
-                                        <input type="hidden" name="merchant_id" value="89958"/>
-                                        <input type="hidden" name="order_id" value="<?php //echo $res_orders['order_id'];?>"/>
-                                        <input type="hidden" name="amount" value="<?php //echo number_format((float)$total_amount, 2, '.', '');?>"/>
-                                        <input type="hidden" name="currency" value="INR"/>
-                                        <input type="hidden" name="redirect_url" value="http://hobbistan.com/web/ccavenue/ccavResponseHandler.php"/>
-                                        <input type="hidden" name="cancel_url" value="http://littleamore.in/cancel/"/>
-                                        <input type="hidden" name="language" value="EN"/>
-                                        <INPUT type="submit"  id="submit" value="Make Payment" class="btn btn-primary">
-            							</form>-->
-                                        </div>
+			                          </div>
                                     </div>
                                 </div>
                             </div>
