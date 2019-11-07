@@ -124,8 +124,8 @@
 											<input type="hidden" name="cancel_url" value="<?php echo base_url(); ?>"/>
 											<input type="hidden" name="language" value="EN"/>
 											<input type="submit" value="CheckOut" class="btn btn-primary">
-											
 										</form>
+										
 			                          </div>
                                     </div>
                                 </div>

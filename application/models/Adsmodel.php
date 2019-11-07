@@ -83,7 +83,7 @@ Class Adsmodel extends CI_Model
 
    function update_ads($sub_cat_id,$ads_token,$ad_img,$ad_title,$ads_status,$user_id){
    $id=base64_decode($ads_token)/9876;
-   if($ad_status=='Active'){
+   if($ads_status=='Active'){
      $update="UPDATE ads_master SET status='Inactive'";
      $res=$this->db->query($update);
    }
