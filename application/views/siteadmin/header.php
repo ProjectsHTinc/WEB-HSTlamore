@@ -30,70 +30,16 @@
         <div class="la-anim-1"></div>
     </div>
     <!-- /Preloader -->
+	
     <div class="wrapper">
         <!-- Top Menu Items -->
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <a id="toggle_nav_btn" class="toggle-left-nav-btn inline-block mr-20 pull-left" href="javascript:void(0);"><i class="fa fa-bars"></i></a>
             <a href="<?php echo base_url(); ?>adminlogin/home"><img class="brand-img pull-left" src="<?php echo base_url(); ?>/assets/dist/img/logo.png" alt="brand" /></a>
             <ul class="nav navbar-right top-nav pull-right">
-
-                <li>
-                    <a id="open_right_sidebar" href="javascript:void(0);"><i class="fa fa-cog top-nav-icon"></i></a>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-th top-nav-icon"></i></a>
-                    <ul class="dropdown-menu app-dropdown" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
-                        <li>
-                            <ul class="app-icon-wrap">
-                                <li>
-                                    <a href="#" class="connection-item">
-                                        <i class="pe-7s-umbrella txt-info"></i>
-                                        <span class="block">weather</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="connection-item">
-                                        <i class="pe-7s-mail-open-file txt-success"></i>
-                                        <span class="block">e-mail</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="connection-item">
-                                        <i class="pe-7s-date txt-primary"></i>
-                                        <span class="block">calendar</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="connection-item">
-                                        <i class="pe-7s-map txt-danger"></i>
-                                        <span class="block">map</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="connection-item">
-                                        <i class="pe-7s-comment txt-warning"></i>
-                                        <span class="block">chat</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="connection-item">
-                                        <i class="pe-7s-notebook"></i>
-                                        <span class="block">contact</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="divider"></li>
-
-                    </ul>
-                </li>
-
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle pr-0" data-toggle="dropdown"><img src="<?php echo base_url(); ?>/assets/dist/img/user1.png" alt="user_auth" class="user-auth-img img-circle" /><span class="user-online-status"></span></a>
                     <ul class="dropdown-menu user-auth-dropdown" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                        </li>
                         <li>
                             <a href="<?php echo base_url(); ?>adminlogin/profile"><i class="fa fa-fw fa-user"></i> Profile</a>
                         </li>

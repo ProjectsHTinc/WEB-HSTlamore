@@ -263,15 +263,16 @@
                         <!-- Best Seller Product Activation Start -->
                         <div class="best-seller new-products owl-carousel">
                         
-                            <?php foreach($home_popularproducts as $npro){ 
-								$sproduct_id = $npro->id;
-								$product_id = $npro->id * 663399;
-								$enc_product_name = strtolower(preg_replace("/[^\w]/", "-", $npro->product_name));
+                            <?php foreach($home_popularproducts as $vpro){ 
+								$sproduct_id = $vpro->id;
+				
+								$product_id = $vpro->id * 663399;
+								$enc_product_name = strtolower(preg_replace("/[^\w]/", "-", $vpro->product_name));
 								$enc_product_id = base64_encode($product_id);
-								$combined_status = $npro->combined_status;
-								$offer_status = $npro->offer_status;
-								$prod_actual_price = $npro->prod_actual_price;
-								$stocks_left = $npro->stocks_left;
+								$combined_status = $vpro->combined_status;
+								$offer_status = $vpro->offer_status;
+								$prod_actual_price = $vpro->prod_actual_price;
+								$stocks_left = $vpro->stocks_left;
 								
 								if ($offer_status =='1'){
 									$offer_details = $this->homemodel->get_offer_details($sproduct_id);
@@ -292,7 +293,7 @@
                                     <!-- Product Image Start -->
                                     <div class="pro-img">
                                         <a href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/">
-                                            <img class="primary-img" src="<?php echo base_url(); ?>assets/products/<?php echo $npro->product_cover_img; ?>" alt="single-product">
+                                            <img class="primary-img" src="<?php echo base_url(); ?>assets/products/<?php echo $vpro->product_cover_img; ?>" alt="single-product">
                                             <!--<img class="secondary-img" src="<?php echo base_url(); ?>assets/front/img/new-products/1_2.jpg" alt="single-product">-->
                                         </a>
                                         <!--<div class="quick-view">
@@ -303,7 +304,7 @@
                                     <!-- Product Image End -->
                                     <!-- Product Content Start -->
                                     <div class="pro-content text-center">
-                                        <h4><a href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/"><?php echo $npro->product_name; ?></a></h4>
+                                        <h4><a href="<?php echo base_url(); ?>home/product_details/<?php echo $sproduct_id; ?>/<?php echo $enc_product_name ; ?>/"><?php echo $vpro->product_name; ?></a></h4>
                                          <?php if ($offer_status == '1'){ ?>
                                         <p class="price"><span class="mrp">₹<?php echo $prod_actual_price;?></span> <span>₹<?php echo $offer_price;?></span></p>										<?php } else { ?>
                                         <p class="price"><span>₹<?php echo $prod_actual_price;?></span></p>
@@ -336,7 +337,8 @@
             </div>
             <!-- Container End -->
         </div>
-        <!-- Best Seller Products End -->      
+        <!-- Best Seller Products End -->
+		</div>
 <?php } ?>
 
 

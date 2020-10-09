@@ -53,15 +53,17 @@ if (count($category_details)>0){
                                     </div>-->
                                 </div>
                                 <div class="col-md-4 col-sm-5 pull-right">
-                                    <select name="shorer" id="shorter" class="form-control select-varient">
+                                    <!--<select name="shorer" id="shorter" class="form-control select-varient">
                                         <option value="#">Sort By:Default</option>
                                         <option value="#">Sort By:Name (A - Z)</option>
                                         <option value="#">Sort By:Name (Z - A)</option>
                                         <option value="#">Sort By:Price (Low > High)</option>
                                         <option value="#">Sort By:Price (High > Low)</option>
-                                    </select>
+                                    </select>-->
                                 </div>
                             </div>
+							
+
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="tab-content categorie-list ">
@@ -152,6 +154,9 @@ if (count($category_details)>0){
                                 </div>
                             </div>
                             <!-- Row End -->
+							
+							
+							
                         </div>
                         <!-- Best Seller Product End -->
                     </div>

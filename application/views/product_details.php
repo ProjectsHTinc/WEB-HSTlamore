@@ -283,7 +283,7 @@ if (count($product_gallery)>0){
                             </div>
                             <!-- Product Button Actions End -->
                             <!-- Product Social Link Share Start -->
-                            <div class="social-shared">
+                            <!--<div class="social-shared">
                                 <ul>
                                     <li class="f-book">
                                         <a href="#">
@@ -304,7 +304,7 @@ if (count($product_gallery)>0){
                                             <span>plus</span>
                                         </a>
                                     </li>
-                                    <!-- Product Social Link Share Dropdown Start -->
+                                   
                                     <li class="share-post">
                                         <a href="#">
                                             <span><i class="fa fa-plus-square" aria-hidden="true"></i></span>
@@ -320,10 +320,9 @@ if (count($product_gallery)>0){
                                             <li><a href="#"><i class="fa fa-plus-square" aria-hidden="true"></i>more(99)</a></li>
                                         </ul>
                                     </li>
-                                    <!-- Product Social Link Share Dropdown End -->
                                 </ul>
-                            </div>
-                            <!-- Product Social Link Share End -->
+                            </div>-->
+                           
                         </div>
                         </form>
                     </div>

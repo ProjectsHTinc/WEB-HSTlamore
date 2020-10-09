@@ -27,7 +27,7 @@ class Home extends CI_Controller {
 		//$datas['categories'] = $this->homemodel->categorylist();
 		//$datas['home_bestsaleproducts'] = $this->homemodel->bestsaleproducts();
 		//$datas['home_promotions'] = $this->homemodel->homepromotions();
-		//print_r($datas['home_banner']);
+		//print_r($datas['home_popularproducts']);
 		$this->load->view('front_header',$datas);
 		$this->load->view('index',$datas);
 		$this->load->view('front_footer',$datas);

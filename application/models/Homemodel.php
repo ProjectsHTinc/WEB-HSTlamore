@@ -1212,7 +1212,7 @@ Class Homemodel extends CI_Model
    }
    
    function popularproducts(){
-		$sql = "SELECT * FROM products A,product_view_count B WHERE A.status='Active' AND A.id = B.product_id ORDER BY view_count DESC LIMIT 10";
+		$sql = "SELECT A.*,B.view_count FROM products A,product_view_count B WHERE A.status='Active' AND A.id = B.product_id ORDER BY B.view_count DESC LIMIT 10";
 		$resu=$this->db->query($sql);
 		$res=$resu->result();
 		return $res;

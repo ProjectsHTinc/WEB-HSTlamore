@@ -1,28 +1,32 @@
 <?php
-    ob_start();
+include('Crypto.php');
+include("connection.php");
 	error_reporting(0);
-    include('Crypto.php');
-    include("connection.php");
+	
+	$workingKey='3A5F7172E7947B223888492581B32ED2';		//Working Key should be provided here.
+	$encResponse=$_POST["encResp"];			//This is the response sent by the CCAvenue Server
+	$rcvdString=decrypt($encResponse,$workingKey);		//Crypto Decryption used as per the specified working key.
+	$order_status="";
+	$decryptValues=explode('&', $rcvdString);
+	$dataSize=sizeof($decryptValues);
 
-	$workingKey = '66DE435387A4C12180CCB5350B4B6552';		//Working Key should be provided here.
-	$encResponse = $_POST["encResp"];			            //This is the response sent by the CCAvenue Server
-	$rcvdString = decrypt($encResponse,$workingKey);		//Crypto Decryption used as per the specified working key.
-	$order_status = "";
-	$decryptValues = explode('&', $rcvdString);
-	$dataSize = sizeof($decryptValues);
-
-
+/*
+	echo "<center>";
+	for($i = 0; $i < $dataSize; $i++) 
+	{
+		$information=explode('=',$decryptValues[$i]);
+		if($i==3)	$order_status=$information[1];
+	}
 	echo "<table cellspacing=4 cellpadding=4>";
- 	for($i = 0; $i < $dataSize; $i++) 
- 	{
- 		$information=explode('=',$decryptValues[$i]);
- 	    	echo '<tr><td>'.$information[0].'</td><td>'.$information[1].'</td></tr>';
- 	    		if($i==2)	echo $bank=$information[2];
- 	    	echo '<tr><td>'.$information[$i].'</td><td>'.$information[$i].'</td></tr>';
- 	}
- 	echo "</table><br>";
-
-for($i = 0; $i < $dataSize; $i++) 
+	for($i = 0; $i < $dataSize; $i++) 
+	{
+		$information=explode('=',$decryptValues[$i]);
+	    	echo '<tr><td>'.$information[0].'</td><td>'.$information[1].'</td></tr>';
+	}
+	echo "</table><br>";
+	echo "</center>";
+*/
+	for($i = 0; $i < $dataSize; $i++) 
 	{
 		$information=explode('=',$decryptValues[$i]);
 		if($i==0)   $orderid=$information[1];
@@ -68,8 +72,8 @@ for($i = 0; $i < $dataSize; $i++)
 		if($i==40)  $transdate=$information[1];
 		if($i==41)  $bin_country=$information[1];	
 	}
-
-		//$browser_id = $this->session->userdata('browser_sess_id');
+	
+	//$browser_id = $this->session->userdata('browser_sess_id');
 		//$cust_id = '1';
 
     	/* $string = $orderid;
@@ -82,29 +86,30 @@ for($i = 0; $i < $dataSize; $i++)
         //$objRs  = mysql_query($sQuery) or die("Could not select Query ");
 
 //exit;
-
-    	if($order_status=="Success")
-    	{
-			$query = "UPDATE purchase_order SET status = 'Success' WHERE order_id = '$orderid'";
-			$objRs  = mysql_query($query) or die("Could not select Query ");
-			
-			 header("Location: https://www.happysanztech.com/lamore/cust_orders/");
-    	}
-
-    	if($order_status=="Aborted")
-    	{
-    	   header("Location: https://www.happysanztech.com/lamore/");
-    	}
-    	
-    	if($order_status=="Failure")
-    	{
-    	    header("Location: https://www.happysanztech.com/lamore/");
-    	}
-    	
-    	if($order_status=="Invalid")
-    	{
-    	    header("Location: https://www.happysanztech.com/lamore/");
-
-    	}
-
+	
+	if($order_status==="Success")
+	{
+		//echo "<br>Thank you for shopping with us. Your credit card has been charged and your transaction is successful. We will be shipping your order to you soon.";
+		
+		$query = "UPDATE purchase_order SET status = 'Success' WHERE order_id = '" .$orderid. "'";
+	    $result = $mysqli->query($query);
+	    
+	    header("Location: https://www.happysanztech.com/lamore/cust_orders/");
+        exit();
+		
+	}
+	else if($order_status==="Aborted")
+	{
+		echo "<br>Thank you for shopping with us.We will keep you posted regarding the status of your order through e-mail";
+	
+	}
+	else if($order_status==="Failure")
+	{
+		echo "<br>Thank you for shopping with us.However,the transaction has been declined.";
+	}
+	else
+	{
+		echo "<br>Security Error. Illegal access detected";
+	
+	}
 ?>

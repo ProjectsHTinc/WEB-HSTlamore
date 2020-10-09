@@ -1,6 +1,6 @@
 <?php 
-	header("Cache-Control: no cache");
-	session_cache_limiter("private_no_expire");
+	//header("Cache-Control: no cache");
+	//session_cache_limiter("private_no_expire");
 	$browser_sess_id = 'lil'.$_SESSION["__ci_last_regenerate"];
 	$this->session->set_userdata('browser_sess_id', $browser_sess_id);
 	$cust_session_id = $this->session->userdata('cust_session_id');
@@ -98,7 +98,6 @@
                         <div class="primary-menu">
                             <nav>
                                 <ul class="primary-menu-list">
-                                    <li><a href="<?php echo base_url(); ?>">home</a></li>
 									<?php 
 									if (count($main_catmenu)>0){
 										foreach($main_catmenu as $rowm){ 
@@ -130,7 +129,7 @@
                     </div>
                     <!-- Primary-Menu End -->
                     <!-- Header All Shopping Selection Start -->
-                    <div class="col-lg-4 col-md-2 col-sm-6 col-xs-7 full-col pr-0">
+                    <div class="col-lg-4 col-md-2 col-sm-6 col-xs-7 full-col pr-0" style="padding-top:30px;">
                         <div class="main-selection">
                             <ul class="selection-list text-right">
                             <li class="hidden-control">
