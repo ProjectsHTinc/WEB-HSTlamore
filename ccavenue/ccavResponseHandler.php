@@ -12,11 +12,14 @@ include("connection.php");
 
 /*
 	echo "<center>";
+
 	for($i = 0; $i < $dataSize; $i++) 
 	{
 		$information=explode('=',$decryptValues[$i]);
 		if($i==3)	$order_status=$information[1];
 	}
+
+
 	echo "<table cellspacing=4 cellpadding=4>";
 	for($i = 0; $i < $dataSize; $i++) 
 	{
@@ -73,26 +76,13 @@ include("connection.php");
 		if($i==41)  $bin_country=$information[1];	
 	}
 	
-	//$browser_id = $this->session->userdata('browser_sess_id');
-		//$cust_id = '1';
-
-    	/* $string = $orderid;
-        $result = explode("-", $string);
-        $order_id=$result[0];  
-        $user_id= $result[1];
-        $purchase_id = $result[2]; */
-		
-        //echo $sQuery = "INSERT INTO ccavenue_status (order_id,user_id,track_id,bank_ref_no,order_status,failure_message,payment_mode,card_name,status_code,status_message,currency,amount,billing_name,billing_address, billing_city,billing_state,billing_zip,billing_country,billing_tel,billing_email,delievery_name,delievery_address,delievery_city,delievery_state,delievery_zip,delievery_country,delievery_tel,merch_param1,merch_param2,merch_param3,merch_param4,merch_param5,vault,offer_type,offer_code,discount_value, mer_amt,eci_value,retry,response_code,billing_notes,trans_date,bin_country) VALUES ('$orderid','$cust_id','$track_id','$bank_ref_no','$order_status','$failure_message','$payment_mode','$card_name','$status_code','$status_message','$currency','$amount','$billing_name','$billing_address','$billing_city','$billing_state','$billing_zip','$billing_country','$billing_tel','$billing_email','$delievery_name','$delievery_address','$delievery_city','$delievery_state','$delievery_zip','$delievery_country','$delievery_tel','$merch_param1','$merch_param2','$merch_param3','$merch_param4','$merch_param5','$vault','$offer_type','$offer_code','$discount_value','$mer_amt','$eci_value','$retry','$response_code','$billing_notes','$transdate','$bin_country')";
-        //$objRs  = mysql_query($sQuery) or die("Could not select Query ");
-
-//exit;
-	
 	if($order_status==="Success")
 	{
 		//echo "<br>Thank you for shopping with us. Your credit card has been charged and your transaction is successful. We will be shipping your order to you soon.";
 		
 		$query = "UPDATE purchase_order SET status = 'Success' WHERE order_id = '" .$orderid. "'";
 	    $result = $mysqli->query($query);
+	    
 	    
 	    header("Location: https://www.happysanztech.com/lamore/cust_orders/");
         exit();
